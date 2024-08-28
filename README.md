@@ -366,12 +366,13 @@ addpoint(0, pos);
 // Remove unused primitive.
 removeprim(0, @primnum, 1);
 ```
+
 ## Compute Curveu From Line
 *Reference Code*: 49138898
 
 ### curveu
 > [!IMPORTANT]
-> **Mode:** Primitive.
+> **Mode:** Points.
 > - **Input 0:** connected to a polyline.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
@@ -385,4 +386,38 @@ float curveu = float(@ptnum)/float(@numpt-1);
 
 // Set value.
 f@curveu = curveu;
+```
+
+## Angle Between Two Vectors
+*Reference Code*: 89221217
+
+### curveu
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+> [!NOTE]
+> In the example code, the v@up and the v@axis are computed already. If you need to compute the angle between two other vectors or other attributes, you can susbtitute the value of the up and axis variables.
+
+``` c
+""" Compute angle between two vectors. """;
+
+// Initialize values.
+vector up = v@up;
+vector axis = v@axis;
+
+// Get angle between two vectors.
+float angle = degrees(acos(dot(up, axis)));
+
+// Compute stable axis
+vector stable_axis = normalize(cross(up, cross({0,1,0}, up)));
+float full_angle = (int(sign(dot(axis, stable_axis)))==-1)? angle:360-angle;
+
+// Set angle value.
+f@angle = full_angle;
+
+
 ```
