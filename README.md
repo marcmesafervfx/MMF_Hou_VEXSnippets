@@ -12,10 +12,6 @@ This repository is designated to be a place where I put some of the VEX snippets
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
 
-<details>
-
-<summary>Snippet Code</summary>
-
 ``` c
 """ Create tangent based on neighbours in a line. """;
 
@@ -36,7 +32,6 @@ if(@ptnum==@numpt-1) tan*=-1;
 // Set attribute.
 v@tan = tan;
 ```
-</details>
 
 ## Blur Point Positions
 *Reference Code*: 26692791
@@ -50,10 +45,6 @@ v@tan = tan;
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
-
-<details>
-
-<summary>Snippet Code</summary>
 
 ``` c
 """ Blue based on nearpoints. """;
@@ -83,7 +74,6 @@ pos/=len(nearpts)+1;
 // Set attribute value.
 v@P = pos;
 ```
-</details>
 
 ## Cluster By Point Proximity
 *Reference Code*: 45043176
@@ -97,10 +87,6 @@ v@P = pos;
 > - **Input 1:** connected to a scatter node.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
-
-<details>
-
-<summary>Snippet Code</summary>
 
 ``` c
 """ Compute clusters avoiding promoting parameter. """;
@@ -129,8 +115,6 @@ foreach(int i; pts){
 // Set the cluster.
 i@cluster = cluster;
 ```
-</details>
-
 ### nearpoint
 > [!IMPORTANT]
 > **Mode:** Points.
@@ -138,10 +122,6 @@ i@cluster = cluster;
 > - **Input 1:** connected to a scatter node.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
-
-<details>
-
-<summary>Snippet Code</summary>
 
 ``` c
 """ Set cluster by proximity. """;
@@ -174,7 +154,6 @@ if(len(pts)>4){
     setprimgroup(0, "ngons", i@primnum, 1);
 }
 ```
-</details>
 
 ## Normalize Distance
 *Reference Code*: 89906276
@@ -189,10 +168,6 @@ if(len(pts)>4){
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
 
-<details>
-
-<summary>Snippet Code</summary>
-
 ``` c
 """ Get the distance for each of the points. """;
 
@@ -205,7 +180,6 @@ float dist = distance(pos, v@P);
 // Set distance attribute.
 f@dist = dist;
 ```
-</details>
 
 > [!NOTE]
 > Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values to follow the next steps.
@@ -217,10 +191,6 @@ f@dist = dist;
 > - **Input 1:** connected to a reference point.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
-
-<details>
-
-<summary>Snippet Code</summary>
 
 ``` c
 """ Normalize distance using the computed max distance. """;
@@ -234,7 +204,6 @@ float norm_dist = f@dist/max_dist;
 // Set color attrivute to show the normalized distance.
 v@Cd = chramp("color", norm_dist);
 ```
-</details>
 
 ### normalize_distance_detail
 > [!IMPORTANT]
@@ -243,10 +212,6 @@ v@Cd = chramp("color", norm_dist);
 > - **Input 1:** connected to a reference point.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
-
-<details>
-
-<summary>Snippet Code</summary>
 
 ``` c
 """ Normalize distance attribute. """;
@@ -280,4 +245,52 @@ for(int pt=0; pt<pts; pt++){
     setpointattrib(0, "Cd", pt, color);
 }
 ```
-</details>
+
+## Frustum Camera
+*Reference Code*: 38002708
+
+### frustum_camera
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a default box.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create camera frustum and make available the expansions. """;
+
+// Get camera path to create the frustum from.
+string cam = chs("camera");
+
+// Initialize expansion values (x,y).
+float expand_top = chf("expand_top");
+float expand_bottom = chf("expand_bottom");
+float expand_right = chf("expand_right");
+float expand_left = chf("expand_left");
+
+// Initialize clipping values (z).
+float near_clip = chf("near_clip");
+float far_clip = chf("far_clip");
+
+// Offset position to "convert" box position into normalized
+// coordinates.
+vector offset_pos = set(0.5, 0.5, -0.5);
+vector pos = v@P+offset_pos;
+
+// Apply expansions based on normalized positions.
+if(pos.y==1) pos.y+=expand_top;
+if(pos.y==0) pos.y-=expand_bottom;
+if(pos.x==1) pos.x+=expand_right;
+if(pos.x==0) pos.x-=expand_left;
+
+// Apply clipping based on normalized positions.
+if(pos.z==-1) pos.z-=far_clip;
+if(pos.z==0) pos.z-=near_clip;
+
+// Set position converting from NDC coordinates to world space.
+v@P = fromNDC(cam, pos);
+
+/* In this case we inverted the process. We created an "NDC" and
+we are transforming back to world space. */
+```
