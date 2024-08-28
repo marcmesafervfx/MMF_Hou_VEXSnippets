@@ -7,6 +7,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 ### create_tangents_line
 > [!IMPORTANT]
+> **Mode:** Points.
 > - **Input 0:** connected to the curve.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
@@ -38,6 +39,7 @@ v@tan = tan;
 
 ### blur_position
 > [!IMPORTANT]
+> **Mode:** Points.
 > - **Input 0:** connected to a scatter node.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
