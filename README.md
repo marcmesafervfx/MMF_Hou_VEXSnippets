@@ -393,7 +393,7 @@ f@curveu = curveu;
 > [!NOTE]
 > In the example code, the v@up and the v@axis are computed already. If you need to compute the angle between two other vectors or other attributes, you can susbtitute the value of the up and axis variables.
 
-### curveu
+### angle_vectors
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -423,7 +423,7 @@ f@angle = full_angle;
 
 ## Unshared Points
 *Reference Code*: 82391305
-### curveu
+### unshared_points
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -467,3 +467,4 @@ for(int i=0; i<pts; i++){
     init_hedge = hedge_next(0, init_hedge);
 }
 ```
+
