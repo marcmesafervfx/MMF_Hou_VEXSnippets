@@ -76,3 +76,58 @@ pos/=len(nearpts)+1;
 // Set attribute value.
 v@P = pos;
 ```
+
+## Cluster By Point Proximity
+*Reference Code*: 26692791
+> [!NOTE]
+> The following snippet contains two variables: primpoints and nearpoint. Both output similar results, but the methodology is different.
+
+### primpoints
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a scatter node.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute clusters avoiding promoting parameter. """;
+
+// Get primitive points.
+int pts[] = primpoints(0, @primnum);
+
+// Initialize cluster as -1.
+int cluster=-1;
+
+// Iterate for each primitive points.
+foreach(int i; pts){
+
+    // Get position of the current point.
+    vector pos = point(0, "P", i);
+    
+    // Get near point from second input.
+    int new_cluster = nearpoint(1, pos);
+    
+    //If the previous cluster is bigger keep it (emulates the max method).
+    if(new_cluster>cluster){       
+        cluster = new_cluster;
+    }
+}
+
+// Set the cluster.
+i@cluster = cluster;
+```
+### nearpoint
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a scatter node.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Set cluster by proximity. """;
+
+// Set cluster value.
+i@cluster = nearpoint(1, v@P);
+```
