@@ -1,26 +1,13 @@
 # Houdini VEX Snippets
-<test>
-
-<test1>###Tips for collapsed sections</test1>
-
-### You can add a header
-
-You can add text within a collapsed section. 
-
-You can add an image or a code block, too.
-
-```ruby
-   puts "Hello World"
-```
-
-</test>
 ## Initial Provisions
 This repository is designated to be a place where I put some of the VEX snippets I've been using to fix, check, create, and manipulate information in different contexts. If something needs to be revisited, let me know so I can check for it and commit any of the requested modifications.
 
 ## Vector along curve
 *Reference Code*: 72854126
+<details>
+   
+<summary>create_tangents_line</summary>
 
-### create_tangents_line
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to the curve.
@@ -48,7 +35,7 @@ if(@ptnum==@numpt-1) tan*=-1;
 // Set attribute.
 v@tan = tan;
 ```
-
+</details>
 ## Blur Point Positions
 *Reference Code*: 26692791
 > [!TIP]
