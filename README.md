@@ -411,12 +411,59 @@ vector axis = v@axis;
 // Get angle between two vectors.
 float angle = degrees(acos(dot(up, axis)));
 
-// Compute stable axis
+// Compute stable axis to check for values over 180.
 vector stable_axis = normalize(cross(up, cross({0,1,0}, up)));
+
+// Compute full 360 angle. 
 float full_angle = (int(sign(dot(axis, stable_axis)))==-1)? angle:360-angle;
 
 // Set angle value.
 f@angle = full_angle;
+```
 
+## Unshared Points
+*Reference Code*: 82391305
+### curveu
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
 
+``` c
+""" Group unshared points. """;
+
+// Get amount of points composing the current primitive.
+int pts = len(primpoints(0, @primnum));
+
+// Get initial half edge of the current primitive.
+int init_hedge = primhedge(0, @primnum);
+
+// Iterate as many times as points the primitive has.
+for(int i=0; i<pts; i++){
+
+    // Get next equivalent (opposite half edge) of the current half edge.
+    int equiv = hedge_nextequiv(0, init_hedge);
+    
+    // Get primitive number that contains the equivalent half edge.
+    int prim = hedge_prim(0, equiv);
+
+    // If the opposite primitive is the same as current, it means
+    // that it doesn't have another primitive connected.
+    if(prim==@primnum){
+    
+        // Check for the destiny and source point for the half edge.
+        int pt_dst = hedge_dstpoint(0, equiv);
+        int pt_src = hedge_srcpoint(0, equiv);
+        
+        // Set unshared point group.
+        setpointgroup(0, "unshared", pt_dst, 1);
+        setpointgroup(0, "unshared", pt_src, 1);
+    }
+    
+    // Once iteration is finished, move to the next half edge of the 
+    // same primitive.
+    init_hedge = hedge_next(0, init_hedge);
+}
 ```
