@@ -159,7 +159,7 @@ if(len(pts)>4){
 ## Normalize Distance
 *Reference Code*: 89906276
 > [!NOTE]
-> The following snippet contains two variables: *get_distance + normalize_distance* and *normalize_distance_Detail*. Both output similar results, but the methodology is different.
+> The following snippet contains two variables: *get_distance + normalize_distance* and *normalize_distance_detail*. Both output similar results, but the methodology is different.
 
 ### get_distance
 > [!IMPORTANT]
@@ -205,7 +205,7 @@ float norm_dist = f@dist/max_dist;
 v@Cd = chramp("color", norm_dist);
 ```
 
-### normalize_distance_Detail
+### normalize_distance_detail
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** connected to a geometry.
