@@ -6,7 +6,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 *Reference Code*: 72854126
 > [!IMPORTANT]
 > - **Input 0:** connected to the curve.
-> -**Input 1:** no-connected.
+> - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
 ``` c
