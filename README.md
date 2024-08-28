@@ -1,7 +1,7 @@
 # Houdini VEX Snippets
 <test>
 
-<summary>###Tips for collapsed sections</summary>
+<test1>###Tips for collapsed sections</test1>
 
 ### You can add a header
 
