@@ -51,6 +51,10 @@ v@tan = tan;
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
 
+<details>
+
+<summary>Snippet Code</summary>
+
 ``` c
 """ Blue based on nearpoints. """;
 
@@ -79,6 +83,7 @@ pos/=len(nearpts)+1;
 // Set attribute value.
 v@P = pos;
 ```
+</details>
 
 ## Cluster By Point Proximity
 *Reference Code*: 45043176
