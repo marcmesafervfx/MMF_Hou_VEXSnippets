@@ -33,10 +33,10 @@ if(@ptnum==@numpt-1) tan*=-1;
 v@tan = tan;
 ```
 
-## Vector along curve
-*Reference Code*: 72854126
+## Blur Point Positions
+*Reference Code*: 26692791
 
-### create_tangents_line
+### blur_position
 > [!IMPORTANT]
 > - **Input 0:** connected to a scatter node.
 > - **Input 1:** no-connected.
