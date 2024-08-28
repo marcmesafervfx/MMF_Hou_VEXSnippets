@@ -36,6 +36,8 @@ v@tan = tan;
 
 ## Blur Point Positions
 *Reference Code*: 26692791
+> [!TIP]
+> Create a for-loop and loop the attribute wrangle with feedback.
 
 ### blur_position
 > [!IMPORTANT]
@@ -44,9 +46,6 @@ v@tan = tan;
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
-
-> [!TIP]
-> Create a for-loop and loop the attribute wrangle with feedback.
 
 ``` c
 """ Blue based on nearpoints. """;
