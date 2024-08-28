@@ -12,8 +12,6 @@ This repository is designated to be a place where I put some of the VEX snippets
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
 
-<details>
-<summary> Code to source <summary/>
 ``` c
 """ Create tangent based on neighbours in a line. """;
 
@@ -34,4 +32,3 @@ if(@ptnum==@numpt-1) tan*=-1;
 // Set attribute.
 v@tan = tan;
 ```
-<details/>
