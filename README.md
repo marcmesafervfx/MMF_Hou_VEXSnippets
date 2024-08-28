@@ -98,6 +98,10 @@ v@P = pos;
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
 
+<details>
+
+<summary>Snippet Code</summary>
+
 ``` c
 """ Compute clusters avoiding promoting parameter. """;
 
@@ -125,6 +129,8 @@ foreach(int i; pts){
 // Set the cluster.
 i@cluster = cluster;
 ```
+</details>
+
 ### nearpoint
 > [!IMPORTANT]
 > **Mode:** Points.
@@ -132,6 +138,10 @@ i@cluster = cluster;
 > - **Input 1:** connected to a scatter node.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
+
+<details>
+
+<summary>Snippet Code</summary>
 
 ``` c
 """ Set cluster by proximity. """;
@@ -164,6 +174,7 @@ if(len(pts)>4){
     setprimgroup(0, "ngons", i@primnum, 1);
 }
 ```
+</details>
 
 ## Normalize Distance
 *Reference Code*: 89906276
@@ -178,6 +189,10 @@ if(len(pts)>4){
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
 
+<details>
+
+<summary>Snippet Code</summary>
+
 ``` c
 """ Get the distance for each of the points. """;
 
@@ -190,6 +205,8 @@ float dist = distance(pos, v@P);
 // Set distance attribute.
 f@dist = dist;
 ```
+</details>
+
 > [!NOTE]
 > Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values to follow the next steps.
 
@@ -200,6 +217,10 @@ f@dist = dist;
 > - **Input 1:** connected to a reference point.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
+
+<details>
+
+<summary>Snippet Code</summary>
 
 ``` c
 """ Normalize distance using the computed max distance. """;
@@ -213,6 +234,7 @@ float norm_dist = f@dist/max_dist;
 // Set color attrivute to show the normalized distance.
 v@Cd = chramp("color", norm_dist);
 ```
+</details>
 
 ### normalize_distance_detail
 > [!IMPORTANT]
@@ -221,6 +243,10 @@ v@Cd = chramp("color", norm_dist);
 > - **Input 1:** connected to a reference point.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
+
+<details>
+
+<summary>Snippet Code</summary>
 
 ``` c
 """ Normalize distance attribute. """;
@@ -254,4 +280,4 @@ for(int pt=0; pt<pts; pt++){
     setpointattrib(0, "Cd", pt, color);
 }
 ```
-
+</details>
