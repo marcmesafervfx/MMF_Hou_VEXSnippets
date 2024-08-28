@@ -575,3 +575,180 @@ v@P*=xform;
 // Apply transformations to the normal.
 v@N*=matrix3(xform);
 ```
+
+## Create Checkboard
+*Reference Code*: 43837465
+
+### checkerboard
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create checker using ternary conditions. """;
+
+// Set the frequency for the scene.
+float freq = chf("frequency");
+
+// Compute vertical sections.
+v@Cd = (sin(v@P.x*freq)<0)?0:1;
+
+// Add horizontal sections.
+v@Cd += (sin(v@P.z*freq)<0)?0:1;
+
+// Check if there's coincidence and multiply by 0.
+v@Cd *= (v@Cd.r==2)?0:1;
+```
+
+## Basic Point Deform
+*Reference Code*: 39569619
+> [!NOTE]
+> The simplicity of the method makes the process quite limitated. The deformed rest geometry should be quite similar as the geometry that you want to deform in terms of shape.
+
+### point_deform
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry to deform.
+> - **Input 1:** connected to a deformed rest geometry.
+> - **Input 2:** connected to a deformed animated geometry.
+> - **Input 3:** no-connected.
+
+``` c
+""" Deform poitn position based on rest and animated geometry. """; 
+
+// Initialize primitive and uv intrinsic coordinates.
+int prim; vector uvw;
+xyzdist(1, v@P, prim, uvw);
+
+// Retrieve the position value from the animated geometry.
+vector pos = primuv(2, "P", prim, uvw);
+
+// Set position.
+v@P = pos;
+```
+
+## Advanced Point Deform
+*Reference Code*: 209363
+
+### capture
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry to deform.
+> - **Input 1:** connected to a deformed rest geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+"""Capture the close points and weights""";
+
+//Capture close points between lowres and highres rest pose.
+float maxdist = chf('maxdist');
+int maxpts = chi('maxpts');
+int npts[] = nearpoints(1, v@P, maxdist, maxpts);
+
+// Store captured points.
+i[]@npts = npts;
+
+//Iterate for each captured point and compute the distance to generate the weights.
+float weights[];
+
+foreach(int val; npts){
+    vector npos = point(1, 'P', val);
+    float ndist = distance(v@P, npos);
+    //Invert values to have higher values being closer to its reference point
+    ndist = fit(ndist, 0, maxdist, 1, 0);
+    push(weights, ndist);
+}
+
+// Store captured weights.
+f[]@weights = weights;
+```
+### get_offset_matrix
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a deformed rest geometry.
+> - **Input 1:** connected to a deformed animated geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Retrieve offset comparing original rest and anim geometry. """;
+
+//Get the basic translation offset
+vector npos = point(1, 'P', @ptnum);
+v@offset = npos-v@P;
+
+//Get neighbours to create the animated axis for the matrix
+int npts[] = neighbours(0, @ptnum);
+vector ndir = point(1, 'P', npts[0]);
+vector tan1 = npos - ndir;
+ndir = point(1, 'P', npts[1]);
+vector tan2 = npos - ndir;
+vector up = cross(tan1, tan2);
+
+//Create the animated matrix for each of the points
+matrix3 xformnew = maketransform(normalize(tan1), normalize(up));
+
+//Create the reference axis for the matrix
+ndir = point(0, 'P', npts[0]);
+tan1 = v@P - ndir;
+ndir = point(0, 'P', npts[1]);
+tan2 = v@P - ndir;
+up = cross(tan1, tan2);
+
+matrix3 xformold = maketransform(normalize(tan1), normalize(up));
+
+//Create the offset using addition method = invert(reference matrix)* new matrix 
+matrix3 totalxform = invert(xformold)*xformnew;
+
+3@xform = totalxform;
+```
+### set_deform
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to capture node.
+> - **Input 1:** connected to get_offset_matrix node.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+"""Set deformation for the new geometry""";
+
+//Initialize values and store attributes inside statements
+float weights[] = f[]@weights;
+int npts[] = i[]@npts;
+float sumweights = 0;
+vector sumoffsets = {0,0,0};
+int val = 0;
+
+//Offset based on its weigth and capture point
+foreach(int npt; npts){
+    //Retrieve xform, position and offset from anim
+    vector opos = point(1, 'P', npt);
+    matrix3 xform = point(1, 'xform', npt);
+    vector offset = point(1, 'offset', npt);
+    
+    //Transform to the center, apply xform transformations and bring back transforms
+    vector pos = v@P;
+    pos -= opos;
+    pos *= xform;
+    pos += opos;
+    pos -= v@P;
+    
+    //Add basic displacement to the point
+    offset += pos;
+    
+    //Multiply offset by weights to transform based on relative position, add all influenced offsets and add all the weights
+    offset *= weights[val];
+    sumweights += weights[val];
+    sumoffsets += offset;
+    val++;
+}
+
+//Get final offset based on the influence of the weights
+vector finaloffset = sumoffsets / sumweights;
+v@P += finaloffset;
+```
