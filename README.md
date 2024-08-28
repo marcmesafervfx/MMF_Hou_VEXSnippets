@@ -508,7 +508,7 @@ v@P*=orig_matrix;
 ## Extract Transform
 *Reference Code*: 30376309
 > [!NOTE]
-> This method pretends to output a similar output as a extract transform node would do.
+> This method pretends to output a similar result as a extract transform node would do.
 
 ### get_offset_matrix
 > [!IMPORTANT]
