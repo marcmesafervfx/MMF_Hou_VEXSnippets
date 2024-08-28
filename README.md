@@ -345,9 +345,6 @@ if(rand_value<chf("threshold")){
 
 ## Primitive Centroid
 *Reference Code*: 39725183
-> [!NOTE]
-> All the methods are based on the mathematical approaches that might not match perfectly with the centroid node provided by Houdini, but those can be quite useful in most of the cases.
-> Note that there are 3 different methods that might 
 
 ### primitive_centroid
 > [!IMPORTANT]
@@ -368,4 +365,24 @@ addpoint(0, pos);
 
 // Remove unused primitive.
 removeprim(0, @primnum, 1);
+```
+## Compute Curveu From Line
+*Reference Code*: 39725183
+
+### curveu
+> [!IMPORTANT]
+> **Mode:** Primitive.
+> - **Input 0:** connected to a polyline.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute curveu. """;
+
+// Compute curveu based on amount of points and current ptnum.
+float curveu = float(@ptnum)/float(@numpt-1); 
+
+// Set value.
+f@curveu = curveu;
 ```
