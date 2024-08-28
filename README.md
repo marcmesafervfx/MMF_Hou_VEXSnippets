@@ -3,6 +3,7 @@
 This repository is designated to be a place where I put some of the VEX snippets I've been using to fix, check, create, and manipulate information in different contexts. If something needs to be revisited, let me know so I can check for it and commit any of the requested modifications.
 
 ## Vector along curve
+```
 """ Create tangent based on neighbours in a line. """;
 
 // Get neighbours of current point and capture it's position.
@@ -21,3 +22,4 @@ if(@ptnum==@numpt-1) tan*=-1;
 
 // Set attribute.
 v@tan = tan;
+```
