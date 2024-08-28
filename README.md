@@ -182,7 +182,7 @@ f@dist = dist;
 ```
 
 > [!NOTE]
-> Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values to follow the next steps.
+> Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values to follow the next step.
 
 ### normalize_distance
 > [!IMPORTANT]
