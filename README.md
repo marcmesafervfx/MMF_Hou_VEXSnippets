@@ -155,3 +155,50 @@ if(len(pts)>4){
     setprimgroup(0, "ngons", i@primnum, 1);
 }
 ```
+
+## NGon Detector
+*Reference Code*: 50655883
+
+### get_distance
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a reference point.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get the distance for each of the points. """;
+
+// Get position from the second input.
+vector pos = point(1, "P", 0);
+
+// Get distance between current point and input 2 positon.
+float dist = distance(pos, v@P);
+
+// Set distance attribute.
+f@dist = dist;
+```
+> [!NOTE]
+> Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values.
+
+### normalize_distance
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a reference point.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get the distance for each of the points. """;
+
+// Get position from the second input.
+vector pos = point(1, "P", 0);
+
+// Get distance between current point and input 2 positon.
+float dist = distance(pos, v@P);
+
+// Set distance attribute.
+f@dist = dist;
+```
