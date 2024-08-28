@@ -367,7 +367,7 @@ addpoint(0, pos);
 removeprim(0, @primnum, 1);
 ```
 ## Compute Curveu From Line
-*Reference Code*: 39725183
+*Reference Code*: 49138898
 
 ### curveu
 > [!IMPORTANT]
