@@ -5,7 +5,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 ## Vector along curve
 *Reference Code*: 72854126
 > [!IMPORTANT]
-> Input 0 connected to the curve.
+> **Input 0** connected to the curve.
 ``` c
 """ Create tangent based on neighbours in a line. """;
 
