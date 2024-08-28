@@ -247,7 +247,7 @@ for(int pt=0; pt<pts; pt++){
 ```
 <details>
 
-<summary>Tips for collapsed sections</summary>
+<summary>###Tips for collapsed sections</summary>
 
 ### You can add a header
 
