@@ -390,6 +390,8 @@ f@curveu = curveu;
 
 ## Angle Between Two Vectors
 *Reference Code*: 89221217
+> [!NOTE]
+> In the example code, the v@up and the v@axis are computed already. If you need to compute the angle between two other vectors or other attributes, you can susbtitute the value of the up and axis variables.
 
 ### curveu
 > [!IMPORTANT]
@@ -398,9 +400,6 @@ f@curveu = curveu;
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
-
-> [!NOTE]
-> In the example code, the v@up and the v@axis are computed already. If you need to compute the angle between two other vectors or other attributes, you can susbtitute the value of the up and axis variables.
 
 ``` c
 """ Compute angle between two vectors. """;
