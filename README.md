@@ -156,8 +156,10 @@ if(len(pts)>4){
 }
 ```
 
-## NGon Detector
-*Reference Code*: 50655883
+## Normalize Distance
+*Reference Code*: 89906276
+> [!NOTE]
+> The following snippet contains two variables: *get_distance + normalize_distance* and *normalize_distance_Detail*. Both output similar results, but the methodology is different.
 
 ### get_distance
 > [!IMPORTANT]
@@ -180,7 +182,7 @@ float dist = distance(pos, v@P);
 f@dist = dist;
 ```
 > [!NOTE]
-> Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values.
+> Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values to follow the next steps.
 
 ### normalize_distance
 > [!IMPORTANT]
@@ -191,14 +193,55 @@ f@dist = dist;
 > - **Input 3:** no-connected.
 
 ``` c
-""" Get the distance for each of the points. """;
+""" Normalize distance using the computed max distance. """;
+
+// Get max distance from detail.
+float max_dist = detail(0, "max_dist"); 
+
+// Normalize distance.
+float norm_dist = f@dist/max_dist;
+
+// Set color attrivute to show the normalized distance.
+v@Cd = chramp("color", norm_dist);
+```
+
+### normalize_distance_Detail
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a reference point.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Normalize distance attribute. """;
+
+// Get amount of point from first input.
+int pts = npoints(0);
 
 // Get position from the second input.
-vector pos = point(1, "P", 0);
+vector ref_pos = point(1, "P", 0);
 
-// Get distance between current point and input 2 positon.
-float dist = distance(pos, v@P);
+// Create handle using the pcopen.
+int handle = pcopen(0, "P", ref_pos, 1e09, int(1e09));
 
-// Set distance attribute.
-f@dist = dist;
+// Get farthest distance of the point cloud.
+float max_dist = pcfarthest(handle);
+
+// Iterate for each point.
+for(int pt=0; pt<pts; pt++){
+
+    // Get current point position.
+    vector curr_pos = point(0, "P", pt);
+    
+    // Compute current distance.
+    float dist = distance(curr_pos, ref_pos);
+    
+    // Normalize distance and remap color.
+    float norm_dist = dist/max_dist;
+    vector color = chramp("ramp_color", norm_dist);
+    
+    // Set color attrivute to show the normalized distance.
+    setpointattrib(0, "Cd", pt, color);
+}
 ```
