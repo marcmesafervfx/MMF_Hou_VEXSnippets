@@ -245,3 +245,18 @@ for(int pt=0; pt<pts; pt++){
     setpointattrib(0, "Cd", pt, color);
 }
 ```
+<details>
+
+<summary>Tips for collapsed sections</summary>
+
+### You can add a header
+
+You can add text within a collapsed section. 
+
+You can add an image or a code block, too.
+
+```ruby
+   puts "Hello World"
+```
+
+</details>
