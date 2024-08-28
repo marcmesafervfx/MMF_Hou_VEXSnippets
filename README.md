@@ -78,7 +78,7 @@ v@P = pos;
 ```
 
 ## Cluster By Point Proximity
-*Reference Code*: 26692791
+*Reference Code*: 45043176
 > [!NOTE]
 > The following snippet contains two variables: *primpoints* and *nearpoint*. Both output similar results, but the methodology is different.
 
@@ -130,4 +130,29 @@ i@cluster = cluster;
 
 // Set cluster value.
 i@cluster = nearpoint(1, v@P);
+```
+
+## NGon Detector
+*Reference Code*: 50655883
+
+### ngon_detector
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Group ngons to fix them later. """;
+
+// Detect amount of points composing each primitive.
+int pts[] = primpoints(0, i@primnum);
+
+// Check if length of the array is bigger than 4.
+if(len(pts)>4){
+    
+    // Set point group.
+    setprimgroup(0, "ngons", i@primnum, 1);
+}
 ```
