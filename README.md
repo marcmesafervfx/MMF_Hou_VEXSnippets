@@ -9,6 +9,8 @@ This repository is designated to be a place where I put some of the VEX snippets
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
+
+### create_tangents_line
 ``` c
 """ Create tangent based on neighbours in a line. """;
 
