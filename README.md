@@ -64,7 +64,7 @@ vector pos = v@P;
 // Iterate for each of the near points.
 foreach(int i; nearpts){
     
-    // Add value to the pos vairiable.
+    // Add value to the pos variable.
     pos += point(0, "P", i); 
 }
 
