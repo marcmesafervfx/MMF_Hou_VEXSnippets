@@ -44,7 +44,7 @@ v@tan = tan;
 > - **Input 3:** no-connected.
 
 > [!TIP]
-> Create a for-loop and loop the iterations with feedback.
+> Create a for-loop and loop the attribute wrangle with feedback.
 
 ``` c
 """ Blue based on nearpoints. """;
