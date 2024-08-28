@@ -80,7 +80,7 @@ v@P = pos;
 ## Cluster By Point Proximity
 *Reference Code*: 26692791
 > [!NOTE]
-> The following snippet contains two variables: primpoints and nearpoint. Both output similar results, but the methodology is different.
+> The following snippet contains two variables: *primpoints* and *nearpoint*. Both output similar results, but the methodology is different.
 
 ### primpoints
 > [!IMPORTANT]
