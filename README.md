@@ -294,3 +294,30 @@ v@P = fromNDC(cam, pos);
 /* In this case we inverted the process. We created an "NDC" and
 we are transforming back to world space. */
 ```
+
+## Remove points by threshold
+*Reference Code*: 9067034
+> [!TIP]
+> Remember that you can use the @id attribute instead of the @ptnum to be consistent, but it needs to be precomputed.
+
+### remove_points_by_threshold
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove by threshold. """;
+
+// Create a random value betweem 0 and 1 for each point.
+float rand_value = rand(@ptnum);
+
+// Check if the value is smaller than the threshold.
+if(rand_value<chf("threshold")){
+
+    // Remove point.
+    removepoint(0, @ptnum);
+}
+```
