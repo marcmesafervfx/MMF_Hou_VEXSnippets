@@ -1087,6 +1087,7 @@ f@max_repeated = max_repeated;
 *Reference Code*: 77666090
 > [!NOTE]
 > This example needs to be tested inside a CVEX Shader Builder with a Inline Code node. It requires the creation of some external parameters to link the STMap file, aperture and focal length of the camera.
+> To be able to use it in Karma, you'll need to create an HDA and embbed the code into it. For mantra works without having to explicitly create that HDA.
 
 > [!TIP]
 > You can link the parameters from the CVEX Shader Builder to the actual camera values. 
