@@ -962,3 +962,40 @@ vector minpos = minpos(1, v@P);
 // Set position.
 v@P = minpos; 
 ```
+
+## Voxel Index And Rest
+*Reference Code*: 8712550
+> [!TIP]
+> This code exports the necessary values to work with the volumerasterizelattice. You can potentially deform the exported points and the volumerasterizelattice will deform the volumes using the i@ix, i@iy, i@iz and v@rest attributes.
+
+> [!NOTE]
+> In order to create geometry with a volumewrangle, you'll need to turn on the Only Output Created Geometry in the Bindings tab.
+
+### voxel_index
+> [!IMPORTANT]
+> **Mode:** Volume.
+> - **Input 0:** connected to a density volume.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute rest and index values for volumes. """;
+
+// Create point for each voxel.
+int pt = addpoint(0, v@P);
+
+// Convert position to rest position.
+vector rest = volumepostoindex(0, 0, v@P);
+
+// Store rest position.
+setpointattrib(0, "rest", pt, rest);
+
+// Create index for each axis and export it as integer.
+setpointattrib(0, "ix", pt, int(rest.x));
+setpointattrib(0, "iy", pt, int(rest.y));
+setpointattrib(0, "iz", pt, int(rest.z));
+
+// Set density to 0 to be able to generate geometry.
+@density=0;
+```
