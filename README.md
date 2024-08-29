@@ -1167,3 +1167,49 @@ vector pos = set(mag_vec * (origin_pt2.x - final_pt2.x) + (origin_pt1.x - final_
 // Store intersection position.
 v@intersect_pos = pos;
 ```
+
+## Create Circle
+*Reference Code*: 32305122
+
+### creat_circle
+> [!IMPORTANT]
+> **Mode:** Details.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create circle. """;
+
+// Initialize parameters.
+int div = clamp(chi("divisions"), 2, int(1e09));
+float uniform_scale = chf("uniform_scale");
+vector2 radius = chu("radius");
+int open = chi("open_arc");
+
+// Initialize point array to store created points.
+int pts[];
+
+// Iterate for each division points.
+for(int pt=0; pt<div; pt++){
+    
+    // Compute radians for each iteration.
+    float rad = $PI*2/div*pt;
+    
+    // Compute position using radians and scaling values.
+    vector pos = set(cos(rad)*radius.x,
+                     sin(rad)*radius.y, 
+                     0)*uniform_scale;
+    
+    // Create point and add number to point array.
+    int p = addpoint(0, pos);
+    append(pts, p);
+}
+
+// Append last number to close circle.
+append(pts, pts[0]);
+
+// If user wants open geo, create a polyline. Otherwise, create a closed poly.
+(open==1)? addprim(0, "polyline", pts):addprim(0, "poly", pts);
+```
