@@ -1082,3 +1082,41 @@ foreach(float val; unique_vals){
 // Store max repeated attribute.
 f@max_repeated = max_repeated;
 ```
+
+## STMap Lens Shader
+*Reference Code*: 77666090
+> [!NOTE]
+> This example needs to be tested inside a CVEX Shader Builder with a Inline Code node. It requires the creation of some external parameters to link the STMap file, aperture and focal length of the camera.
+
+> [!TIP]
+> You can link the parameters from the CVEX Shader Builder to the actual camera values. 
+
+### lens_shader
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** bind x axis.
+> - **Input 1:** bind y axis.
+> - **Input 2:** bind aspect.
+> - **Input 3:** aperture value parameter node.
+> - **Input 4:** focal length value parameter node.
+> - **Input 5:** STMap file value parameter node.
+>
+> - **Output 0:** P as a Vector value.
+> - **Output 1:** I as a Vector value.
+
+``` c
+""" Camera lens shader based on STMap. """;
+
+// x and y is on a -1 to 1 space, we need to switch to ndc.
+float ox = fit(x, -1, 1, 0, 1);
+float oy = fit(y, -1, 1, 0, 1);
+
+// Get color from the STMap and move distortion to center.
+vector c = colormap(file, ox, oy)-0.5;
+
+// Set postion.
+$P = set(0, 0, 0);
+
+// Set ray direction and length based on focus length and aperture.
+$I = set(c.x, c.y / aspect, (fo/ap));
+```
