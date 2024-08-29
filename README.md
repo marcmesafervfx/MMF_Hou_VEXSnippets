@@ -1171,7 +1171,7 @@ v@intersect_pos = pos;
 ## Create Circle
 *Reference Code*: 32305122
 
-### creat_circle
+### create_circle
 > [!IMPORTANT]
 > **Mode:** Details.
 > - **Input 0:** no-connected.
