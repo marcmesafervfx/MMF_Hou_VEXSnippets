@@ -752,3 +752,139 @@ foreach(int npt; npts){
 vector finaloffset = sumoffsets / sumweights;
 v@P += finaloffset;
 ```
+
+## Noise Edge Mask
+*Reference Code*: 72728404
+
+### noise_edge_mask
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Noise mask edge based on x axis. """;
+
+// Displace position and store it in a variable.
+vector pos = v@P+noise(v@P*chf("frequency"))*chf("amplitude");
+
+// Normalize the xaxis position.
+float xaxis = fit(pos.x, getbbox_min(0).x, getbbox_max(0).x, 0, 1);
+
+// Remap normalize x axis position values and contrast them.
+xaxis = chramp("axis", xaxis);
+
+// Set color.
+v@Cd = xaxis;
+```
+
+## Dihedral Offset
+*Reference Code*: 29263487
+> [!NOTE]
+> In the example, the normal is used to compute the offset matrix. You can eventually use your custom attribute just by changing the corresponding variable values.
+
+### compute_offset_matrix
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a rest geometry.
+> - **Input 1:** connected to a deformed geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute rotation offset matrix. """;
+
+// Get the up vector from input 1.
+vector N = v@opinput1_N;
+
+// Compute offset rotation with dihedral.
+matrix3 rot_offset = dihedral(v@N, N);
+
+// Store offset matrix.
+3@rot = rot_offset;
+```
+
+## Primitive Dimensions
+*Reference Code*: 9604585
+> [!TIP]
+> You can eventually accumulate the values to get a similar output as the measure node would return.
+
+### measure
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get dimension values from intrinsic attributes. """;
+
+// Set volume, area and perimeter.
+f@volume = primintrinsic(0, "measuredvolume", @primnum);
+f@area = primintrinsic(0, "measuredarea", @primnum);
+f@perimeter = primintrinsic(0, "measuredarea", @primnum);
+```
+
+## Primitive Type Checker
+*Reference Code*: 914613
+> [!NOTE]
+> Checking the primitive type can allow you to treat the input geometry in a different way. For example, if the input geometry is packed, you'll probably require to apply a different treatment compared to an unpacked one. 
+
+### prim_type
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get primitive type from intrinsic attributes. """;
+
+// Set primitive type.
+s@prim_type = primintrinsic(0, "typename", @primnum);
+```
+
+## Jitter Points
+*Reference Code*: 55905505
+
+### jitter_pts
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a scatter node.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Jitter point position. """;
+
+// Create function to rand values between -1 and 1.
+function float randVal(int id; float seed){
+    
+    // Randomize values between -1 and 1 and return the value.
+    float rand = fit01(rand(id+seed), -1, 1);
+    return rand;
+}
+
+// Initialize jitter parameters.
+int is_id = chi("id");
+string id_attr = chs("id_attribute");
+float scale = chf("scale");
+float seed = chf("seed");
+vector axis_scale = chv("axis_scale");
+
+// Check if user wants to input id attribute.
+int id = (is_id==1)?point(0, id_attr, @ptnum):@ptnum;
+
+// Create directional vector.
+vector dir = set(randVal(id, seed),
+                 randVal(id, seed+1),
+                 randVal(id, seed+2))*axis_scale;
+
+// Set new position.
+v@P+=(dir*scale);
+```
