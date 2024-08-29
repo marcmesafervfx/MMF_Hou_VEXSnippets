@@ -999,3 +999,34 @@ setpointattrib(0, "iz", pt, int(index.z));
 // Set density to 0 to be able to generate geometry.
 @density=0;
 ```
+
+## Remove Array Duplicates
+*Reference Code*: 31145437
+> [!NOTE]
+> This example is being created in order to show how we can remove duplicates from an array, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
+
+### remove_duplicates
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove array duplicates. """;
+
+// Create or input an array.
+float smp_array[] = array(0,1,2,2,3,3,4,5);
+
+// Initialize new array and loop through the vales of the old array. 
+float new_smp_array[];
+foreach(float val; smp_array){
+
+    // Add value if it is not found already in the new array.
+    if(find(new_smp_array, val)<0) append(new_smp_array, val);
+}
+
+// Store array attribute.
+f[]@array = new_smp_array;
+```
