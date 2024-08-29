@@ -997,5 +997,5 @@ setpointattrib(0, "iy", pt, int(rest.y));
 setpointattrib(0, "iz", pt, int(rest.z));
 
 // Set density to 0 to be able to generate geometry.
-@density=0;
+f@density = 0;
 ```
