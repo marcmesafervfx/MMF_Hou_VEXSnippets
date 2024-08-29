@@ -941,3 +941,24 @@ float dist = volumesample(1, 0, v@P);
 // Create a group to contain the inside points.
 if(dist<0) setpointgroup(0, "inside", @ptnum, 1);
 ```
+
+## Ray Minimum Distance
+*Reference Code*: 77468763
+
+### ray_min_dist
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a snapping geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Ray minimum distance without volumes. """;
+
+// Get closes position value.
+vector minpos = minpos(1, v@P);
+
+// Set position.
+v@P = minpos; 
+```
