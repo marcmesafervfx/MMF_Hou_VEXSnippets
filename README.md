@@ -1030,3 +1030,55 @@ foreach(float val; smp_array){
 // Store array attribute.
 f[]@array = new_smp_array;
 ```
+
+## Most Repeated Value Array
+*Reference Code*: 30011921
+> [!NOTE]
+> This example is being created in order to show how we can get the most repeated element from an array, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
+
+### most_repeated_value
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Find the most repeated element in the array. """;
+
+// Create or input an array.
+float smp_array[] = array(0,1,2,2,3,3,4,5);
+
+// Initialize unique values.
+float unique_vals[];
+
+// Compute unique values from the array.
+foreach(float item; smp_array){
+    int checker = find(unique_vals, item);
+    if(checker<0) append(unique_vals, item);
+}
+
+// Initialize counting.
+float max_repeated = 0.0;
+int max_items = 0;
+
+// Check for the most repeated element in the array.
+foreach(float val; unique_vals){
+    
+    // Get values from original array that matches current value.
+    int items[] = find(smp_array, val);
+    
+    // Count how many items are in the array.
+    int item_count = len(items);
+    
+    // If the count is bigger, it is the most repeated one until now.
+    if(item_count>max_items){
+        max_items = item_count;
+        max_repeated = val;
+    }
+}
+
+// Store max repeated attribute.
+f@max_repeated = max_repeated;
+```
