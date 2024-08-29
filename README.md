@@ -986,16 +986,16 @@ v@P = minpos;
 int pt = addpoint(0, v@P);
 
 // Convert position to rest position.
-vector rest = volumepostoindex(0, 0, v@P);
+vector index = volumepostoindex(0, 0, v@P);
 
 // Store rest position.
-setpointattrib(0, "rest", pt, rest);
+setpointattrib(0, "rest", pt, v@P);
 
 // Create index for each axis and export it as integer.
-setpointattrib(0, "ix", pt, int(rest.x));
-setpointattrib(0, "iy", pt, int(rest.y));
-setpointattrib(0, "iz", pt, int(rest.z));
+setpointattrib(0, "ix", pt, int(index.x));
+setpointattrib(0, "iy", pt, int(index.y));
+setpointattrib(0, "iz", pt, int(index.z));
 
 // Set density to 0 to be able to generate geometry.
-f@density = 0;
+@density=0;
 ```
