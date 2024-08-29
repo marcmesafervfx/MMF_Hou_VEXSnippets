@@ -1123,3 +1123,47 @@ $P = set(0, 0, 0);
 // Set ray direction and length based on focus length and aperture.
 $I = set(c.x, c.y / aspect, (fo/ap));
 ```
+
+## Two Vector Intersect
+*Reference Code*: 70358649
+> [!NOTE]
+> This example is being created in order to show how we can get the position information from two vectors, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
+
+### vector_intersect
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get intersection position between two vectors in a position. """;
+
+// Initialize point positions.
+vector origin_pt1 = set(0.5, 0, 0);
+vector origin_pt2 = set(-0.5, 0, 0);
+
+// Initialize direction vector.
+vector dir_pt1 = set(-0.7, 0.7, 0);
+vector dir_pt2 = set(0.7, 0.7, 0);
+
+// Compute final position using the direction and origin position.
+vector final_pt1 = origin_pt1 + dir_pt1 * 1.0e08;
+vector final_pt2 = origin_pt2 + dir_pt2 * 1.0e08;
+
+// Compute intersection position using the line-line equation by Eric Wolfgang Weisstein.
+float den = (origin_pt1.x - final_pt1.x) *
+            (origin_pt2.y - final_pt2.y) -
+            (origin_pt1.y - final_pt1.y) *
+            (origin_pt2.x - final_pt2.x);
+
+float mag_vec = (origin_pt1.x * final_pt1.y - origin_pt1.y * final_pt1.x);
+            
+vector pos = set(mag_vec * (origin_pt2.x - final_pt2.x) + (origin_pt1.x - final_pt1.x) * mag_vec,
+                 mag_vec * (origin_pt2.y - final_pt2.y) + (origin_pt1.y - final_pt1.y) * mag_vec,
+                 0) / den;
+
+// Store intersection position.
+v@intersect_pos = pos;
+```
