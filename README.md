@@ -1093,14 +1093,14 @@ f@max_repeated = max_repeated;
 
 ### lens_shader
 > [!IMPORTANT]
-> **Mode:** Detail.
+> **Mode:** VEX Shader.
 > - **Input 0:** bind x axis.
 > - **Input 1:** bind y axis.
 > - **Input 2:** bind aspect.
 > - **Input 3:** aperture value parameter node.
 > - **Input 4:** focal length value parameter node.
 > - **Input 5:** STMap file value parameter node.
->
+
 > - **Output 0:** P as a Vector value.
 > - **Output 1:** I as a Vector value.
 
