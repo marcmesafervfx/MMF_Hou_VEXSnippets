@@ -1308,12 +1308,12 @@ if(dist<max_dist){
 }
 ```
 
-## Find Equivalent Value
-*Reference Code*: 28038311
+## Find Equivalent Ptnum
+*Reference Code*: 39128540
 > [!NOTE]
 > In this example, I use an integer value, but you can use a string one if you'd like. In addition, this process can be done in different types of geometries.
 
-### find_equiv_value
+### find_equiv_ptnum
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
