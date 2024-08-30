@@ -1306,6 +1306,30 @@ if(dist<max_dist){
         }
     }
 }
+```
 
+## Find Equivalent Value
+*Reference Code*: 28038311
+> [!NOTE]
+> In this example, I use an integer value, but you can use a string one if you'd like.
 
+### find_equiv_value
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a geometry with at least a coinciding attribute with Input 0.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Find equivalent value and set the color using integer values. """;
+
+// Find equivalent point using int attribute.
+int equiv_pt = findattribval(1, "point", "id", i@id);
+
+// Get attribute using equivalent point.
+vector color = point(1, "Cd", equiv_pt);
+
+// Set attribute.
+v@Cd = color;
 ```
