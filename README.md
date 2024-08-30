@@ -1762,6 +1762,14 @@ v@Cd = color;
 ``` c
 """ Create default box. """;
 
+// Create reusable void function.
+void createPrim(int pt0, pt1, pt2, pt3){
+    
+    // Create primitives using arrays.
+    int prim_pts[] = array(pt0, pt1, pt2, pt3);
+    addprim(0,'poly', prim_pts);
+}
+
 // Create points.
 int pt0 = addpoint(0, {0.5,-0.5,0.5});
 int pt1 = addpoint(0, {0.5,-0.5,-0.5});
@@ -1772,24 +1780,13 @@ int pt5 = addpoint(0, {0.5,0.5,-0.5});
 int pt6 = addpoint(0, {-0.5,0.5,-0.5});
 int pt7 = addpoint(0, {-0.5,0.5,0.5});
 
-// Create primitives using point array.
-int prim0_pts[] = array(pt0, pt1, pt2, pt3);
-int prim0 = addprim(0,'poly', prim0_pts);
-
-int prim1_pts[] = array(pt0, pt4, pt5, pt1);
-int prim1 = addprim(0,'poly', prim1_pts);
-
-int prim2_pts[] = array(pt1, pt5, pt6, pt2);
-int prim2 = addprim(0,'poly', prim2_pts);
-
-int prim3_pts[] = array(pt2, pt6, pt7, pt3);
-int prim3 = addprim(0,'poly', prim3_pts);
-
-int prim4_pts[] = array(pt3, pt7, pt4, pt0);
-int prim4 = addprim(0,'poly', prim4_pts);
-
-int prim5_pts[] = array(pt6, pt5, pt4, pt7);
-int prim5 = addprim(0,'poly', prim5_pts);
+// Create primitives using void function.
+createPrim(pt0, pt1, pt2, pt3);
+createPrim(pt0, pt4, pt5, pt1);
+createPrim(pt1, pt5, pt6, pt2);
+createPrim(pt2, pt6, pt7, pt3);
+createPrim(pt3, pt7, pt4, pt0);
+createPrim(pt6, pt5, pt4, pt7);
 ```
 ### create_box_equivs
 > [!IMPORTANT]
