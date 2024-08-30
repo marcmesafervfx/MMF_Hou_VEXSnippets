@@ -1213,3 +1213,99 @@ append(pts, pts[0]);
 // If user wants open geo, create a polyline. Otherwise, create a closed poly.
 (open==1)? addprim(0, "polyline", pts):addprim(0, "poly", pts);
 ```
+
+## Point Attribute Transfer
+*Reference Code*: 53451011
+> [!NOTE]
+> This code is able to handle the following datatypes: int, float, vector2 and vector. If you want to create transfer other datatypes, you can follow the pattern of the other ones.
+
+> [!NOTE]
+> Note that this code has a falloff parameter that allows the user to modify how the data is tranferred using a ramp. In addition, there's a parameter to input the attributes that the user want to transfer.
+
+> [!NOTE]
+> There's another way to transfer attributes using point clouds and near points. The fastest approach with a large amount of points is this one as far as I tested.
+   
+### attribute_transfer
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry to copy attributes to.
+> - **Input 1:** connected to a geometry to copy attributes from.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Point attribute transfer with falloff. """;
+
+// Initialize transfer values.
+int enable_falloff = chi("enable_falloff"); 
+float max_dist = chf("max_distance");
+
+// Get list of attributes and split based on spaces.
+string list_attr = chs("point_attributes");
+string attrs[] = split(list_attr, " ");
+
+// Get closest point from the current point.
+int nearpt = nearpoint(1, v@P);
+
+// Get closest point position and compute distance.
+vector nearpt_pos = point(1, "P", nearpt);
+float dist = distance(v@P, nearpt_pos);
+
+// If the point is not further than the maximum distance.
+if(dist<max_dist){
+
+    // Remap distance and store it as bias.
+    float bias = fit(dist, 0, max_dist, 1, 0);
+    bias = chramp("falloff_ramp", bias);
+    
+    // Loop for each of the input values.
+    foreach(string att; attrs){
+    
+        // Get the type of the attribute and its size.
+        int attrtype = attribtype(1, "point", att);
+        int attrsize = attribsize(1, "point", att);
+        
+        // Check if the attribute is int and filter.
+        if(attrtype==0) setpointattrib(0, att, @ptnum, int(point(1, att, nearpt)));
+
+        // Check if the attribute is string and filter.
+        if(attrtype==2) setpointattrib(0, att, @ptnum, string(point(1, att, nearpt)));
+        
+        // Check if the attribute is float.
+        if(attrtype==1 && attrsize==1){
+            
+            // Filter float information.
+            float filter = point(1, att, nearpt);
+            
+            // Check if user wants falloff and set the value.
+            filter = (enable_falloff)? lerp(point(0, att, nearpt), filter, bias):filter;
+            setpointattrib(0, att, @ptnum, filter);
+        }
+        
+        // Check if the attribute is vector2.
+        if(attrtype==1 && attrsize==2){
+        
+            // Filter vector2 information.
+            vector2 filter = point(1, att, nearpt);
+            
+            // Check if user wants falloff and set the value.
+            filter = (enable_falloff)? lerp(point(0, att, nearpt), filter, bias):filter;
+            setpointattrib(0, att, @ptnum, filter);
+        }
+        
+        // Check if the attribute is vector3.
+        if(attrtype==1 && attrsize==3){
+        
+            // Filter vector3 information.
+            vector filter = point(1, att, nearpt);
+            
+            // Check if user wants falloff and set the value.
+            filter = (enable_falloff)? lerp(point(0, att, nearpt), filter, bias):filter;
+            setpointattrib(0, att, @ptnum, filter);
+            
+        }
+    }
+}
+
+
+```
