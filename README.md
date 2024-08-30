@@ -1747,8 +1747,11 @@ v@Cd = color;
 *Reference Code*: 97607751
 > [!NOTE]
 > Note that the code doesn't allow to do modifications to the geometry because it is intended to be a really default box. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix. In addition, the methodology that I used is not the common manual way to create the geometry, so I would recommend you to check how it's been approached.
+
+> [!NOTE]
+> Here you have 3 different ways to do a box. The fun one is the create_box_equivs because it requires some procedural thinking, meantime the others are more mechanic ones.
  
-### create_box
+### create_box_equivs
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1818,4 +1821,103 @@ foreach(int curr_pt; first_prim){
     addprim(0, "poly", prim_pts);
 }
 
+```
+### create_box_vxt
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create default box. """;
+
+// Create points.
+int pt0 = addpoint(0, {0.5,-0.5,0.5});
+int pt1 = addpoint(0, {0.5,-0.5,-0.5});
+int pt2 = addpoint(0, {-0.5,-0.5,-0.5});
+int pt3 = addpoint(0, {-0.5,-0.5,0.5});
+int pt4 = addpoint(0, {0.5,0.5,0.5});
+int pt5 = addpoint(0, {0.5,0.5,-0.5});
+int pt6 = addpoint(0, {-0.5,0.5,-0.5});
+int pt7 = addpoint(0, {-0.5,0.5,0.5});
+
+// Create primitives adding a vertex to the primitive and point.
+int prim0 = addprim(0,'poly');
+int vtx0 = addvertex(0, prim0, pt0);
+int vtx1 = addvertex(0, prim0, pt1);
+int vtx2 = addvertex(0, prim0, pt2);
+int vtx3 = addvertex(0, prim0, pt3);
+
+int prim1 = addprim(0,'poly');
+int vtx4 = addvertex(0, prim1, pt0);
+int vtx5 = addvertex(0, prim1, pt4);
+int vtx6 = addvertex(0, prim1, pt5);
+int vtx7 = addvertex(0, prim1, pt1);
+
+int prim2 = addprim(0,'poly');
+int vtx8 = addvertex(0, prim2, pt1);
+int vtx9 = addvertex(0, prim2, pt5);
+int vtx10 = addvertex(0, prim2, pt6);
+int vtx11 = addvertex(0, prim2, pt2);
+
+int prim3 = addprim(0,'poly');
+int vtx12 = addvertex(0, prim3, pt2);
+int vtx13 = addvertex(0, prim3, pt6);
+int vtx14 = addvertex(0, prim3, pt7);
+int vtx15 = addvertex(0, prim3, pt3);
+
+int prim4 = addprim(0,'poly');
+int vtx16 = addvertex(0, prim4, pt3);
+int vtx17 = addvertex(0, prim4, pt7);
+int vtx18 = addvertex(0, prim4, pt4);
+int vtx19 = addvertex(0, prim4, pt0);
+
+int prim5 = addprim(0,'poly');
+int vtx20 = addvertex(0, prim5, pt6);
+int vtx21 = addvertex(0, prim5, pt5);
+int vtx22 = addvertex(0, prim5, pt4);
+int vtx23 = addvertex(0, prim5, pt7);
+
+```
+### create_box_arrays
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create default box. """;
+
+// Create points.
+int pt0 = addpoint(0, {0.5,-0.5,0.5});
+int pt1 = addpoint(0, {0.5,-0.5,-0.5});
+int pt2 = addpoint(0, {-0.5,-0.5,-0.5});
+int pt3 = addpoint(0, {-0.5,-0.5,0.5});
+int pt4 = addpoint(0, {0.5,0.5,0.5});
+int pt5 = addpoint(0, {0.5,0.5,-0.5});
+int pt6 = addpoint(0, {-0.5,0.5,-0.5});
+int pt7 = addpoint(0, {-0.5,0.5,0.5});
+
+// Create primitives using point array.
+int prim0_pts[] = array(pt0, pt1, pt2, pt3);
+int prim0 = addprim(0,'poly', prim0_pts);
+
+int prim1_pts[] = array(pt0, pt4, pt5, pt1);
+int prim1 = addprim(0,'poly', prim1_pts);
+
+int prim2_pts[] = array(pt1, pt5, pt6, pt2);
+int prim2 = addprim(0,'poly', prim2_pts);
+
+int prim3_pts[] = array(pt2, pt6, pt7, pt3);
+int prim3 = addprim(0,'poly', prim3_pts);
+
+int prim4_pts[] = array(pt3, pt7, pt4, pt0);
+int prim4 = addprim(0,'poly', prim4_pts);
+
+int prim5_pts[] = array(pt6, pt5, pt4, pt7);
+int prim5 = addprim(0,'poly', prim5_pts);
 ```
