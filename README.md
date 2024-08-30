@@ -1490,7 +1490,7 @@ v@dir = dir;
 ### hanging_pts
 > [!IMPORTANT]
 > **Mode:** Points.
-> - **Input 0:** connected to points.
+> - **Input 0:** connected to reference points.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
@@ -1545,4 +1545,31 @@ for(int i=1;i<npoints(0);i++){
 // Append last point to the list and create the polyline.
 append(pts, npoints(0)-1);
 addprim(0,"polyline",pts);
+```
+
+## UDIM Connectivity
+*Reference Code*: 93149288
+
+### connectivity_udim
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create attribute per UDIM. """;
+
+// Get uv information using parametric uvs (just to not have to convert to points or vertices). 
+vector2 uv = primuv(0, "uv", @primnum, {0.5,0.5});
+
+// Round up the uv values.
+uv = ceil(uv);
+
+// Construct UDIM value convention. 
+float uv_num = 1000 + (uv.x) + ((uv.y-1)*10);
+
+// Export uv name attribute.
+i@uv_name = int(uv_num);
 ```
