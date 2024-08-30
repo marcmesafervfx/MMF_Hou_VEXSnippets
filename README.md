@@ -1396,7 +1396,7 @@ s@name = name;
 > This example is being created in order to show how we can convert strings into floats, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
 
 > [!NOTE]
-> The str_to_flt_shash is unlikely to return the same values using different strings, but it can happen. The str_to_flt_utf won't return the same values. 
+> The str_to_flt_shash is unlikely to return the same values using different strings, but it can happen. The str_to_flt_utf won't return the same values if we use the raw utf value.
 
 ### str_to_flt_shash
 > [!IMPORTANT]
