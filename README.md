@@ -1798,7 +1798,7 @@ createPrim(pt6, pt5, pt4, pt7);
 
 ``` c
 """ Create default box. """;
-
+int sides =5;
 // Initialize point number and point position arrays.
 int all_pts[]; 
 vector all_pos[];
@@ -1839,9 +1839,9 @@ addprim(0, "poly", second_prim);
 // Iterate for each point of the first primitive.
 foreach(int curr_pt; first_prim){
     
-    // Find next equivalent position. Set first position if current point
+    // Find next equivalent position. Set first position if current point 
     // is the last point in the first primitive.
-    vector next_pos_equiv = (curr_pt==3)? all_pos[0]:all_pos[curr_pt+1];
+    vector next_pos_equiv = (curr_pt==first_prim[-1])? all_pos[0]:all_pos[curr_pt+1];
     
     // Invert z axis.
     next_pos_equiv.z*=-1;
@@ -1852,13 +1852,12 @@ foreach(int curr_pt; first_prim){
     // Canstruct winding order. 
     // Set first point of the first prim and last point of the second prim
     // if current point is the last point in the first primitive.
-    int prim_pts[] = (curr_pt==3)? array(curr_pt, 0, equiv_pt, 7) : 
+    int prim_pts[] = (curr_pt==first_prim[-1])? array(curr_pt, first_prim[0], equiv_pt, second_prim[-1]) : 
                                    array(curr_pt, curr_pt+1, equiv_pt, equiv_pt-1);
     
     // Create primitive using the winding order.
     addprim(0, "poly", prim_pts);
 }
-
 ```
 
 
