@@ -1573,3 +1573,35 @@ float uv_num = 1000 + (uv.x) + ((uv.y-1)*10);
 // Export uv name attribute.
 i@uv_name = int(uv_num);
 ```
+
+## Convert Attribute To Group
+*Reference Code*: 43837465
+> [!NOTE]
+> This example is being created in order to show how to convert a point string attribute into a point group. You can do the same process for the other geometry types, but you have to make sure that the attribute that you are using is a string.
+
+> [!WARNING]
+> Don't use attributes with a lot of different values... You don't want to get a lot of groups.  
+
+### attr_to_grp
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create checker using ternary conditions. """;
+
+// Set the frequency for the scene.
+float freq = chf("frequency");
+
+// Compute vertical sections.
+v@Cd = (sin(v@P.x*freq)<0)?0:1;
+
+// Add horizontal sections.
+v@Cd += (sin(v@P.z*freq)<0)?0:1;
+
+// Check if there's coincidence and multiply by 0.
+v@Cd *= (v@Cd.r==2)?0:1;
+```
