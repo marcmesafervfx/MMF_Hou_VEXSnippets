@@ -1716,6 +1716,11 @@ v@P+=push;
 
 ## Color Normalized Age
 *Reference Code*: 66781383
+> [!NOTE]
+> You can use the @nage built-in attribute, which contains the same value as the nage variable from the code.
+
+> [!TIP]
+> Change the color ramp user parameter to color in order to visualize the proper ramp.
 
 ### colorize
 > [!IMPORTANT]
