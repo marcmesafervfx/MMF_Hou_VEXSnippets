@@ -1311,7 +1311,7 @@ if(dist<max_dist){
 ## Find Equivalent Value
 *Reference Code*: 28038311
 > [!NOTE]
-> In this example, I use an integer value, but you can use a string one if you'd like.
+> In this example, I use an integer value, but you can use a string one if you'd like. In addition, this process can be done in different types of geometries.
 
 ### find_equiv_value
 > [!IMPORTANT]
