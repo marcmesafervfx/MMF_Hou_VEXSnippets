@@ -1220,11 +1220,11 @@ append(pts, pts[0]);
 > This code is able to handle the following datatypes: int, float, vector2 and vector. If you want to create transfer other datatypes, you can follow the pattern of the other ones.
 
 > [!NOTE]
+> There's another way to transfer attributes using point clouds and near points. The fastest approach with a large amount of points is this one as far as I tested.
+
+> [!TIP]
 > Note that this code has a falloff parameter that allows the user to modify how the data is tranferred using a ramp. In addition, there's a parameter to input the attributes that the user want to transfer.
 
-> [!NOTE]
-> There's another way to transfer attributes using point clouds and near points. The fastest approach with a large amount of points is this one as far as I tested.
-   
 ### attribute_transfer
 > [!IMPORTANT]
 > **Mode:** Points.
