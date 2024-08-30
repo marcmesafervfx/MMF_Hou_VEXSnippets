@@ -1311,7 +1311,7 @@ if(dist<max_dist){
 ## Find Equivalent Ptnum
 *Reference Code*: 39128540
 > [!NOTE]
-> In this example, I use an integer value, but you can use a string one if you'd like. In addition, this process can be done in different types of geometries.
+> In this example I use an integer value, but you can use a string one if you'd like. In addition, this process can be done in different types of geometries.
 
 ### find_equiv_ptnum
 > [!IMPORTANT]
@@ -1359,4 +1359,33 @@ int pt = addpoint(0, new_pos);
 
 // Create polyline.
 addprim(0, "polyline", @ptnum, pt);
+```
+
+## Convert Integer To String
+*Reference Code*: 44470061
+> [!NOTE]
+> This example is being created in order to show how we can convert integers into strings, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
+
+> [!TIP]
+> You can use that snippet inputting the interations of a loop. For example, that would help you out to create proper naming for fracturing pieces.
+
+### int_to_str
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert integer values into strings. """;
+
+// Create or import the integer value.
+int value = 2;
+
+// Create a name including the converted integer value.
+string name = "piece_" + itoa(value);
+
+// Export string attribute.
+s@name = name;
 ```
