@@ -1839,7 +1839,8 @@ addprim(0, "poly", second_prim);
 // Iterate for each point of the first primitive.
 foreach(int curr_pt; first_prim){
     
-    // Find next equivalent position. Set first position if current point is the last point in the first primitive.
+    // Find next equivalent position. Set first position if current point
+    // is the last point in the first primitive.
     vector next_pos_equiv = (curr_pt==3)? all_pos[0]:all_pos[curr_pt+1];
     
     // Invert z axis.
