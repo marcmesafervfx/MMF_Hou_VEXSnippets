@@ -1798,7 +1798,7 @@ createPrim(pt6, pt5, pt4, pt7);
 
 ``` c
 """ Create default box. """;
-int sides =5;
+
 // Initialize point number and point position arrays.
 int all_pts[]; 
 vector all_pos[];
