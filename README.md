@@ -1454,3 +1454,32 @@ float value = rand(atoi(utfval));
 // Export float attribute.
 f@value = value;
 ```
+
+## Vector Between Positions
+*Reference Code*: 4300925
+> [!NOTE]
+> Note that this example is a basic exemplification of how we can get the direction vector between two positions. This snippet usually comes with additional functionality that is not being implemented here.
+ 
+### vector_between_pos
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get direction vector between two points. """;
+
+// Get point position to point to.
+vector to_pos = point(1, "P", @ptnum);
+
+// Get current point position to point from.
+vector from_pos = v@P;
+
+// Compute direction vector.
+vector dir = to_pos-from_pos;
+
+// Export direction attribute.
+v@dir = dir;
+```
