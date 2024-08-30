@@ -1689,3 +1689,51 @@ vector grad = volumegradient(1, 0, v@P);
 // Push points.
 if(dist<0.001) v@P -= normalize(grad)*dist;
 ```
+
+## Peak Geometry
+*Reference Code*: 92501258
+
+### peak
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Peak object using normals. """;
+
+// Get peak value.
+float peak = chf("peak");
+
+// Mult normals and peak value.
+vector push = v@N*peak;
+
+// Add peak.
+v@P+=push;
+```
+
+## Color Normalized Age
+*Reference Code*: 66781383
+
+### colorize
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to points with f@age and f@life attributes.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Normalize particle age. """;
+
+// Compute normalized age.
+float nage = f@age/f@life;
+
+// Remap color using normalized age.
+vector color = chramp("color", nage);
+
+// Export color attribute.
+v@Cd = color;
+```
