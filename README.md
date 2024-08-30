@@ -1746,10 +1746,10 @@ v@Cd = color;
 ## Create Default Box
 *Reference Code*: 97607751
 > [!NOTE]
-> Note that the code doesn't allow to do modifications to the geometry because it is intended to be a really default box. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix. In addition, the methodology that I used is not the common manual way to create the geometry, so I would recommend you to check how it's been approached.
+> Note that the code doesn't allow to do modifications to the geometry because it is intended to be a really default box. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
 
 > [!NOTE]
-> Here you have 2 different ways to do a box: create_box_equivs and create_box_arrays. My recommendation is to use the box node, but if you are interested in the VEX approach, you can check both. The create_box_arrays is manual and the create_box_equivs is an alternative more complex and programatic way.
+> Here you have 2 different ways to do a box: create_box_equivs and create_box_arrays. My recommendation is to use the box node, but if you are interested in the VEX approach, you can check teh code. The create_box_arrays is a manual process and the create_box_equivs is an alternative, complex and programatic method.
 
 ### create_box_arrays
 > [!IMPORTANT]
