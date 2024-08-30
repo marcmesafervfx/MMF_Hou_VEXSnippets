@@ -1665,3 +1665,27 @@ foreach(string grp; grps){
     if(inpointgroup(0, grp, @ptnum)) setpointattrib(0, grp, @ptnum, 1);
 }
 ```
+
+## Push Points Volume
+*Reference Code*: 73825197
+
+### push_points
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to points.
+> - **Input 1:** connected to sdf volume.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Push Points Outisde Volumes. """;
+
+// Compute signed distance field value.
+float dist = volumesample(1, 0, v@P);
+
+// Compute gradient from volume.
+vector grad = volumegradient(1, 0, v@P);
+
+// Push points.
+if(dist<0.001) v@P -= normalize(grad)*dist;
+```
