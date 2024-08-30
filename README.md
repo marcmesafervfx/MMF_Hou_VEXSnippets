@@ -1,4 +1,4 @@
-r# Houdini VEX Snippets
+# Houdini VEX Snippets
 ## Initial Provisions
 This repository is designated to be a place where I put some of the VEX snippets I've been using to fix, check, create, and manipulate information in different contexts. If something needs to be revisited, let me know so I can check for it and commit any of the requested modifications.
 
