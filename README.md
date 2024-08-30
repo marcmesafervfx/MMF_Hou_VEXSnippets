@@ -1742,3 +1742,80 @@ vector color = chramp("color", nage);
 // Export color attribute.
 v@Cd = color;
 ```
+
+## Create Default Box
+*Reference Code*: 97607751
+> [!NOTE]
+> Note that the code doesn't allow to do modifications to the geometry because it is intended to be a really default box. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix. In addition, the methodology that I used is not the common manual way to create the geometry, so I would recommend you to check how it's been approached.
+ 
+### create_box
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create default box. """;
+
+// Initialize point number and point position arrays.
+int all_pts[]; 
+vector all_pos[];
+
+// Loop 2 times to create points based on z.
+for(int a=0; a<2;a++){
+    
+    // Loop 4 times to create the primitive points.
+    for(int i=0; i<4; i++){
+        
+        // Compute 45 degrees in radians.
+        float rad = $PI*2/4;
+        
+        // Compute the x and y axes.
+        float x = rint(sin(rad*i+rad/2));
+        float y = rint(cos(rad*i+rad/2));
+        
+        // Compute positions using x and y. Use z to place points in depth.
+        vector pos = (a)? set(x,y,1)/2 : set(x,y,-1)/2;
+        
+        // Create points.
+        int pt = addpoint(0, pos);
+        
+        // Append points and positions to arrays.
+        append(all_pts, pt);
+        append(all_pos, pos);
+    } 
+}
+
+// Separate core primitive points into two groups.
+int first_prim[] = all_pts[:4];
+int second_prim[] = all_pts[4:];
+
+// Create primitives. One with reversed windings.
+addprim(0, "poly", reverse(first_prim));
+addprim(0, "poly", second_prim);
+
+// Iterate for each point of the first primitive.
+foreach(int curr_pt; first_prim){
+    
+    // Find next equivalent position. Set first position if current point is the last point in the first primitive.
+    vector next_pos_equiv = (curr_pt==3)? all_pos[0]:all_pos[curr_pt+1];
+    
+    // Invert z axis.
+    next_pos_equiv.z*=-1;
+    
+    // Find equivalent point index. all_pos index = all_pts value 
+    int equiv_pt = find(all_pos, next_pos_equiv);
+    
+    // Canstruct winding order. 
+    // Set first point of the first prim and last point of the second prim
+    // if current point is the last point in the first primitive.
+    int prim_pts[] = (curr_pt==3)? array(curr_pt, 0, equiv_pt, 7) : 
+                                   array(curr_pt, curr_pt+1, equiv_pt, equiv_pt-1);
+    
+    // Create primitive using the winding order.
+    addprim(0, "poly", prim_pts);
+}
+
+```
