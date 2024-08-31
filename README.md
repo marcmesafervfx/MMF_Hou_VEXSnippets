@@ -5,6 +5,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 ## Vector Along Curve
 *Reference Code*: 72854126
 
+**vector_along_curve**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to the curve.
