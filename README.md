@@ -1913,7 +1913,7 @@ addprim(0, "polyline", pts);
 
 ### carve
 > [!IMPORTANT]
-> **Mode:** Points.
+> **Mode:** Primitives.
 > - **Input 0:** connected to a polyline.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
@@ -1936,4 +1936,28 @@ float trim = clamp(dist, 0, p);
 
 // Adjust the primitive length.
 adjustPrimLength(0, @primnum, p, trim);
+```
+
+## Remove By Speed Threshold
+*Reference Code*: 9971578
+
+### remove_speed
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to points with v@v attribute.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove based on speed. """;
+
+// Get speed threshold.
+float speed_thr = chf("speed_threshold");
+
+// Compute speed.
+float speed = length(v@v);
+
+// Remove based on speed.
+if(speed<speed_thr)removepoint(0, @ptnum);
 ```
