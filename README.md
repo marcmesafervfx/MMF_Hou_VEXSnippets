@@ -39,7 +39,7 @@ v@tan = tan;
 > [!TIP]
 > Create a for-loop and loop the attribute wrangle with feedback.
 
-### blur_position
+**blur_position**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a scatter node.
@@ -81,7 +81,7 @@ v@P = pos;
 > [!NOTE]
 > The following snippet contains two variables: *primpoints* and *nearpoint*. Both output similar results, but the methodology is different.
 
-### primpoints
+**primpoints**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -116,7 +116,7 @@ foreach(int i; pts){
 // Set the cluster.
 i@cluster = cluster;
 ```
-### nearpoint
+**nearpoint**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -134,7 +134,7 @@ i@cluster = nearpoint(1, v@P);
 ## NGon Detector
 *Reference Code*: 50655883
 
-### ngon_detector
+**ngon_detector**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -161,7 +161,7 @@ if(len(pts)>4){
 > [!NOTE]
 > The following snippet contains two variables: *get_distance + normalize_distance* and *normalize_distance_detail*. Both output similar results, but the methodology is different.
 
-### get_distance
+**get_distance**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -185,7 +185,7 @@ f@dist = dist;
 > [!NOTE]
 > Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values to follow the next step.
 
-### normalize_distance
+**normalize_distance**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -206,7 +206,7 @@ float norm_dist = f@dist/max_dist;
 v@Cd = chramp("color", norm_dist);
 ```
 
-### normalize_distance_detail
+**normalize_distance_detail**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** connected to a geometry.
@@ -250,7 +250,7 @@ for(int pt=0; pt<pts; pt++){
 ## Frustum Camera
 *Reference Code*: 38002708
 
-### frustum_camera
+**frustum_camera**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a default box.
@@ -301,7 +301,7 @@ we are transforming back to world space. */
 > [!TIP]
 > Remember that you can use the @id or @prim_id attributes instead of the @ptnum or @primnum to be consistent, but it needs to be precomputed.
 
-### remove_points_by_threshold
+**remove_points_by_threshold**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -322,7 +322,7 @@ if(rand_value<chf("threshold")){
     removepoint(0, @ptnum);
 }
 ```
-### remove_prims_by_threshold
+**remove_prims_by_threshold**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -347,7 +347,7 @@ if(rand_value<chf("threshold")){
 ## Primitive Centroid
 *Reference Code*: 39725183
 
-### primitive_centroid
+**primitive_centroid**
 > [!IMPORTANT]
 > **Mode:** Primitive.
 > - **Input 0:** connected to a geometry.
@@ -371,7 +371,7 @@ removeprim(0, @primnum, 1);
 ## Compute Curveu From Line
 *Reference Code*: 49138898
 
-### curveu
+**curveu**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a polyline.
@@ -394,7 +394,7 @@ f@curveu = curveu;
 > [!NOTE]
 > In the example code, the v@up and the v@axis are computed already. If you need to compute the angle between two other vectors or other attributes, you can susbtitute the value of the up and axis variables.
 
-### angle_vectors
+**angle_vectors**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -424,7 +424,7 @@ f@angle = full_angle;
 
 ## Unshared Points
 *Reference Code*: 82391305
-### unshared_points
+**unshared_points**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -471,7 +471,7 @@ for(int i=0; i<pts; i++){
 
 ## Basic Transform With Matrix
 *Reference Code*: 32956689
-### transform
+**transform**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -511,7 +511,7 @@ v@P*=orig_matrix;
 > [!NOTE]
 > This method pretends to output a similar result as a extract transform node would do.
 
-### get_offset_matrix
+**get_offset_matrix**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -556,7 +556,7 @@ matrix totalxform = invert(rest_xform)*trans_xform;
 int pt = addpoint(0, {0,0,0});
 setpointattrib(0, "xform", pt, totalxform);
 ```
-### set_transformations
+**set_transformations**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a rest geometry.
@@ -580,7 +580,7 @@ v@N*=matrix3(xform);
 ## Create Checkboard
 *Reference Code*: 43837465
 
-### checkerboard
+**checkerboard**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -609,7 +609,7 @@ v@Cd *= (v@Cd.r==2)?0:1;
 > [!NOTE]
 > The simplicity of the method makes the process quite limitated. The deformed rest geometry should be quite similar as the geometry that you want to deform in terms of shape.
 
-### point_deform
+**point_deform**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry to deform.
@@ -634,7 +634,7 @@ v@P = pos;
 ## Advanced Point Deform
 *Reference Code*: 209363
 
-### capture
+**capture**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry to deform.
@@ -667,7 +667,7 @@ foreach(int val; npts){
 // Store captured weights.
 f[]@weights = weights;
 ```
-### get_offset_matrix
+**get_offset_matrix**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a deformed rest geometry.
@@ -707,7 +707,7 @@ matrix3 totalxform = invert(xformold)*xformnew;
 
 3@xform = totalxform;
 ```
-### set_deform
+**set_deform**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to capture node.
@@ -757,7 +757,7 @@ v@P += finaloffset;
 ## Noise Edge Mask
 *Reference Code*: 72728404
 
-### noise_edge_mask
+**noise_edge_mask**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -786,7 +786,7 @@ v@Cd = xaxis;
 > [!NOTE]
 > In the example, the normal is used to compute the offset matrix. You can eventually use your custom attribute just by changing the corresponding variable values.
 
-### compute_offset_matrix
+**compute_offset_matrix**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a rest geometry.
@@ -812,7 +812,7 @@ matrix3 rot_offset = dihedral(v@N, N);
 > [!TIP]
 > You can eventually accumulate the values to get a similar output as the measure node would return.
 
-### measure
+**measure**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -834,7 +834,7 @@ f@perimeter = primintrinsic(0, "measuredarea", @primnum);
 > [!NOTE]
 > Checking the primitive type can allow you to treat the input geometry in a different way. For example, if the input geometry is packed, you'll probably require to apply a different treatment compared to an unpacked one. 
 
-### prim_type
+**prim_type**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -852,7 +852,7 @@ s@prim_type = primintrinsic(0, "typename", @primnum);
 ## Jitter Points
 *Reference Code*: 55905505
 
-### jitter_pts
+**jitter_pts**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a scatter node.
@@ -895,7 +895,7 @@ v@P+=(dir*scale);
 > [!NOTE]
 > Note that there are two different approaches to getting a similar result. The check_inside_pts_geo is limited because it requires a clean geometry without self-intersections, but it doesn't require an additional step converting the geometry into sdf. Meantime, the check_inside_pts_vol is more stable for self-intersecting geometries, but it requires the mentioned additional step.
 
-### check_inside_pts_geo
+**check_inside_pts_geo**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -925,7 +925,7 @@ float dot = dot(dir, norm);
 // Create a group to contain the inside points.
 if(dot<0) setpointgroup(0, "inside", @ptnum, 1);
 ```
-### check_inside_pts_vol
+**check_inside_pts_vol**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -946,7 +946,7 @@ if(dist<0) setpointgroup(0, "inside", @ptnum, 1);
 ## Ray Minimum Distance
 *Reference Code*: 77468763
 
-### ray_min_dist
+**ray_min_dist**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -972,7 +972,7 @@ v@P = minpos;
 > [!NOTE]
 > In order to create geometry with a volumewrangle, you'll need to turn on the Only Output Created Geometry in the Bindings tab.
 
-### voxel_index
+**voxel_index**
 > [!IMPORTANT]
 > **Mode:** Volume.
 > - **Input 0:** connected to a density volume.
@@ -1006,7 +1006,7 @@ setpointattrib(0, "iz", pt, int(index.z));
 > [!NOTE]
 > This example is being created in order to show how we can remove duplicates from an array, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
 
-### remove_duplicates
+**remove_duplicates**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1037,7 +1037,7 @@ f[]@array = new_smp_array;
 > [!NOTE]
 > This example is being created in order to show how we can get the most repeated element from an array, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
 
-### most_repeated_value
+**most_repeated_value**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1095,7 +1095,7 @@ f@max_repeated = max_repeated;
 > [!TIP]
 > You can link the parameters from the CVEX Shader Builder to the actual camera values. 
 
-### lens_shader
+**lens_shader**
 > [!IMPORTANT]
 > **Mode:** VEX Shader.
 > - **Input 0:** bind x axis.
@@ -1130,7 +1130,7 @@ $I = set(c.x, c.y / aspect, (fo/ap));
 > [!NOTE]
 > This example is being created in order to show how we can get the position information from two vectors, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
 
-### vector_intersect
+**vector_intersect**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1172,7 +1172,7 @@ v@intersect_pos = pos;
 ## Create Circle
 *Reference Code*: 32305122
 
-### create_circle
+**create_circle**
 > [!IMPORTANT]
 > **Mode:** Details.
 > - **Input 0:** no-connected.
@@ -1226,7 +1226,7 @@ append(pts, pts[0]);
 > [!TIP]
 > Note that this code has a falloff parameter that allows the user to modify how the data is tranferred using a ramp. In addition, there's a parameter to input the attributes that the user want to transfer.
 
-### attribute_transfer
+**attribute_transfer**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry to copy attributes to.
@@ -1314,7 +1314,7 @@ if(dist<max_dist){
 > [!NOTE]
 > In this example I use an integer value, but you can use a string one if you'd like. In addition, this process can be done in different types of geometries.
 
-### find_equiv_ptnum
+**find_equiv_ptnum**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -1338,7 +1338,7 @@ v@Cd = color;
 ## Velocity Point Trail
 *Reference Code*: 50993777
 
-### point_trail
+**point_trail**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry with v@v attribute.
@@ -1370,7 +1370,7 @@ addprim(0, "polyline", @ptnum, pt);
 > [!TIP]
 > You can use that snippet inputting the interations of a loop. For example, that would help you out to create proper naming for fracturing pieces.
 
-### int_to_str
+**int_to_str**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1399,7 +1399,7 @@ s@name = name;
 > [!NOTE]
 > The str_to_flt_shash is unlikely to return the same values using different strings, but it can happen. The str_to_flt_utf won't return the same values if we use the raw utf value.
 
-### str_to_flt_shash
+**str_to_flt_shash**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1419,7 +1419,7 @@ float value = rand(random_shash(name));
 // Export float attribute.
 f@name = value;
 ```
-### str_to_flt_utf
+**str_to_flt_utf**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1461,7 +1461,7 @@ f@value = value;
 > [!NOTE]
 > Note that this example is a basic exemplification of how we can get the direction vector between two positions. This snippet usually comes with additional functionality that is not being implemented here.
  
-### vector_between_pos
+**vector_between_pos**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -1488,7 +1488,7 @@ v@dir = dir;
 ## Hanging Catenary Wire
 *Reference Code*: 63831594
 
-### hanging_pts
+**hanging_pts**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to reference points.
@@ -1551,7 +1551,7 @@ addprim(0,"polyline",pts);
 ## UDIM Connectivity
 *Reference Code*: 93149288
 
-### connectivity_udim
+**connectivity_udim**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
@@ -1583,7 +1583,7 @@ i@uv_name = int(uv_num);
 > [!WARNING]
 > Don't use attributes with a lot of different values... You don't want to get a lot of groups.  
 
-### attr_to_grp
+**attr_to_grp**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -1618,7 +1618,7 @@ v@Cd *= (v@Cd.r==2)?0:1;
 > [!WARNING]
 > If you want to use the attr_creation method is better to check for how many groups you have in your current geometry... You don't want to get a lot of attributes.  
 
-### attr_name_array
+**attr_name_array**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -1645,7 +1645,7 @@ foreach(string grp; grps){
 // Export array of point groups for current point.
 s[]@grp_attr = pt_grps;
 ```
-### attr_creation
+**attr_creation**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -1670,7 +1670,7 @@ foreach(string grp; grps){
 ## Push Points Volume
 *Reference Code*: 73825197
 
-### push_points
+**push_points**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to points.
@@ -1694,7 +1694,7 @@ if(dist<0.001) v@P -= normalize(grad)*dist;
 ## Peak Geometry
 *Reference Code*: 92501258
 
-### peak
+**peak**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -1723,7 +1723,7 @@ v@P+=push;
 > [!TIP]
 > Change the color ramp user parameter to color in order to visualize the proper ramp.
 
-### colorize
+**colorize**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to points with f@age and f@life attributes.
@@ -1749,7 +1749,7 @@ v@Cd = color;
 > [!NOTE]
 > Note that the code doesn't allow to do modifications to the geometry because it is intended to be a really default box. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
 
-### create_box
+**create_box**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1792,7 +1792,7 @@ createPrim(pt6, pt5, pt4, pt7);
 > [!NOTE]
 > Note that the code only allows you to do modifications to the columns because it is intended to be a really default tube. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
 
-### create_tube
+**create_tube**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1873,7 +1873,7 @@ for(int i=0; i<len(first_prim); i++){
 > [!NOTE]
 > Note that the code only allows you to do modifications to the length and points because it is intended to be a really default line. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
 
-### create_line
+**create_line**
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1912,7 +1912,7 @@ addprim(0, "polyline", pts);
 ## Carve Primitive
 *Reference Code*: 46938032
 
-### carve
+**carve**
 > [!IMPORTANT]
 > **Mode:** Primitives.
 > - **Input 0:** connected to a polyline.
@@ -1942,7 +1942,7 @@ adjustPrimLength(0, @primnum, p, trim);
 ## Remove By Speed Threshold
 *Reference Code*: 9971578
 
-### remove_speed
+**remove_speed**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to points with v@v attribute.
@@ -1966,7 +1966,7 @@ if(speed<speed_thr)removepoint(0, @ptnum);
 ## Remap Density Reference Point
 *Reference Code*: 22887045
 
-### remap_density
+**remap_density**
 > [!IMPORTANT]
 > **Mode:** Volume.
 > - **Input 0:** connected to a density volume.
@@ -2001,7 +2001,7 @@ f@density*=dist;
 > [!TIP]
 > You can interpolate other values just by replicating the position workflow.
 
-### blend_shapes
+**blend_shapes**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
@@ -2030,7 +2030,7 @@ v@P = final_pos;
 > [!NOTE]
 > You can do the same process with different types of geometry. Just remember to modify the corresponding functions and geometry number.
 
-### str_to_grp
+**str_to_grp**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
