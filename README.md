@@ -1743,15 +1743,12 @@ vector color = chramp("color", nage);
 v@Cd = color;
 ```
 
-## Create Default Box
-*Reference Code*: 97607751
+## Create Box
+*Reference Code*: 93703926
 > [!NOTE]
 > Note that the code doesn't allow to do modifications to the geometry because it is intended to be a really default box. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
 
-> [!NOTE]
-> Here you have 2 different ways to do a box: create_box_equivs and create_box_arrays. My recommendation is to use the box node, but if you are interested in the VEX approach, you can check the code. The create_box_arrays is a manual process and the create_box_equivs is an alternative, complex and programatic method.
-
-### create_box_arrays
+### create_box
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1788,7 +1785,13 @@ createPrim(pt2, pt6, pt7, pt3);
 createPrim(pt3, pt7, pt4, pt0);
 createPrim(pt6, pt5, pt4, pt7);
 ```
-### create_box_equivs
+
+## Create Tube
+*Reference Code*: 61391039
+> [!NOTE]
+> Note that the code only allows you to do modifications to the columns because it is intended to be a really default tube. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
+
+### create_tube
 > [!IMPORTANT]
 > **Mode:** Detail.
 > - **Input 0:** no-connected.
@@ -1797,27 +1800,30 @@ createPrim(pt6, pt5, pt4, pt7);
 > - **Input 3:** no-connected.
 
 ``` c
-""" Create default box. """;
-int sides =5;
+""" Create default tube. """;
+
+// Set columns.
+int col = chi("columns");
+
 // Initialize point number and point position arrays.
 int all_pts[]; 
 vector all_pos[];
 
-// Loop 2 times to create points based on z.
+// Loop 2 times to create reference winding faces.
 for(int a=0; a<2;a++){
     
-    // Loop 4 times to create the primitive points.
-    for(int i=0; i<4; i++){
+    // Loop col times to create the primitive points.
+    for(int i=0; i<col; i++){
         
-        // Compute 45 degrees in radians.
-        float rad = $PI*2/4;
+        // Compute degrees in radians.
+        float rad = $PI*2/col;
         
         // Compute the x and y axes.
-        float x = rint(sin(rad*i+rad/2));
-        float y = rint(cos(rad*i+rad/2));
+        float x = sin(rad*i);
+        float z = cos(rad*i);
         
-        // Compute positions using x and y. Use z to place points in depth.
-        vector pos = (a)? set(x,y,1)/2 : set(x,y,-1)/2;
+        // Compute positions using x and z. Use y to place points in height.
+        vector pos = (a)? set(x,-1,z)/2 : set(x,1,z)/2;
         
         // Create points.
         int pt = addpoint(0, pos);
@@ -1829,8 +1835,8 @@ for(int a=0; a<2;a++){
 }
 
 // Separate core primitive points into two groups.
-int first_prim[] = all_pts[:4];
-int second_prim[] = all_pts[4:];
+int first_prim[] = all_pts[:col];
+int second_prim[] = all_pts[col:];
 
 // Create primitives. One with reversed windings.
 addprim(0, "poly", reverse(first_prim));
@@ -1844,7 +1850,7 @@ for(int i=0; i<len(first_prim); i++){
     vector next_pos_equiv = (first_prim[i]==first_prim[-1])? all_pos[0]:all_pos[i+1];
     
     // Invert z axis.
-    next_pos_equiv.z*=-1;
+    next_pos_equiv.y*=-1;
     
     // Find equivalent point index. all_pos index = all_pts value 
     int equiv_pt = find(all_pos, next_pos_equiv);
@@ -1858,6 +1864,6 @@ for(int i=0; i<len(first_prim); i++){
     // Create primitive using the winding order.
     addprim(0, "poly", prim_pts);
 }
-```
 
+```
 
