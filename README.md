@@ -1907,3 +1907,33 @@ for(int i=0; i<points; i++){
 // Create poly line using point array.
 addprim(0, "polyline", pts);
 ```
+
+## Carve Primitive
+*Reference Code*: 46938032
+
+### carve
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a polyline.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Carve curve. """;
+
+// Include groom library.
+#include <groom.h>
+
+// Get the distance to keep.
+float dist = chf('distance');
+
+// Get intrinsic perimeter
+float p = primintrinsic(0, 'measuredperimeter', @primnum);
+
+// Clamp distance.
+float trim = clamp(dist, 0, p);
+
+// Adjust the primitive length.
+adjustPrimLength(0, @primnum, p, trim);
+```
