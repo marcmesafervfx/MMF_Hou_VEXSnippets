@@ -1961,3 +1961,36 @@ float speed = length(v@v);
 // Remove based on speed.
 if(speed<speed_thr)removepoint(0, @ptnum);
 ```
+
+## Remap Density Reference Point
+*Reference Code*: 22887045
+
+### remap_density
+> [!IMPORTANT]
+> **Mode:** Volume.
+> - **Input 0:** connected to a density volume.
+> - **Input 1:** connected to a reference point.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remap the density based on reference point. """;
+
+// Initialize amplitude and frequency values.
+float amp = chf("amplitude");
+float freq = chf("frequency");
+
+// Get renferece point position.
+vector pos = point(1, "P", 0);
+
+// Get current position and add noise to it if user inputs amplitude.
+vector curr_pos = v@P+noise(v@P*freq)*amp;
+
+// Get distance between curr_pos and pos. Remap distance to fit desired values.
+float dist = distance(curr_pos, pos);
+dist = fit(dist, 0, chf("max_distance"), 0, 1);
+dist = chramp("distance", dist);
+
+// Multiply density by distance.
+f@density*=dist;
+```
