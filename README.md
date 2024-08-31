@@ -1994,3 +1994,32 @@ dist = chramp("distance", dist);
 // Multiply density by distance.
 f@density*=dist;
 ```
+
+## Blend Shapes
+*Reference Code*: 61849155
+> [!TIP]
+> You can interpolate other values just by replicating the position workflow.
+
+### blend_shapes
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to the deformed Input 0 geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Blend between shapes. """;
+
+// Get bias for the blend shape.
+float bias = chf("bias");
+
+// Get position equivalent point number position attribute.
+vector pos = point(1, "P", @ptnum);
+
+// Interpolate between the two positions using bias.
+vector final_pos = lerp(v@P, pos, bias);
+
+// Set final position.
+v@P = final_pos;
+```
