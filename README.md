@@ -1867,3 +1867,43 @@ for(int i=0; i<len(first_prim); i++){
 
 ```
 
+## Create Line
+*Reference Code*: 58694772
+> [!NOTE]
+> Note that the code only allows you to do modifications to the length and points because it is intended to be a really default line. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
+
+### create_line
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create line. """;
+
+// Get number of points and length for the line.
+int points = chi("points");
+float length = chf("length");
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each points.
+for(int i=0; i<points; i++){
+    
+    // Compute height value.
+    float height = length/(points-1);
+    
+    // Create position value.
+    vector pos = set(0, height*i, 0);
+    
+    // Create point and append to point array list. 
+    int pt = addpoint(0, pos);
+    append(pts, pt);
+}
+
+// Create poly line using point array.
+addprim(0, "polyline", pts);
+```
