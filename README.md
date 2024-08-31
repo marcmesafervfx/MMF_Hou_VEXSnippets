@@ -298,8 +298,11 @@ we are transforming back to world space. */
 
 ## Remove by threshold
 *Reference Code*: 9067034
+> [!NOTE]
+> You can remove other types of geometry using the corresponding remove functions.
+
 > [!TIP]
-> Remember that you can use the @id or @prim_id attributes instead of the @ptnum or @primnum to be consistent, but it needs to be precomputed.
+> Remember that you can use the @id attribute instead of the @ptnum to be consistent, but it needs to be precomputed.
 
 **remove_points_by_threshold**
 > [!IMPORTANT]
@@ -322,27 +325,7 @@ if(rand_value<chf("threshold")){
     removepoint(0, @ptnum);
 }
 ```
-**remove_prims_by_threshold**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
 
-``` c
-""" Remove by threshold. """;
-
-// Create a random value betweem 0 and 1 for each prim.
-float rand_value = rand(@primnum);
-
-// Check if the value is smaller than the threshold.
-if(rand_value<chf("threshold")){
-
-    // Remove prim.
-    removeprim(0, @primnum, 1);
-}
-```
 
 ## Primitive Centroid
 *Reference Code*: 39725183
