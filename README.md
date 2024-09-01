@@ -2498,3 +2498,24 @@ createPrim(pt2, pt3, pt7, pt6);
 createPrim(pt3, pt0, pt4, pt7);
 createPrim(pt0, pt1, pt5, pt4);
 ```
+
+## Remove Unused Points
+*Reference Code*: 11943207
+
+**remove_unused_pts**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove unused points. """;
+
+// Get neighbour count.
+int count = neighbourcount(0, @ptnum);
+
+// Remove point if count is 0.
+if(count==0) removepoint(0, @ptnum);
+```
