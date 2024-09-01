@@ -2229,3 +2229,32 @@ else if(geo_type=="PackedGeometry"){
     warning("The type %s is valid, but might output unexpected results.", geo_type);
 }
 ```
+
+## Attribute From Map
+*Reference Code*: 43837465
+> [!TIP]
+> You can use a grayscale maps to set up floating values.
+
+**attr_from_map**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Color and Alpha from texture file. """;
+
+// Get the base color texture and the uv attribute.
+string base_color = chs("base_color");
+string uv_attr = chs("point_UV");
+vector uv = point(0, uv_attr, @ptnum);
+
+// Compute color map using uvs and texture file.
+vector4 color = colormap(base_color, uv);
+
+// Export color and Alpha.
+v@Cd = vector(color);
+f@Alpha = color.a;
+```
