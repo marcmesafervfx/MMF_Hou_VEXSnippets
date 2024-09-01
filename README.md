@@ -2166,3 +2166,38 @@ if(find(prims, @primnum)>=0){
     } 
 }
 ```
+
+## Point Cloud To Array
+*Reference Code*: 49343432
+
+**pc_array**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a geometry to capture from.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Point cloud to attribute array, """;
+
+// Create point cloud based on distance and maximum points
+int pc = pcopen(1, 'P', v@P, ch('distance'), chi('maxpts'));
+
+// Initialize pts array and iterate for each point in the point cloud.
+int pts[];
+while (pciterate(pc) > 0){
+    
+    // Initialize current point number.
+    int currentpt;
+    
+    // Import current point number.
+    pcimport(pc, 'point.number', currentpt);
+    
+    // Append to point array.
+    append(pts, currentpt);
+}
+
+// Export points array.
+i[]@nearpts = pts;
+```
