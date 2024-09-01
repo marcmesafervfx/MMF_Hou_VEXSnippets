@@ -2258,3 +2258,38 @@ vector4 color = colormap(base_color, uv);
 v@Cd = vector(color);
 f@Alpha = color.a;
 ```
+
+## Remove Attributes
+*Reference Code*: 87389390
+> [!NOTE]
+> This example is created to show how to remove point attributes. You can remove other attributes from other geometry types by using the corresponding geometry type functions.
+
+**remove_attr**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove point attributes. """;
+
+// Get attributes to remove and separate them.
+string attrs = chs("attributes");
+string attr_list[] = split(attrs, " ");
+
+// Iterate for each attribute in the list.
+foreach(string attr; attr_list){
+    
+    // If the attribute exists, remove it.
+    if(haspointattrib(0, attr)){
+        removepointattrib(0, attr);
+    }
+    
+    // If the attribute doesn't exist, raise a warning.
+    else{
+        warning("%s attribute doesn't exist or it is not valid.", attr);
+    }
+}
+```
