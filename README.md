@@ -2231,7 +2231,7 @@ else if(geo_type=="PackedGeometry"){
 ```
 
 ## Attribute From Map
-*Reference Code*: 43837465
+*Reference Code*: 11700711
 > [!TIP]
 > You can use a grayscale maps to set up floating values.
 
