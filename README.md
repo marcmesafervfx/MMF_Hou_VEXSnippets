@@ -2390,3 +2390,28 @@ vector zaxis = normalize((cross(yaxis, xaxis)));
 v@dir = (type)? zaxis:xaxis;
 
 ```
+
+## Normalize Point Positions
+*Reference Code*: 6378648
+
+**norm_pt_pos**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Normalize position values. """;
+
+// Get bouding box max and min sizes.
+vector max_bbox = getbbox_max(0);
+vector min_bbox = getbbox_min(0);
+
+// Normalize position values.
+vector norm_pos = fit(v@P, min_bbox, max_bbox, 0, 1);
+
+// Export normalized positions in the color attribute.
+v@Cd = norm_pos;
+```
