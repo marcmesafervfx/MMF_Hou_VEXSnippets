@@ -2358,3 +2358,35 @@ foreach(string grp; prim_grps) (nprimitivesgroup(0, grp)==0)? removeprimgroup(0,
 string vxt_grps[] = detailintrinsic(0, "vertexgroups");
 foreach(string grp; vxt_grps) (nverticesgroup(0, grp)==0)? removevertexgroup(0, grp): 1;
 ```
+
+## Object Flow Vector
+*Reference Code*: 29015830
+> [!NOTE]
+> Note that you have a flow_vector_type parameter that allows you to choose between two different flow vectors.
+
+**flow_vector**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute flow vectors from object. """;
+
+// Get type of flow vector.
+int type = chi("flow_vector_type");
+
+// Initialize up vector and y axis.
+vector up = {0,1,0};
+vector yaxis = v@N;
+
+// Compute xaxis and zaxis using cross product.
+vector xaxis = normalize((cross(yaxis, up)));
+vector zaxis = normalize((cross(yaxis, xaxis)));
+
+// Export directional vector.
+v@dir = (type)? zaxis:xaxis;
+
+```
