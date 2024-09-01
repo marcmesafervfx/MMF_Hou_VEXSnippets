@@ -2201,3 +2201,31 @@ while (pciterate(pc) > 0){
 // Export points array.
 i[]@nearpts = pts;
 ```
+
+## Error And Warning
+*Reference Code*: 21550162
+
+**err_warning**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Error and warning based on condition. """;
+
+// Get geometry type.
+string geo_type = primintrinsic(0, "typename", @primnum);
+
+// If volume or VDB, error.
+if(geo_type=="Volume" || geo_type=="VDB"){
+    error("The type %s is not valid. Please use a different type of geometry.", geo_type);
+}
+
+// If PackedGeometry, warning.
+else if(geo_type=="PackedGeometry"){
+    warning("The type %s is valid, but might output unexpected results.", geo_type);
+}
+```
