@@ -37,7 +37,7 @@ v@tan = tan;
 ## Blur Point Positions
 *Reference Code*: 26692791
 > [!TIP]
-> Create a for-loop and loop the attribute wrangle with feedback.
+> Create a for-loop and iterate the attribute wrangle with feedback.
 
 **blur_position**
 > [!IMPORTANT]
