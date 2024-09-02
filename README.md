@@ -48,7 +48,7 @@ v@tan = tan;
 > - **Input 3:** no-connected.
 
 ``` c
-""" Blue based on nearpoints. """;
+""" Blur based on nearpoints. """;
 
 // Get maximum distance and maximum points.
 float maxdist = chf("maxdist");
