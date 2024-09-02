@@ -2359,8 +2359,8 @@ string vxt_grps[] = detailintrinsic(0, "vertexgroups");
 foreach(string grp; vxt_grps) (nverticesgroup(0, grp)==0)? removevertexgroup(0, grp): 1;
 ```
 
-## Object Flow Vector
-*Reference Code*: 29015830
+## Flow Vector
+*Reference Code*: 66138567
 > [!NOTE]
 > Note that you have a flow_vector_type parameter that allows you to choose between two different flow vectors.
 
@@ -2615,4 +2615,38 @@ v@Cd += (sin(v@P.z*freq)<0)?0:1;
 
 // Check if there's coincidence and multiply by 0.
 v@Cd *= (v@Cd.r==2)?0:1;
+```
+
+## Flow Vector Reference Point
+*Reference Code*: 75398837
+
+**flow_vector**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry with v@N attribute.
+> - **Input 1:** connected to a point reference.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Flow vector using a reference point position. """;
+
+// Initialize up vector.
+vector up = {0,1,0};
+
+// Get point reference position.
+vector pos = point(1, "P", 0);
+
+// Normalize direction vector.
+vector dir = normalize(v@P-pos);
+
+// Compute cross vector.
+vector cross = normalize(cross(dir, v@N));
+
+// Compute flow vector.
+vector flow = normalize(cross(v@N, cross));
+
+// Export dir attribute. 
+v@dir = flow;
+
 ```
