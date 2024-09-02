@@ -2702,4 +2702,52 @@ if(keep_pt==@ptnum){
 }
 ```
 
+## Fix Primitive Overlap
+*Reference Code*: 38465172
 
+**fix_overlaps**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Fix overlaps. """;
+
+// Get prim points.
+int prim_pts[] = primpoints(0, @primnum);
+
+// Initialize primitive list.
+int prim_lst[];
+
+// Iterate for each point in the current primitive.
+foreach(int pt; prim_pts){
+    
+    // Get primitives of the current point.
+    int pt_prims[] = pointprims(0, pt);
+    
+    // Iterate for each point primitives.
+    foreach(int prim; pt_prims){
+        
+        // Get primitive position.
+        vector prim_pos = prim(0, "P", prim);
+        
+        // Get distance between current pos and prim pos.
+        float dist = distance(v@P, prim_pos);
+        
+        // Append if distance is ok and is not in the prim list.
+        if(dist<1e-5 && find(prim_lst, prim)<0) append(prim_lst, prim);
+    }
+}
+
+// Sort prim list and remove last index.
+prim_lst = sort(prim_lst);
+removeindex(prim_lst, -1);
+
+// Iterate for each of the overlap faces and remove them.
+foreach(int prim; prim_lst){
+    removeprim(0, prim, 1);
+}
+```
