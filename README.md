@@ -2646,7 +2646,60 @@ vector cross = normalize(cross(dir, v@N));
 // Compute flow vector.
 vector flow = normalize(cross(v@N, cross));
 
-// Export dir attribute. 
-v@dir = flow;
+// Compute dot product between direction and normal.
+float dot = dot(dir, v@N);
 
+// Export dir attribute. 
+v@dir = lerp(flow, dir, dot);
 ```
+
+## Fuse Points
+*Reference Code*: 28848869
+
+**fuse**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Fuse coincident points. """;
+
+// Get points in the same position.
+int nearpts[] = nearpoints(0, v@P, 1e-5, int(1e09));
+
+// Store last index.
+int keep_pt = nearpts[-1];
+
+// Remove last index
+removeindex(nearpts, -1);
+
+// Check if current point is the keep point. 
+if(keep_pt==@ptnum){
+    
+    // Iterate for each coincident points.
+    foreach(int pt; nearpts){
+        
+        // Get vertices for current point.
+        int vtxs[] = pointvertices(0, pt);
+        
+        // If the list contain vertices, run loop.
+        if(len(vtxs)!=0){
+            
+            // Iterate for each vertex.
+            foreach(int vtx; vtxs){
+                
+                // Set vertex for points.
+                setvertexpoint(0, -1, vtx, @ptnum);
+            }
+        }
+        
+        // Remove point.
+        removepoint(0, pt);
+    }
+}
+```
+
+
