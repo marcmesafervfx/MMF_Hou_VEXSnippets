@@ -2587,3 +2587,32 @@ for(int i=0; i<npts; i++){
     hedge = hedge_next(0, hedge);
 }
 ```
+
+## Degrees To Dot Value
+*Reference Code*: 59668810
+> [!NOTE]
+> This code is created to show how you can convert degrees into dot values, not to use it in any specific geometry or context example.
+
+**degree_to_dot**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create checker using ternary conditions. """;
+
+// Set the frequency for the scene.
+float freq = chf("frequency");
+
+// Compute vertical sections.
+v@Cd = (sin(v@P.x*freq)<0)?0:1;
+
+// Add horizontal sections.
+v@Cd += (sin(v@P.z*freq)<0)?0:1;
+
+// Check if there's coincidence and multiply by 0.
+v@Cd *= (v@Cd.r==2)?0:1;
+```
