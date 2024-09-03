@@ -2852,3 +2852,30 @@ float ramp = fit01(rand, -1, 1);
 // Export -1 to 1 values.
 f@rand_vale = ramp;
 ```
+
+## Camera Transformations
+*Reference Code*: 51915380
+> [!NOTE]
+> Note that this example is created in Detail, but it can be implemented in other geometry types.
+
+**cam_transform**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get camera transformations. """;
+
+// Get camera to extract transformations.
+string cam = chs("camera");
+
+// Extract transformation from operator.
+matrix cam_xform = optransform(cam);
+
+// Export translate and rotation quaternion.
+v@translate = cracktransform(0,0,0,{0,0,0},cam_xform);
+p@rotate = eulertoquaternion(cracktransform(0,0,1,{0,0,0},cam_xform), 0);
+```
