@@ -2908,3 +2908,93 @@ vector dir = {0,0,-1}*matrix3(cam_xform);
 // Export camera direction. 
 v@cam_dir = dir;
 ```
+
+## Push Point Over Ground
+*Reference Code*: 56272568
+
+**push_pt**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Push point over the surface. """; 
+
+// Get maximum and minimum position values.
+vector max_bbox = getbbox_max(0);
+vector min_bbox = getbbox_min(0);
+
+if(sign(min_bbox.y)==-1){
+    // Compute normalize height.
+    float norm_height = fit(v@P.y, min_bbox.y, max_bbox.y, 1, 0);
+    
+    // Compute offset based on normalized height and add it to current position.
+    float pos = v@P.y+abs(min_bbox.y)*norm_height;
+    
+    // Remap normalized height.
+    norm_height = chramp("push_remap", norm_height);
+    
+    // Interpolate between current yaxis and new yaxis position using remapped norm_height.
+    float final_ypos = lerp(v@P.y, pos, norm_height);
+    
+    // Clamp negative values.
+    v@P.y=clamp(final_ypos, 0, max_bbox.y);
+}
+```
+
+## Create Spiral
+*Reference Code*: 53096382
+> [!NOTE]
+> Note that the snippet creates the spiral with just a few parameters to modify because it was intended to create a basic spiral. You can add more in the code if you require them.
+
+**create_spiral**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create spring. """;
+
+// Get number of points, length, coils and radius for the spring.
+int points = chi("points");
+int coil = clamp(chi("coils"), 1, int(1e09));
+vector2 radius = chu("radius");
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each points.
+for(int i=0; i<points; i++){
+    
+    // Normalize point value.
+    float norm_w = 1.0/(points-1);
+    
+    // Get current iteration value.
+    float current_w = norm_w*i;
+    
+    // Compute expand factor for each coil.
+    float expand_factor = $PI*2*current_w*coil;
+    
+    // Expand in x and z axes based on expand factor, coil and radius.
+    float xaxis = sin(expand_factor)*expand_factor/coil;
+    xaxis*=radius.x;
+    float zaxis = cos(expand_factor)*expand_factor/coil;
+    zaxis*=radius.y;
+    
+    // Create position value.
+    vector pos = set(xaxis, 0, zaxis);
+    
+    // Create point and append to point array list. 
+    int pt = addpoint(0, pos);
+    append(pts, pt);
+}
+
+// Create poly line using point array.
+addprim(0, "polyline", pts);
+```
