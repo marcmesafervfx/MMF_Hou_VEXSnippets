@@ -2827,3 +2827,28 @@ for(int i=0; i<points; i++){
 addprim(0, "polyline", pts);
 ```
 
+## From 01 to -11
+*Reference Code*: 25761785
+> [!NOTE]
+> Note that this example was created to show how you can remap values from 0 to 1 to -1 to 1, not for some geometry or attribute modification in particular. You can use the same method to remap different values.
+ 
+**remap_values**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remap random 01 values to -11 values. """;
+
+// Create random value between 0 and 1.
+float rand = rand(@ptnum);
+
+// Fit 0 to 1 values to -1 to 1 values.
+float ramp = fit01(rand, -1, 1);
+
+// Export -1 to 1 values.
+f@rand_vale = ramp;
+```
