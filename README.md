@@ -2751,3 +2751,27 @@ foreach(int prim; prim_lst){
     removeprim(0, prim, 1);
 }
 ```
+
+## Name Pattern To Group
+*Reference Code*: 54775006
+> [!NOTE]
+> Note that in this example we check the pattern using the name attribute. You can use a different string attribute and add some more complexity to the conditional to make it more useful.
+
+**name_to_grp**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry with s@name attribute.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert name attribute pattern into group. """;
+
+// Get group name and pattern.
+string grp_name = chs("group_name");
+string pattern = chs("pattern");
+
+// Check if name matches the pattern and set the group
+if(match(pattern, s@name)) setpointgroup(0, grp_name, @ptnum, 1);
+```
