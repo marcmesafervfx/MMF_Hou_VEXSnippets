@@ -2878,6 +2878,7 @@ matrix cam_xform = optransform(cam);
 // Export translate and rotation quaternion.
 v@translate = cracktransform(0,0,0,{0,0,0},cam_xform);
 p@rotate = eulertoquaternion(cracktransform(0,0,1,{0,0,0},cam_xform), 0);
+4@xform = cam_xform;
 ```
 
 ## Camera Direction
