@@ -3095,3 +3095,31 @@ v@P*=offset_xform;
 v@N*=matrix3(offset_xform);
 ```
 
+## Flatten Object Camera Perspective
+*Reference Code*: 89071933
+
+**flat_camera**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Flatten objects based on camera perspective. """;
+
+// Get depth and camera.
+float depth = chf("depth");
+string cam = chs("camera");
+
+// Transform to NDC and flatten points.
+vector ndc_flatten = toNDC(cam, v@P);
+ndc_flatten.z=-depth;
+
+// Transform back to world position.
+vector flatten = fromNDC(cam, ndc_flatten);
+
+// Export position.
+v@P = flatten;
+```
