@@ -2998,3 +2998,37 @@ for(int i=0; i<points; i++){
 // Create poly line using point array.
 addprim(0, "polyline", pts);
 ```
+
+## Smooth Geometry
+*Reference Code*: 99265810
+> [!TIP]
+> Add the snippet in a for loop and feedback each iteration to smooth the object multiple times. We are able to layer smooth interations with just one wrangle, but it takes too long to compute.
+
+**smooth_geo**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Smooth geometry. """;
+
+// Get point neighbours.
+int neis[] = neighbours(0, @ptnum);
+
+// Initialize median position with current position value.
+vector med_pos[] = array(v@P);
+
+// Iterate for each neighbour.
+foreach(int n; neis){
+
+    // Get neighbour position and append to median list.
+    vector pos = point(0, "P", n);
+    append(med_pos, pos);
+}
+
+// Export position attribute by dividing all positions by number of points.
+v@P = sum(med_pos) / (len(neis)+1);
+```
