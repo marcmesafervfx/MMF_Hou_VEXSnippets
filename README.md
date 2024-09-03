@@ -2879,3 +2879,32 @@ matrix cam_xform = optransform(cam);
 v@translate = cracktransform(0,0,0,{0,0,0},cam_xform);
 p@rotate = eulertoquaternion(cracktransform(0,0,1,{0,0,0},cam_xform), 0);
 ```
+
+## Camera Direction
+*Reference Code*: 2930099
+> [!NOTE]
+> Note that this example is created in Detail, but it can be implemented in other geometry types.
+
+**cam_dir**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get camera direction. """;
+
+// Get camera to extract transformations.
+string cam = chs("camera");
+
+// Extract transformation from operator.
+matrix cam_xform = optransform(cam);
+
+// Transform static direction with rotation matrix.
+vector dir = {0,0,-1}*matrix3(cam_xform);
+
+// Export camera direction. 
+v@cam_dir = dir;
+```
