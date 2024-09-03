@@ -3032,3 +3032,38 @@ foreach(int n; neis){
 // Export position attribute by dividing all positions by number of points.
 v@P = sum(med_pos) / (len(neis)+1);
 ```
+
+## Cull Geometry Camera View
+*Reference Code*: 4197627
+> [!NOTE]
+> This example is created to show how to cull primitives based on camera view. You can cull other types of geometry using the same method and the corresponding functions.
+
+**cull_geo**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Cull based on camera view. """;
+
+// Get culling camera.
+string cam = chs("camera");
+
+// Initialize expansion values (x,y).
+float expand_top = chf("expand_top");
+float expand_bottom = chf("expand_bottom");
+float expand_right = chf("expand_right");
+float expand_left = chf("expand_left");
+
+// Convert coordinates to NDC.
+vector pos = toNDC(cam, v@P);
+
+// Check if something is outside the camera and remove it.
+if(pos.y>(1+expand_top)) removeprim(0, @primnum, 1);
+if(pos.y<(-expand_bottom)) removeprim(0, @primnum, 1);
+if(pos.x<(expand_left)) removeprim(0, @primnum, 1);
+if(pos.x>(1+expand_right)) removeprim(0, @primnum, 1);
+```
