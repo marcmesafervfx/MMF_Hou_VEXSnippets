@@ -3123,3 +3123,28 @@ vector flatten = fromNDC(cam, ndc_flatten);
 // Export position.
 v@P = flatten;
 ```
+
+## Run At Frame
+*Reference Code*: 87482557
+> [!NOTE]
+> This code is created to show how you can set up a condition using the @Frame. You can use it in different contexts, types of geometry and in more complex conditionals.
+
+**run_at_frame**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Run code at specific frame. """;
+
+// If frame is equal to 10, run the code.
+if(@Frame==10){
+    
+    // Print formatted string.
+    printf("This condition runs at frame %d.", @Frame);
+}
+```
+
