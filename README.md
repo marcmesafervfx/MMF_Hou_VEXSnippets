@@ -3399,3 +3399,30 @@ int var = int(fit01(rand(@ptnum), 0, count));
 // Set variant attribute.
 i@variant = var;
 ```
+
+## Normalize Density Attribute
+*Reference Code*: 86444637
+> [!NOTE]
+> Note that this example shows how to normalize the density value, but you can follow the same structure to normalize every field. Just remember to use the corresponding primitive number value.
+ 
+**norm_density**
+> [!IMPORTANT]
+> **Mode:** Volume.
+> - **Input 0:** connected to a density volume.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Normalize density value. """;
+
+// Get maximum and minimum volume value.
+float max_den = primintrinsic(0, "volumemaxvalue", 0);
+float min_den = primintrinsic(0, "volumeminvalue", 0);
+
+// Fit values and normalize them.
+float den = fit(f@density, min_den, max_den, 0, 1);
+
+// Export density attribute.
+f@density = den;
+```
