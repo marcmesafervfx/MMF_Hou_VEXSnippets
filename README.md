@@ -3171,3 +3171,32 @@ printf("This is an example of how you would print a string value: %s\n\n", "Hell
 printf("This is an example of how you would print a integer value: %d\n\n", 1);
 printf("This is an example of how you would print a %% sign: %%\n\n", 1);
 ```
+
+## Normalized Point Density
+*Reference Code*: 35108816
+
+**pt_density**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute normalized point density. """;
+
+// Get maximum points and radius to compute density.
+int maxpts = chi('max_points');
+float rad = chf('radius');
+
+// Get nearpoints from first input and remove current value.
+int pts[] = nearpoints(0, v@P, rad, maxpts);
+removevalue(pts, @ptnum);
+
+// Compute normalized density value based on maxpoints.
+float density = len(pts)/float(maxpts-1);
+
+// Export density attribute.
+f@density = density;
+```
