@@ -3375,3 +3375,27 @@ vector def_pos = new_pos*wave_m;
 // Export position attribute.
 v@P = def_pos*xform;
 ```
+
+## Variant Attribute
+*Reference Code*: 43837465
+
+**var_attr**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to points.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create random integer values. """;
+
+// Get amount of integer values.
+int count = chi("count");
+
+// Fit random value using count.
+int var = int(fit01(rand(@ptnum), 0, count));
+
+// Set variant attribute.
+i@variant = var;
+```
