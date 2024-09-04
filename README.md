@@ -3426,3 +3426,42 @@ float den = fit(f@density, min_den, max_den, 0, 1);
 // Export density attribute.
 f@density = den;
 ```
+
+## Blur Attributes
+*Reference Code*: 55835080
+
+**blur_attrib**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Blur attributes. """;
+
+// Get attribute to be blurred.
+string attr = chs("attribute");
+
+// Get attribute size.
+int size = attribsize(0, "point", attr);
+
+// Get maximum points and clamp value by 1.
+int max_pts = clamp(chi("max_points"), 1, int(1e09));
+
+// Create point cloud.
+int handle = pcopen(0, "P", v@P, 1e09, max_pts);
+
+// Check if value is float and export it.
+if(size==1){
+    float attr_val = pcfilter(handle, attr);
+    setpointattrib(0, attr, @ptnum, attr_val);
+}
+// Check if value is vector and export it.
+if(size==3){
+    vector attr_val = pcfilter(handle, attr);
+    setpointattrib(0, attr, @ptnum, attr_val);
+}
+```
+
