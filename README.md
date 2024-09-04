@@ -3329,3 +3329,49 @@ foreach(int p; pts){
     addprim(0, "poly", pt3, pt2, pt1, pt0);
 }
 ```
+
+## Wave Deformer
+*Reference Code*: 81930198
+
+**wave_deformer**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create a wave deform. """;
+
+vector wave_pos = chv("wave_position");
+vector wave_rot = chv("wave_rotation");
+float distance = -chf("distance");
+float angle = radians(chf("angle"));
+float wave_line = chf("wave_line");
+
+// Extract transforms from target values.
+matrix xform = maketransform(0,0, wave_pos, wave_rot);
+vector new_pos = v@P*invert(xform);
+
+// Create expansion value based on
+vector expand = new_pos;
+expand.z*=wave_line;
+
+// Comput exponential value of the distance between expansion and input distance.
+float expand_amount = length(expand);
+float effect_falloff = exp(expand_amount/distance);
+
+// Multiply angles by the falloff effect.
+float mult_angle =  effect_falloff*angle;
+
+// Create wave transformation matrix.
+matrix wave_m = ident();
+rotate(wave_m, mult_angle, 4);
+
+// Create new position.
+vector def_pos = new_pos*wave_m;
+
+// Export position attribute.
+v@P = def_pos*xform;
+```
