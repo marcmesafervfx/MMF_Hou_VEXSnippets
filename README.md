@@ -3346,7 +3346,7 @@ foreach(int p; pts){
 
 vector wave_pos = chv("wave_position");
 vector wave_rot = chv("wave_rotation");
-float distance = -chf("distance");
+float distance = chf("distance");
 float angle = radians(chf("angle"));
 float wave_line = chf("wave_line");
 
@@ -3360,7 +3360,7 @@ expand.z*=wave_line;
 
 // Comput exponential value of the distance between expansion and input distance.
 float expand_amount = length(expand);
-float effect_falloff = exp(expand_amount/distance);
+float effect_falloff = exp(expand_amount/distance*-1);
 
 // Multiply angles by the falloff effect.
 float mult_angle =  effect_falloff*angle;
