@@ -3241,7 +3241,7 @@ foreach(int pt; prim_pts){
 addprim(0, "poly", pts);
 removeprim(0, @primnum, 1);
 ```
-**inset_points**
+**inset_prims**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to unique_points.
