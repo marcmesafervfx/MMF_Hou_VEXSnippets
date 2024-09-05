@@ -3616,6 +3616,8 @@ v@Cd = pump;
 
 ## Edge Rotation Based
 *Reference Code*: 28567025
+> [!TIP]
+> You can add some additional logic to set up the edge that should be rotated. In this example, the rotation is done using the first hald-edge.
 
 **rot_edge**
 > [!IMPORTANT]
