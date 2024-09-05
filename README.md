@@ -3053,11 +3053,13 @@ v@P = sum(med_pos) / (len(neis)+1);
 // Get culling camera.
 string cam = chs("camera");
 
-// Initialize expansion values (x,y).
+// Initialize expansion values (x,y) and depth values.
 float expand_top = chf("expand_top");
 float expand_bottom = chf("expand_bottom");
 float expand_right = chf("expand_right");
 float expand_left = chf("expand_left");
+float far = chf("far_clip");
+float near = chf("near_clip");
 
 // Convert coordinates to NDC.
 vector pos = toNDC(cam, v@P);
@@ -3065,8 +3067,10 @@ vector pos = toNDC(cam, v@P);
 // Check if something is outside the camera and remove it.
 if(pos.y>(1+expand_top)) removeprim(0, @primnum, 1);
 if(pos.y<(-expand_bottom)) removeprim(0, @primnum, 1);
-if(pos.x<(expand_left)) removeprim(0, @primnum, 1);
+if(pos.x<(-expand_left)) removeprim(0, @primnum, 1);
 if(pos.x>(1+expand_right)) removeprim(0, @primnum, 1);
+if(pos.z>(-near)) removeprim(0, @primnum, 1);
+if(pos.z<(-far)) removeprim(0, @primnum, 1);
 ```
 
 ## Constraint To Camera
