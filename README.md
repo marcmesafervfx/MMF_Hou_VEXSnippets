@@ -3586,3 +3586,30 @@ vector color = primuv(1, "Cd", prim, uvw);
 // Export color attribute.
 v@Cd = color;
 ```
+
+## Pump Motion Attribute
+*Reference Code*: 88325985
+
+**pump**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create pump values. """;
+
+// Get ratio for the pump.
+float ratio = chf("ratio");
+
+// Compute pump using ratio and normalize it.
+float pump = (f@Frame%ratio)/ratio;
+
+// Compute pump spline.
+pump = spline(array("linear"), pump, array(0, 1, 0, 1), array(0, 0.75, 0.9, 1));
+
+// Export color pump attribute.
+v@Cd = pump;
+```
