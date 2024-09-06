@@ -3848,3 +3848,39 @@ foreach(int pt; pts){
     addprim(0, "poly", pt, s_pt, t_pt, f_pt);
 }
 ```
+
+## Infrared From Float Attribute
+*Reference Code*: 56068393
+
+**infrared**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create color attribute to visualize values. """;
+
+// Get attribute name, type and size.
+string attr = chs("attribute");
+int type = attribtype(0, "point", attr);
+int size = attribsize(0, "point", attr);
+
+// The attribute must be float.
+if(type==1 && size==1){
+
+    // Fit attribute values based on min and max values.
+    float att_val = fit(point(0, attr, @ptnum), chf("minimum_value"), chf("maximum_value"), 0, 1);
+    
+    // Get infrared values.
+    vector values[] = array({0.2,0,1}, {0,0.85,1}, {0,1,0.1}, {0.95,1,0}, {1,0,0});
+    
+    // Compute spline with values and sample position.
+    vector color = spline("linear", att_val, values);
+    
+    // Export color attribute.
+    v@Cd = color;
+}
+```
