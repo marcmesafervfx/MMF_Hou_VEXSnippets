@@ -3779,3 +3779,72 @@ foreach(int pt; pts){
     }
 }
 ```
+
+## Create Torus
+*Reference Code*: 7003422
+
+**create_torus**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create torus. """;
+
+// Get rows, columns, width and radius.
+int rows = chi("rows");
+int cols = chi("columns");
+vector width = chv("width")*2;
+vector radius = chv("radius")*2;
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each row.
+for(int r=0; r<rows;r++){
+    
+    // Compute height angle.
+    float h = r*($PI*2/(rows));
+    
+    // Iterate for each column.
+    for(int c=0; c<cols; c++){
+        
+        // Compute width angle.
+        float w = c*($PI*2/(cols));
+        
+        // Compute position point.
+        vector pos = set(sin(h)*cos(w), cos(h), sin(h)*sin(w))*width;
+        pos+=set(cos(w), 0, sin(w))*radius;
+        
+        // Create point and append to point array.
+        int p = addpoint(0, pos);
+        append(pts, p);
+    }
+}
+
+// Get last column point num.
+int last_row[] = pts[-cols:];
+
+// Iterate for each created points.
+foreach(int pt; pts){
+    
+    // Get second, third and fourth point.
+    int s_pt = pt+cols;
+    int t_pt = ((s_pt+1)%cols==0)? s_pt+1-cols:s_pt+1;
+    int f_pt = t_pt-cols;
+    
+    // Update second, third and fourth point if the current point is inside of the last row.
+    if(find(last_row, pt)>=0){
+        
+        s_pt = pt-last_row[0];
+        t_pt = (pt==last_row[-1])? 0:s_pt+1;
+        f_pt = last_row[0]+t_pt;
+    }
+    
+    // Create primitive using all the points.
+    addprim(0, "poly", pt, s_pt, t_pt, f_pt);
+}
+```
