@@ -3920,3 +3920,32 @@ vector color = fit(dot, chf("min_color"), chf("max_color"), 1, 0);
 // Export color attribute.
 v@Cd = color;
 ```
+
+## Sprite Orientation
+*Reference Code*: 29873726
+> [!TIP]
+> Use an attribute copy plugging a grid with a texture map. The code creates the orientation to follow the camera view.
+
+**sprite_orient**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a scattered points.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute sprite orientation for copy to points. """;
+
+// Get camera to extract transformations.
+string cam = chs("camera");
+
+// Extract transformation from operator.
+matrix cam_xform = optransform(cam);
+
+// Convert matrix to matrix3 and then create the quaternion.
+vector4 orient = quaternion(matrix3(cam_xform));
+
+// Export orient attribute.
+p@orient = orient;
+```
