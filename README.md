@@ -3897,7 +3897,7 @@ if(type==1 && size==1){
 > - **Input 3:** no-connected.
 
 ``` c
-""" Get camera direction. """;
+""" Compute fresnel from camera. """;
 
 // Get camera to extract transformations.
 string cam = chs("camera");
@@ -3905,7 +3905,7 @@ string cam = chs("camera");
 // Extract transformation from operator.
 matrix cam_xform = optransform(cam);
 
-// Transform static direction with rotation matrix.
+// Get positon from the matrix.
 vector pos = cracktransform(0,0,0,0,cam_xform);
 
 // Get direction from current point to camera.
