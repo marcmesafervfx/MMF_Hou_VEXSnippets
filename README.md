@@ -3702,7 +3702,7 @@ foreach(int pt; pts){
 // Get rows, columns and radius.
 int rows = chi("rows");
 int cols = chi("columns");
-vector radius = chv("radius");
+vector radius = chv("radius")*2;
 
 // Initialize point array.
 int pts[];
