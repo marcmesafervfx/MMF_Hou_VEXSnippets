@@ -4027,6 +4027,8 @@ if(deformed_pos.x>0 && bend_angle!=0){
 
 ## Ambient Occlusion Attribute
 *Reference Code*: 61836333
+> [!TIP]
+> You can use the sample_hemisphere instead of the custom function. In this case, the code shows a different way to create a hemishpere.
 
 **occlusion**
 > [!IMPORTANT]
