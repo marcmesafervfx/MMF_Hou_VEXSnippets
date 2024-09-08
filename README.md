@@ -4024,3 +4024,82 @@ if(deformed_pos.x>0 && bend_angle!=0){
     v@P = final_pos*invert(init_rot)+origin;
 }
 ```
+
+## Ambient Occlusion Attribute
+*Reference Code*: 61836333
+
+**occlusion**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute ambient occlusion. """; 
+
+// Create function to random vector in a hemisphere. You can use sample_hemisphere instead.
+function vector hemisphere(vector norm; vector2 seed){
+    
+    // Get up vector and compute zaxis.
+    vector up = normalize({1e-9,1,0});
+    vector zaxis = normalize(cross(norm, up));
+    
+    // Create matrix3 with normal and computed zaxis.
+    matrix3 rot = maketransform(zaxis, norm);
+    
+    // Rotate matrix using yaxis between 0 and 360.
+    rotate(rot, radians(360*seed.x), norm);
+    
+    // Recompute zaxis to make it local.
+    zaxis*=-rot;
+    
+    // Rotate matrix3 using the zaxis between -90 and 90.
+    rotate(rot, radians(90*fit01(seed.y, -1, 1)), zaxis);
+    
+    // Get direction vector from yaxis of the matrix.
+    vector dir = normalize(set(getcomp(rot, 1, 0),
+                     getcomp(rot, 1, 1),
+                     getcomp(rot, 1, 2)));
+    
+    // Return direction vector.                 
+    return dir;
+}
+
+// Get iteration, radius, source min and source max values.
+int iter = chi("iterations"); 
+float rad = chf("radius"); 
+float src_min = chf("source_min");
+float src_max = chf("source_max");
+
+// Peak position to avoid intersection with itself.
+vector peak_pos = v@P+v@N*1e-6;
+
+// Initialize occlusion values.
+float occ=0.0;
+
+// Iterate for each iteration value.
+for(int i = 0; i < iter; i++){
+    
+    // Compute seed value using interation value.
+    vector2 seed = rand(@ptnum + i);
+    
+    // Get direction vector.
+    vector dir = hemisphere(v@N, seed);
+    
+    // Initialize position and uvw values.
+    vector inter_pos, uvw;
+    
+    // Get primitive intersection values and overwrite intersect position and uvw.
+    float prim = intersect(0,peak_pos, dir*rad, inter_pos, uvw);
+    
+    // If the primitive intersects, add value to the occlusion based on radius distance.
+    if(prim != -1) occ += fit(distance(inter_pos, v@P), 0, rad, 1, 0);
+
+}
+
+// Export color ambient occlusion dividing the occlusion value by the iterations.
+// Then, fit values to contrast the color attribute.
+v@Cd = fit(1-occ/iter, src_min, src_max, 0, 1);
+```
