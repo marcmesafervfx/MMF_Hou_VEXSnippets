@@ -4044,29 +4044,19 @@ if(deformed_pos.x>0 && bend_angle!=0){
 // Create function to random vector in a hemisphere. You can use sample_hemisphere instead.
 function vector hemisphere(vector norm; vector2 seed){
     
-    // Get up vector and compute zaxis.
-    vector up = normalize({1e-9,1,0});
-    vector zaxis = normalize(cross(norm, up));
+    // Initialize up vector
+    vector up = {0,1,0};
     
-    // Create matrix3 with normal and computed zaxis.
-    matrix3 rot = maketransform(zaxis, norm);
+    // Get normal offset matrix.
+    matrix3 offset = dihedral(up, norm);
     
-    // Rotate matrix using yaxis between 0 and 360.
-    rotate(rot, radians(360*seed.x), norm);
-    
-    // Recompute zaxis to make it local.
-    zaxis*=-rot;
-    
-    // Rotate matrix3 using the zaxis between -90 and 90.
-    rotate(rot, radians(90*fit01(seed.y, -1, 1)), zaxis);
-    
-    // Get direction vector from yaxis of the matrix.
-    vector dir = normalize(set(getcomp(rot, 1, 0),
-                     getcomp(rot, 1, 1),
-                     getcomp(rot, 1, 2)));
+    // Compute direction using seed values.
+    vector dir = normalize(set(fit01(rand(seed.x), -1, 1),
+                               rand(seed.y),
+                               fit01(rand(seed.x+123), -1, 1)));
     
     // Return direction vector.                 
-    return dir;
+    return dir*offset;
 }
 
 // Get iteration, radius, source min and source max values.
