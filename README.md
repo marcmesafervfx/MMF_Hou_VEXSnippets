@@ -4095,3 +4095,43 @@ for(int i = 0; i < iter; i++){
 // Then, fit values to contrast the color attribute.
 v@Cd = fit(1-occ/iter, src_min, src_max, 0, 1);
 ```
+
+## Cone Vector From Position
+*Reference Code*: 14266560
+
+**cone_vector**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry with v@N attribute.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create cone vector based on reference center. """;
+
+// Get center, cone_direction and max angle. 
+vector cent = chv("center");
+vector yaxis = normalize(chv("cone_direction"));
+float max_angle = chf("max_angle");
+
+// Compute direction from current point to center.
+vector dir = normalize(v@P-cent);
+
+// Compute zaxis by crossing dir and cone direction.
+vector zaxis = normalize(cross(dir, yaxis));
+
+// Create matrix using direction and yaxis.
+matrix3 rot = maketransform(zaxis, yaxis);
+
+// Rotate matrix by maximum angle.
+rotate(rot, radians(-max_angle), zaxis);
+
+// Subtract yaxis.
+vector final_dir = set(getcomp(rot, 1, 0),
+                       getcomp(rot, 1, 1),
+                       getcomp(rot, 1, 2));
+
+// Export direction vector.
+v@dir = final_dir;
+```
