@@ -30,6 +30,9 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Create Box`](#create-box)
 * [`Create Bound`](#create-bound)
+* [`Create Circle`](#create-circle)
+* [`Create Grid`](#create-grid)
+* [`Create Hanging Catenary Wire`](#create-hanging-catenary-wire)
 
 </details>
 
