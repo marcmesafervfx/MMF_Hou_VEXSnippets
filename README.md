@@ -6,6 +6,18 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 # Index
 <details>
+    <summary><h2>Array Management</h2></summary>
+</details>
+<details>
+    <summary><h2>Attribute Management</h2></summary>
+</details>
+<details>
+    <summary><h2>Camera Based Management</h2></summary>
+</details>
+<details>
+    <summary><h2>Conversion</h2></summary>
+</details>
+<details>
     <summary><h2>Geometry Creation</h2></summary>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br>
@@ -20,26 +32,24 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-tube"> Create Tube </a>
 </details>
 <details>
-    <summary><h3>Geometry Reporters</h3></summary>
+    <summary><h2>Geometry Reporters</h2></summary>
 </details>
 <details>
-    <summary><h3>Geometry Reporters</h3></summary>
+    <summary><h2>Group Management</h2></summary>
 </details>
 <details>
-    <summary><h3>Geometry Reporters</h3></summary>
+    <summary><h2>Lens Shader</h2></summary>
 </details>
 <details>
-    <summary><h3>Geometry Reporters</h3></summary>
+    <summary><h2>Transformation Management</h2></summary>
 </details>
 <details>
-    <summary><h3>Geometry Reporters</h3></summary>
+    <summary><h2>Vectorial Management</h2></summary>
 </details>
 <details>
-    <summary><h3>Geometry Reporters</h3></summary>
+    <summary><h2>Water Deformers</h2></summary>
 </details>
-<details>
-    <summary><h3>Geometry Reporters</h3></summary>
-</details>
+
 
 # Geometry Creation
 ## Create Box
