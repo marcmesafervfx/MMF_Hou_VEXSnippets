@@ -8,19 +8,12 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>View contents</summary>
 
-* [`Create Box`](#create-box)
+
 
 </details>
-
-<details>
-<summary>Test</summary>
-
-</details>
-* [`test`](#create-box)
     
 <details>
 <summary>Array Management</summary>
-* [`test`]
 </details>
 <details>
     <summary>Attribute Management</summary>
@@ -31,8 +24,10 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
     <summary>Conversion</summary>
 </details>
+
 <details>
     <summary> Geometry Creation </summary>
+    * [`Create Box`](#create-box)
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br>
@@ -45,6 +40,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-torus"> Create Torus </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-tube"> Create Tube </a>
 </details>
+
 <details>
     <summary> Geometry Reporters </summary>
 </details>
