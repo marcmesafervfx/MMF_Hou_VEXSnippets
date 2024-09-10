@@ -6,7 +6,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 # Index
 <details>
-    <summary><h2>Array Management</h2></summary>
+    <summary>Array Management</summary>
 </details>
 <details>
     <summary><h2>Attribute Management</h2></summary>
