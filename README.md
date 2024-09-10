@@ -7,8 +7,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 # Index
 <details>
   <summary><h3>Geometry Creation</h3></summary>
-  
-  ### Heading
+
   1. Foo
   2. Bar
      * Baz
