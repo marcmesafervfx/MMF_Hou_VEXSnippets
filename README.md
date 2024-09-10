@@ -16,6 +16,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spiral"> Create Spiral </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spring"> Create Spring </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-torus"> Create Torus </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-tube"> Create Tube </a><br><br>
 </details>    
 
 # Geometry Creation
@@ -523,6 +524,87 @@ foreach(int pt; pts){
     // Create primitive using all the points.
     addprim(0, "poly", pt, s_pt, t_pt, f_pt);
 }
+```
+
+## Create Tube
+*Reference Code*: 61391039
+> [!NOTE]
+> Note that the code only allows you to do modifications to the columns because it is intended to be a really default tube. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
+
+**create_tube**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create default tube. """;
+
+// Set columns.
+int col = chi("columns");
+
+// Initialize point number and point position arrays.
+int all_pts[]; 
+vector all_pos[];
+
+// Loop 2 times to create reference winding faces.
+for(int a=0; a<2;a++){
+    
+    // Loop col times to create the primitive points.
+    for(int i=0; i<col; i++){
+        
+        // Compute degrees in radians.
+        float rad = $PI*2/col;
+        
+        // Compute the x and y axes.
+        float x = sin(rad*i);
+        float z = cos(rad*i);
+        
+        // Compute positions using x and z. Use y to place points in height.
+        vector pos = (a)? set(x,-1,z)/2 : set(x,1,z)/2;
+        
+        // Create points.
+        int pt = addpoint(0, pos);
+        
+        // Append points and positions to arrays.
+        append(all_pts, pt);
+        append(all_pos, pos);
+    } 
+}
+
+// Separate core primitive points into two groups.
+int first_prim[] = all_pts[:col];
+int second_prim[] = all_pts[col:];
+
+// Create primitives. One with reversed windings.
+addprim(0, "poly", reverse(first_prim));
+addprim(0, "poly", second_prim);
+
+// Iterate for each point of the first primitive.
+for(int i=0; i<len(first_prim); i++){
+    
+    // Find next equivalent position. Set first position if current point 
+    // is the last point in the first primitive.
+    vector next_pos_equiv = (first_prim[i]==first_prim[-1])? all_pos[0]:all_pos[i+1];
+    
+    // Invert z axis.
+    next_pos_equiv.y*=-1;
+    
+    // Find equivalent point index. all_pos index = all_pts value 
+    int equiv_pt = find(all_pos, next_pos_equiv);
+    
+    // Canstruct winding order. 
+    // Set first point of the first prim and last point of the second prim
+    // if current point is the last point in the first primitive.
+    int prim_pts[] = (first_prim[i]==first_prim[-1])? array(i, first_prim[0], equiv_pt, second_prim[-1]) : 
+                                   array(first_prim[i], first_prim[i+1], equiv_pt, equiv_pt-1);
+    
+    // Create primitive using the winding order.
+    addprim(0, "poly", prim_pts);
+}
+
 ```
 
 ## Vector Along Curve
@@ -2203,90 +2285,6 @@ vector color = chramp("color", nage);
 // Export color attribute.
 v@Cd = color;
 ```
-
-
-## Create Tube
-*Reference Code*: 61391039
-> [!NOTE]
-> Note that the code only allows you to do modifications to the columns because it is intended to be a really default tube. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
-
-**create_tube**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create default tube. """;
-
-// Set columns.
-int col = chi("columns");
-
-// Initialize point number and point position arrays.
-int all_pts[]; 
-vector all_pos[];
-
-// Loop 2 times to create reference winding faces.
-for(int a=0; a<2;a++){
-    
-    // Loop col times to create the primitive points.
-    for(int i=0; i<col; i++){
-        
-        // Compute degrees in radians.
-        float rad = $PI*2/col;
-        
-        // Compute the x and y axes.
-        float x = sin(rad*i);
-        float z = cos(rad*i);
-        
-        // Compute positions using x and z. Use y to place points in height.
-        vector pos = (a)? set(x,-1,z)/2 : set(x,1,z)/2;
-        
-        // Create points.
-        int pt = addpoint(0, pos);
-        
-        // Append points and positions to arrays.
-        append(all_pts, pt);
-        append(all_pos, pos);
-    } 
-}
-
-// Separate core primitive points into two groups.
-int first_prim[] = all_pts[:col];
-int second_prim[] = all_pts[col:];
-
-// Create primitives. One with reversed windings.
-addprim(0, "poly", reverse(first_prim));
-addprim(0, "poly", second_prim);
-
-// Iterate for each point of the first primitive.
-for(int i=0; i<len(first_prim); i++){
-    
-    // Find next equivalent position. Set first position if current point 
-    // is the last point in the first primitive.
-    vector next_pos_equiv = (first_prim[i]==first_prim[-1])? all_pos[0]:all_pos[i+1];
-    
-    // Invert z axis.
-    next_pos_equiv.y*=-1;
-    
-    // Find equivalent point index. all_pos index = all_pts value 
-    int equiv_pt = find(all_pos, next_pos_equiv);
-    
-    // Canstruct winding order. 
-    // Set first point of the first prim and last point of the second prim
-    // if current point is the last point in the first primitive.
-    int prim_pts[] = (first_prim[i]==first_prim[-1])? array(i, first_prim[0], equiv_pt, second_prim[-1]) : 
-                                   array(first_prim[i], first_prim[i+1], equiv_pt, equiv_pt-1);
-    
-    // Create primitive using the winding order.
-    addprim(0, "poly", prim_pts);
-}
-
-```
-
-
 
 ## Carve Primitive
 *Reference Code*: 46938032
