@@ -28,8 +28,8 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>Geometry Creation </summary>   
 
-[`Create Box`](#create-box)
-[`Create Bound`](#create-bound)
+* [`Create Box`](#create-box)
+* [`Create Bound`](#create-bound)
 
 </details>
 
