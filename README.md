@@ -8,6 +8,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
     <summary><h3>Geometry Creation</h3></summary>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-line"> Create Line </a><br>
 </details>    
 
@@ -53,6 +54,51 @@ createPrim(pt1, pt5, pt6, pt2);
 createPrim(pt2, pt6, pt7, pt3);
 createPrim(pt3, pt7, pt4, pt0);
 createPrim(pt6, pt5, pt4, pt7);
+```
+
+## Create Bound
+*Reference Code*: 95461313
+
+**create_bound**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** connected to a geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create bounding box from object. """;
+
+// Create reusable void function.
+void createPrim(int pt0, pt1, pt2, pt3){
+    
+    // Create primitives using arrays.
+    int prim_pts[] = array(pt0, pt1, pt2, pt3);
+    addprim(0,'poly', prim_pts);
+}
+
+// Get max and min bbox dimensions.
+vector max = getbbox_max(1); 
+vector min = getbbox_min(1);
+
+// Create points with their max and min positions.
+int pt0 = addpoint(0, set(min.x, max.y, min.z));
+int pt1 = addpoint(0, set(min.x, max.y, max.z));
+int pt2 = addpoint(0, set(max.x, max.y, max.z));
+int pt3 = addpoint(0, set(max.x, max.y, min.z));
+int pt4 = addpoint(0, set(min.x, min.y, min.z));
+int pt5 = addpoint(0, set(min.x, min.y, max.z));
+int pt6 = addpoint(0, set(max.x, min.y, max.z));
+int pt7 = addpoint(0, set(max.x, min.y, min.z));
+
+// Create primitives based on the proper winding.
+createPrim(pt3, pt2, pt1, pt0);
+createPrim(pt4, pt5, pt6, pt7);
+createPrim(pt1, pt2, pt6, pt5);
+createPrim(pt2, pt3, pt7, pt6);
+createPrim(pt3, pt0, pt4, pt7);
+createPrim(pt0, pt1, pt5, pt4);
 ```
 
 ## Create Line
@@ -2467,50 +2513,6 @@ foreach(int pt; neig){
 f@curvature = curvature / len(neig);
 ```
 
-## Create Bound
-*Reference Code*: 95461313
-
-**create_bound**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** connected to a geometry.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create bounding box from object. """;
-
-// Create reusable void function.
-void createPrim(int pt0, pt1, pt2, pt3){
-    
-    // Create primitives using arrays.
-    int prim_pts[] = array(pt0, pt1, pt2, pt3);
-    addprim(0,'poly', prim_pts);
-}
-
-// Get max and min bbox dimensions.
-vector max = getbbox_max(1); 
-vector min = getbbox_min(1);
-
-// Create points with their max and min positions.
-int pt0 = addpoint(0, set(min.x, max.y, min.z));
-int pt1 = addpoint(0, set(min.x, max.y, max.z));
-int pt2 = addpoint(0, set(max.x, max.y, max.z));
-int pt3 = addpoint(0, set(max.x, max.y, min.z));
-int pt4 = addpoint(0, set(min.x, min.y, min.z));
-int pt5 = addpoint(0, set(min.x, min.y, max.z));
-int pt6 = addpoint(0, set(max.x, min.y, max.z));
-int pt7 = addpoint(0, set(max.x, min.y, min.z));
-
-// Create primitives based on the proper winding.
-createPrim(pt3, pt2, pt1, pt0);
-createPrim(pt4, pt5, pt6, pt7);
-createPrim(pt1, pt2, pt6, pt5);
-createPrim(pt2, pt3, pt7, pt6);
-createPrim(pt3, pt0, pt4, pt7);
-createPrim(pt0, pt1, pt5, pt4);
-```
 
 ## Remove Unused Points
 *Reference Code*: 11943207
