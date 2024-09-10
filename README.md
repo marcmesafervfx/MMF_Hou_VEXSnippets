@@ -9,10 +9,10 @@ This repository is designated to be a place where I put some of the VEX snippets
     <summary>Array Management</summary>
 </details>
 <details>
-    <summary><h2>Attribute Management</h2></summary>
+    <summary>Attribute Management</summary>
 </details>
 <details>
-    <summary><h2>Camera Based Management</h2></summary>
+    <summary>Camera Based Management</summary>
 </details>
 <details>
     <summary><h2>Conversion</h2></summary>
