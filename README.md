@@ -8,10 +8,10 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
     <summary><h3>Geometry Creation</h3></summary>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br><br>
-    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br>
-    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br>
-    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-grid"> Create Grid </a><br>
-    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-line"> Create Line </a><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-grid"> Create Grid </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-line"> Create Line </a><br><br>
 </details>    
 
 # Geometry Creation
