@@ -9,6 +9,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     <summary><h3>Geometry Creation</h3></summary>
     <a> https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box </a>
     <a href="URL"> https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box </a> 
+    [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](http://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
 </details>    
 
 # Geometry Creation
