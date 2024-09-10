@@ -6,25 +6,8 @@ This repository is designated to be a place where I put some of the VEX snippets
 [Create Box](https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box)
 # Index
 <details>
-  <summary><h3>Geometry Creation</h3></summary>
-     * Baz
-     * Qux
-
-  ### Some Javascript
-  ```js
-  function logSomething(something) {
-    console.log('Something', something);
-  }
-  ```
-</details>
-<details>
     <summary><h3>Geometry Creation</h3></summary>
-    ### Heading
-      1. Foo
-      2. Bar
-     * Baz
-     * Qux
-    *<a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a>
+    :point_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a>
 
 </details>    
 
