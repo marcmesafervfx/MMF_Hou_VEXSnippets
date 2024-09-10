@@ -6,7 +6,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 # Index
 <details>
-    <summary><h5>Geometry Creation</h5></summary>
+    <summary><h2>Geometry Creation</h2></summary>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br>
