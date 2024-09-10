@@ -8,9 +8,10 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>View contents</summary>
 
-* [`helixCurve`](#helixcurve)
+* [`Create Box`](#create-box)
 
 </details>
+
 <details>
 <summary>Array Management</summary>
 * [`test`]
