@@ -7,7 +7,11 @@ This repository is designated to be a place where I put some of the VEX snippets
 # Index
 <details>
     <summary><h3>Geometry Creation</h3></summary>
-    * Test
+    ### Heading
+      1. Foo
+      2. Bar
+     * Baz
+     * Qux
     *<a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a>
 
 </details>    
