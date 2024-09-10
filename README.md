@@ -12,6 +12,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-grid"> Create Grid </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-line"> Create Line </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-sphere"> Create Sphere </a><br><br>
 </details>    
 
 # Geometry Creation
@@ -250,6 +251,101 @@ for(int i=0; i<points; i++){
 
 // Create poly line using point array.
 addprim(0, "polyline", pts);
+```
+
+## Create Sphere
+*Reference Code*: 51628042
+
+**create_sphere**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create sphere. """;
+
+// Get rows, columns and radius.
+int rows = chi("rows");
+int cols = chi("columns");
+vector radius = chv("radius")*2;
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each row.
+for(int r=0; r<rows;r++){
+    
+    // If the row is 0, create polar top point.
+    if(r==0){
+        int pt = addpoint(0, set(0,radius.y,0));
+        append(pts, pt);
+        continue;
+    }
+    
+    // If the row is 0, create polar bottom point.
+    else if(r==rows-1){
+        int pt = addpoint(0, set(0,-radius.y,0));
+        append(pts, pt);
+        continue;
+    }
+    
+    // Compute height angle.
+    float h = r*($PI/(rows-1));
+    
+    // Iterate for each column.
+    for(int c=0; c<cols; c++){
+        
+        // Compute width angle.
+        float w = c*($PI*2/cols);
+        
+        // Compute position point.
+        vector pos = set(sin(h)*cos(w), cos(h), sin(h)*sin(w))*radius;
+        
+        // Create point and append to point array.
+        int p = addpoint(0, pos);
+        append(pts, p);
+    }
+}
+
+
+// Iterate for each point created.
+foreach(int pt; pts){
+    
+    // Get first and last rows.
+    int first_row[] = pts[1:cols+1];
+    int last_row[] = pts[-cols-1:-1];
+    
+    // Create pirimitives connected to the top polar point.
+    if(pt==0){
+        foreach(int c_pt; first_row){
+            int next_pt = (c_pt==first_row[-1])? first_row[0]:c_pt+1;
+            addprim(0, "poly", pt, c_pt, next_pt, pt);
+        }
+    }
+    
+    // Create pirimitives connected to the bottom polar point.
+    else if(pt==len(pts)-1){
+        foreach(int c_pt; last_row){
+            int next_pt = (c_pt==last_row[-1])? last_row[0]:c_pt+1;
+            addprim(0, "poly", pt, next_pt, c_pt, pt);
+        }
+    }
+    
+    // If the current point is not in the last row, run the code.
+    else if(find(last_row, pt)<0){
+    
+        // Get second, third and fourth point.
+        int f_pt = (pt%cols==0)? pt+1-cols: pt+1;
+        int t_pt = f_pt+cols;
+        int s_pt = pt+cols;
+        
+        // Create primitive using all the points.
+        addprim(0, "poly", pt, s_pt, t_pt, f_pt);
+    }
+}
 ```
 
 ## Vector Along Curve
@@ -3699,101 +3795,6 @@ foreach(int pt; pts){
     
     // Export point position.
     setpointattrib(0, "P", pt, pos);
-}
-```
-
-## Create Sphere
-*Reference Code*: 51628042
-
-**create_sphere**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create sphere. """;
-
-// Get rows, columns and radius.
-int rows = chi("rows");
-int cols = chi("columns");
-vector radius = chv("radius")*2;
-
-// Initialize point array.
-int pts[];
-
-// Iterate for each row.
-for(int r=0; r<rows;r++){
-    
-    // If the row is 0, create polar top point.
-    if(r==0){
-        int pt = addpoint(0, set(0,radius.y,0));
-        append(pts, pt);
-        continue;
-    }
-    
-    // If the row is 0, create polar bottom point.
-    else if(r==rows-1){
-        int pt = addpoint(0, set(0,-radius.y,0));
-        append(pts, pt);
-        continue;
-    }
-    
-    // Compute height angle.
-    float h = r*($PI/(rows-1));
-    
-    // Iterate for each column.
-    for(int c=0; c<cols; c++){
-        
-        // Compute width angle.
-        float w = c*($PI*2/cols);
-        
-        // Compute position point.
-        vector pos = set(sin(h)*cos(w), cos(h), sin(h)*sin(w))*radius;
-        
-        // Create point and append to point array.
-        int p = addpoint(0, pos);
-        append(pts, p);
-    }
-}
-
-
-// Iterate for each point created.
-foreach(int pt; pts){
-    
-    // Get first and last rows.
-    int first_row[] = pts[1:cols+1];
-    int last_row[] = pts[-cols-1:-1];
-    
-    // Create pirimitives connected to the top polar point.
-    if(pt==0){
-        foreach(int c_pt; first_row){
-            int next_pt = (c_pt==first_row[-1])? first_row[0]:c_pt+1;
-            addprim(0, "poly", pt, c_pt, next_pt, pt);
-        }
-    }
-    
-    // Create pirimitives connected to the bottom polar point.
-    else if(pt==len(pts)-1){
-        foreach(int c_pt; last_row){
-            int next_pt = (c_pt==last_row[-1])? last_row[0]:c_pt+1;
-            addprim(0, "poly", pt, next_pt, c_pt, pt);
-        }
-    }
-    
-    // If the current point is not in the last row, run the code.
-    else if(find(last_row, pt)<0){
-    
-        // Get second, third and fourth point.
-        int f_pt = (pt%cols==0)? pt+1-cols: pt+1;
-        int t_pt = f_pt+cols;
-        int s_pt = pt+cols;
-        
-        // Create primitive using all the points.
-        addprim(0, "poly", pt, s_pt, t_pt, f_pt);
-    }
 }
 ```
 
