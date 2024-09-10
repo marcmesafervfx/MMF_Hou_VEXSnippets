@@ -3,7 +3,7 @@
 This repository is designated to be a place where I put some of the VEX snippets I've been using to fix, check, create, and manipulate information in different contexts. If something needs to be revisited, let me know so I can check for it and commit any of the requested modifications.
 
 :warning: The current repository is in development.
-[Create Box](https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box)
+
 # Index
 <details>
     <summary><h3>Geometry Creation</h3></summary>
