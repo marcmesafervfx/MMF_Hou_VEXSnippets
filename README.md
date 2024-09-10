@@ -4,6 +4,11 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 :warning: The current repository is in development.
 
+# Index
+<details>
+    <summary> ## Geometry Creation </summary>
+</details>    
+
 ## Vector Along Curve
 *Reference Code*: 72854126
 
