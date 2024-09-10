@@ -17,7 +17,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spiral"> Create Spiral </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spring"> Create Spring </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-torus"> Create Torus </a><br>
-    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-tube"> Create Tube </a><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-tube"> Create Tube </a>
 </details>
 <details>
     <summary><h3>Geometry Reporters</h3></summary>
