@@ -5,9 +5,16 @@ This repository is designated to be a place where I put some of the VEX snippets
 :warning: The current repository is in development.
 [Create Box](https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box)
 # Index
+<style>
+    details {
+      border: 1px solid black;
+      border-radius: 10px;
+    }
+</style>
 <details>
     <summary><h3>Geometry Creation</h3></summary>
-        - <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a> 
+    
+    - <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a> 
 
 </details>    
 
