@@ -9,6 +9,91 @@ This repository is designated to be a place where I put some of the VEX snippets
     <summary><h3>Geometry Creation</h3></summary>
 </details>    
 
+# Geometry Creation
+## Create Box
+*Reference Code*: 93703926
+> [!NOTE]
+> Note that the code doesn't allow to do modifications to the geometry because it is intended to be a really default box. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
+
+**create_box**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create default box. """;
+
+// Create reusable void function.
+void createPrim(int pt0, pt1, pt2, pt3){
+    
+    // Create primitives using arrays.
+    int prim_pts[] = array(pt0, pt1, pt2, pt3);
+    addprim(0,'poly', prim_pts);
+}
+
+// Create points.
+int pt0 = addpoint(0, {0.5,-0.5,0.5});
+int pt1 = addpoint(0, {0.5,-0.5,-0.5});
+int pt2 = addpoint(0, {-0.5,-0.5,-0.5});
+int pt3 = addpoint(0, {-0.5,-0.5,0.5});
+int pt4 = addpoint(0, {0.5,0.5,0.5});
+int pt5 = addpoint(0, {0.5,0.5,-0.5});
+int pt6 = addpoint(0, {-0.5,0.5,-0.5});
+int pt7 = addpoint(0, {-0.5,0.5,0.5});
+
+// Create primitives using void function.
+createPrim(pt0, pt1, pt2, pt3);
+createPrim(pt0, pt4, pt5, pt1);
+createPrim(pt1, pt5, pt6, pt2);
+createPrim(pt2, pt6, pt7, pt3);
+createPrim(pt3, pt7, pt4, pt0);
+createPrim(pt6, pt5, pt4, pt7);
+```
+
+## Create Line
+*Reference Code*: 58694772
+> [!NOTE]
+> Note that the code only allows you to do modifications to the length and points because it is intended to be a really default line. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
+
+**create_line**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create line. """;
+
+// Get number of points and length for the line.
+int points = chi("points");
+float length = chf("length");
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each points.
+for(int i=0; i<points; i++){
+    
+    // Compute height value.
+    float height = length/(points-1);
+    
+    // Create position value.
+    vector pos = set(0, height*i, 0);
+    
+    // Create point and append to point array list. 
+    int pt = addpoint(0, pos);
+    append(pts, pt);
+}
+
+// Create poly line using point array.
+addprim(0, "polyline", pts);
+```
+
 ## Vector Along Curve
 *Reference Code*: 72854126
 
@@ -1734,48 +1819,6 @@ vector color = chramp("color", nage);
 v@Cd = color;
 ```
 
-## Create Box
-*Reference Code*: 93703926
-> [!NOTE]
-> Note that the code doesn't allow to do modifications to the geometry because it is intended to be a really default box. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
-
-**create_box**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create default box. """;
-
-// Create reusable void function.
-void createPrim(int pt0, pt1, pt2, pt3){
-    
-    // Create primitives using arrays.
-    int prim_pts[] = array(pt0, pt1, pt2, pt3);
-    addprim(0,'poly', prim_pts);
-}
-
-// Create points.
-int pt0 = addpoint(0, {0.5,-0.5,0.5});
-int pt1 = addpoint(0, {0.5,-0.5,-0.5});
-int pt2 = addpoint(0, {-0.5,-0.5,-0.5});
-int pt3 = addpoint(0, {-0.5,-0.5,0.5});
-int pt4 = addpoint(0, {0.5,0.5,0.5});
-int pt5 = addpoint(0, {0.5,0.5,-0.5});
-int pt6 = addpoint(0, {-0.5,0.5,-0.5});
-int pt7 = addpoint(0, {-0.5,0.5,0.5});
-
-// Create primitives using void function.
-createPrim(pt0, pt1, pt2, pt3);
-createPrim(pt0, pt4, pt5, pt1);
-createPrim(pt1, pt5, pt6, pt2);
-createPrim(pt2, pt6, pt7, pt3);
-createPrim(pt3, pt7, pt4, pt0);
-createPrim(pt6, pt5, pt4, pt7);
-```
 
 ## Create Tube
 *Reference Code*: 61391039
@@ -1858,46 +1901,7 @@ for(int i=0; i<len(first_prim); i++){
 
 ```
 
-## Create Line
-*Reference Code*: 58694772
-> [!NOTE]
-> Note that the code only allows you to do modifications to the length and points because it is intended to be a really default line. In case you want to translate, rotate or scale, you can do it in the code by applying some transformation matrix.
 
-**create_line**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create line. """;
-
-// Get number of points and length for the line.
-int points = chi("points");
-float length = chf("length");
-
-// Initialize point array.
-int pts[];
-
-// Iterate for each points.
-for(int i=0; i<points; i++){
-    
-    // Compute height value.
-    float height = length/(points-1);
-    
-    // Create position value.
-    vector pos = set(0, height*i, 0);
-    
-    // Create point and append to point array list. 
-    int pt = addpoint(0, pos);
-    append(pts, pt);
-}
-
-// Create poly line using point array.
-addprim(0, "polyline", pts);
-```
 
 ## Carve Primitive
 *Reference Code*: 46938032
