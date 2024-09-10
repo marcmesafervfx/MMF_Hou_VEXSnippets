@@ -6,13 +6,20 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 # Index
 <details>
-    <summary>Array Management</summary>
+<summary>View contents</summary>
+
+* [`helixCurve`](#helixcurve)
+
+</details>
+<details>
+<summary>Array Management</summary>
+* [`test`]
 </details>
 <details>
     <summary>Attribute Management</summary>
 </details>
 <details>
-    <summary>Camera Based Management</summary>
+    <summary>Camera Based Management</summary> 
 </details>
 <details>
     <summary>Conversion</summary>
