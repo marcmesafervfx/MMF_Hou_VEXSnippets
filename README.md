@@ -26,7 +26,15 @@ This repository is designated to be a place where I put some of the VEX snippets
 </details>
 
 <details>
-    <summary> Geometry Creation </summary>
+<summary>Geometry Creation </summary>   
+
+[`Create Box`](#create-box)
+[`Create Bound`](#create-bound)
+
+</details>
+
+<details>
+    <summary> Geometry C </summary>
     * [`Create Box`](#create-box)
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br>
