@@ -3712,14 +3712,14 @@ for(int r=0; r<rows;r++){
     
     // If the row is 0, create polar top point.
     if(r==0){
-        int pt = addpoint(0, {0,1,0});
+        int pt = addpoint(0, set(0,radius.y,0));
         append(pts, pt);
         continue;
     }
     
     // If the row is 0, create polar bottom point.
     else if(r==rows-1){
-        int pt = addpoint(0, {0,-1,0});
+        int pt = addpoint(0, set(0,-radius.y,0));
         append(pts, pt);
         continue;
     }
