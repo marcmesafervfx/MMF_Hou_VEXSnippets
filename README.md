@@ -15,10 +15,10 @@ This repository is designated to be a place where I put some of the VEX snippets
     <summary>Camera Based Management</summary>
 </details>
 <details>
-    <summary><h2>Conversion</h2></summary>
+    <summary>Conversion</summary>
 </details>
 <details>
-    <summary><h2>Geometry Creation</h2></summary>
+    <summary> Geometry Creation </summary>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br>
@@ -32,22 +32,22 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-tube"> Create Tube </a>
 </details>
 <details>
-    <summary><h2>Geometry Reporters</h2></summary>
+    <summary> Geometry Reporters </summary>
 </details>
 <details>
-    <summary><h2>Group Management</h2></summary>
+    <summary> Group Management </summary>
 </details>
 <details>
-    <summary><h2>Lens Shader</h2></summary>
+    <summary> Lens Shader </summary>
 </details>
 <details>
-    <summary><h2>Transformation Management</h2></summary>
+    <summary> Transformation Management </summary>
 </details>
 <details>
-    <summary><h2>Vectorial Management</h2></summary>
+    <summary> Vectorial Management </summary>
 </details>
 <details>
-    <summary><h2>Water Deformers</h2></summary>
+    <summary> Water Deformers </summary>
 </details>
 
 
