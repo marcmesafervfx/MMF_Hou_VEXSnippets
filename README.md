@@ -7,7 +7,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 # Index
 <details>
     <summary><h3>Geometry Creation</h3></summary><br>
-    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-grid"> Create Grid </a><br><br>
@@ -15,6 +15,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-sphere"> Create Sphere </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spiral"> Create Spiral </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spring"> Create Spring </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-torus"> Create Torus </a><br><br>
 </details>    
 
 # Geometry Creation
@@ -453,6 +454,75 @@ for(int i=0; i<points; i++){
 
 // Create poly line using point array.
 addprim(0, "polyline", pts);
+```
+
+## Create Torus
+*Reference Code*: 7003422
+
+**create_torus**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create torus. """;
+
+// Get rows, columns, width and radius.
+int rows = chi("rows");
+int cols = chi("columns");
+vector width = chv("width")*2;
+vector radius = chv("radius")*2;
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each row.
+for(int r=0; r<rows;r++){
+    
+    // Compute height angle.
+    float h = r*($PI*2/(rows));
+    
+    // Iterate for each column.
+    for(int c=0; c<cols; c++){
+        
+        // Compute width angle.
+        float w = c*($PI*2/(cols));
+        
+        // Compute position point.
+        vector pos = set(sin(h)*cos(w), cos(h), sin(h)*sin(w))*width;
+        pos+=set(cos(w), 0, sin(w))*radius;
+        
+        // Create point and append to point array.
+        int p = addpoint(0, pos);
+        append(pts, p);
+    }
+}
+
+// Get last column point num.
+int last_row[] = pts[-cols:];
+
+// Iterate for each created points.
+foreach(int pt; pts){
+    
+    // Get second, third and fourth point.
+    int s_pt = pt+cols;
+    int t_pt = ((s_pt+1)%cols==0)? s_pt+1-cols:s_pt+1;
+    int f_pt = t_pt-cols;
+    
+    // Update second, third and fourth point if the current point is inside of the last row.
+    if(find(last_row, pt)>=0){
+        
+        s_pt = pt-last_row[0];
+        t_pt = (pt==last_row[-1])? 0:s_pt+1;
+        f_pt = last_row[0]+t_pt;
+    }
+    
+    // Create primitive using all the points.
+    addprim(0, "poly", pt, s_pt, t_pt, f_pt);
+}
 ```
 
 ## Vector Along Curve
@@ -3797,75 +3867,6 @@ foreach(int pt; pts){
     
     // Export point position.
     setpointattrib(0, "P", pt, pos);
-}
-```
-
-## Create Torus
-*Reference Code*: 7003422
-
-**create_torus**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create torus. """;
-
-// Get rows, columns, width and radius.
-int rows = chi("rows");
-int cols = chi("columns");
-vector width = chv("width")*2;
-vector radius = chv("radius")*2;
-
-// Initialize point array.
-int pts[];
-
-// Iterate for each row.
-for(int r=0; r<rows;r++){
-    
-    // Compute height angle.
-    float h = r*($PI*2/(rows));
-    
-    // Iterate for each column.
-    for(int c=0; c<cols; c++){
-        
-        // Compute width angle.
-        float w = c*($PI*2/(cols));
-        
-        // Compute position point.
-        vector pos = set(sin(h)*cos(w), cos(h), sin(h)*sin(w))*width;
-        pos+=set(cos(w), 0, sin(w))*radius;
-        
-        // Create point and append to point array.
-        int p = addpoint(0, pos);
-        append(pts, p);
-    }
-}
-
-// Get last column point num.
-int last_row[] = pts[-cols:];
-
-// Iterate for each created points.
-foreach(int pt; pts){
-    
-    // Get second, third and fourth point.
-    int s_pt = pt+cols;
-    int t_pt = ((s_pt+1)%cols==0)? s_pt+1-cols:s_pt+1;
-    int f_pt = t_pt-cols;
-    
-    // Update second, third and fourth point if the current point is inside of the last row.
-    if(find(last_row, pt)>=0){
-        
-        s_pt = pt-last_row[0];
-        t_pt = (pt==last_row[-1])? 0:s_pt+1;
-        f_pt = last_row[0]+t_pt;
-    }
-    
-    // Create primitive using all the points.
-    addprim(0, "poly", pt, s_pt, t_pt, f_pt);
 }
 ```
 
