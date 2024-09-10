@@ -10,6 +10,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box"> Create Box </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-grid"> Create Grid </a><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-line"> Create Line </a><br>
 </details>    
 
@@ -146,6 +147,68 @@ append(pts, pts[0]);
 
 // If user wants open geo, create a polyline. Otherwise, create a closed poly.
 (open==1)? addprim(0, "polyline", pts):addprim(0, "poly", pts);
+```
+
+## Create Grid
+*Reference Code*: 61834398
+
+**create_grid**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create grid. """;
+
+// Get size, rows and columns.
+vector2 size = chu("size");
+int col = clamp(chi("columns"), 2, int(1e09));
+int row = clamp(chi("rows"), 2, int(1e09));
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each row.
+for(int r=0; r<row;r++){
+    
+    // Normalize row values.
+    float norm_r = r/(row-1.0);
+    
+    // Iterate for each column.
+    for(int c=0; c<col; c++){
+    
+        // Normalize column values.
+        float norm_c = c/(col-1.0); 
+        
+        // Compute x and z positions.
+        float posx = (0.5-norm_r)*size.x;
+        float posz = (0.5-norm_c)*size.y;
+        vector pos = set(posx,0,posz);
+        
+        // Create point with computed position and append to point array.
+        int pt = addpoint(0, pos);
+        append(pts, pt);
+    }
+}
+
+// Iterate for each created point.
+foreach(int p; pts){
+    
+    // Chech if current point is in the last row or column. If so, skip it.
+    if(p>=(row-1)*col || (p+1)%col == 0) continue;
+    
+    // Get ptnum to create poly.
+    int pt0 = pts[p]; 
+    int pt1 = pts[p+1];
+    int pt2 = pts[pt1+col];
+    int pt3 = pts[pt0+col]; 
+    
+    // Create poly.
+    addprim(0, "poly", pt3, pt2, pt1, pt0);
+}
 ```
 
 ## Create Line
@@ -3286,68 +3349,6 @@ vector pos = lerp(v@P, prim_pos, inset);
 
 // Export position attribute.
 v@P = pos;
-```
-
-## Create Grid
-*Reference Code*: 61834398
-
-**create_grid**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create grid. """;
-
-// Get size, rows and columns.
-vector2 size = chu("size");
-int col = clamp(chi("columns"), 2, int(1e09));
-int row = clamp(chi("rows"), 2, int(1e09));
-
-// Initialize point array.
-int pts[];
-
-// Iterate for each row.
-for(int r=0; r<row;r++){
-    
-    // Normalize row values.
-    float norm_r = r/(row-1.0);
-    
-    // Iterate for each column.
-    for(int c=0; c<col; c++){
-    
-        // Normalize column values.
-        float norm_c = c/(col-1.0); 
-        
-        // Compute x and z positions.
-        float posx = (0.5-norm_r)*size.x;
-        float posz = (0.5-norm_c)*size.y;
-        vector pos = set(posx,0,posz);
-        
-        // Create point with computed position and append to point array.
-        int pt = addpoint(0, pos);
-        append(pts, pt);
-    }
-}
-
-// Iterate for each created point.
-foreach(int p; pts){
-    
-    // Chech if current point is in the last row or column. If so, skip it.
-    if(p>=(row-1)*col || (p+1)%col == 0) continue;
-    
-    // Get ptnum to create poly.
-    int pt0 = pts[p]; 
-    int pt1 = pts[p+1];
-    int pt2 = pts[pt1+col];
-    int pt3 = pts[pt0+col]; 
-    
-    // Create poly.
-    addprim(0, "poly", pt3, pt2, pt1, pt0);
-}
 ```
 
 ## Wave Deformer
