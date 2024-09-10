@@ -7,7 +7,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 # Index
 <details>
     <summary>Array Management</summary>
-    [`Test`](#create-box)
+    * [`helixCurve`](#helixcurve)
 </details>
 <details>
     <summary>Attribute Management</summary>
