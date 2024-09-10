@@ -13,6 +13,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-grid"> Create Grid </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-line"> Create Line </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-sphere"> Create Sphere </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spiral"> Create Spiral </a><br><br>
 </details>    
 
 # Geometry Creation
@@ -346,6 +347,60 @@ foreach(int pt; pts){
         addprim(0, "poly", pt, s_pt, t_pt, f_pt);
     }
 }
+```
+
+## Create Spiral
+*Reference Code*: 53096382
+> [!NOTE]
+> Note that the snippet creates the spiral with just a few parameters to modify because it was intended to create a basic spiral. You can add more in the code if you require them.
+
+**create_spiral**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create spring. """;
+
+// Get number of points, length, coils and radius for the spring.
+int points = chi("points");
+int coil = clamp(chi("coils"), 1, int(1e09));
+vector2 radius = chu("radius");
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each points.
+for(int i=0; i<points; i++){
+    
+    // Normalize point value.
+    float norm_w = 1.0/(points-1);
+    
+    // Get current iteration value.
+    float current_w = norm_w*i;
+    
+    // Compute expand factor for each coil.
+    float expand_factor = $PI*2*current_w*coil;
+    
+    // Expand in x and z axes based on expand factor, coil and radius.
+    float xaxis = sin(expand_factor)*expand_factor/coil;
+    xaxis*=radius.x;
+    float zaxis = cos(expand_factor)*expand_factor/coil;
+    zaxis*=radius.y;
+    
+    // Create position value.
+    vector pos = set(xaxis, 0, zaxis);
+    
+    // Create point and append to point array list. 
+    int pt = addpoint(0, pos);
+    append(pts, pt);
+}
+
+// Create poly line using point array.
+addprim(0, "polyline", pts);
 ```
 
 ## Vector Along Curve
@@ -3119,60 +3174,6 @@ if(sign(min_bbox.y)==-1){
     // Clamp negative values.
     v@P.y=clamp(final_ypos, 0, max_bbox.y);
 }
-```
-
-## Create Spiral
-*Reference Code*: 53096382
-> [!NOTE]
-> Note that the snippet creates the spiral with just a few parameters to modify because it was intended to create a basic spiral. You can add more in the code if you require them.
-
-**create_spiral**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create spring. """;
-
-// Get number of points, length, coils and radius for the spring.
-int points = chi("points");
-int coil = clamp(chi("coils"), 1, int(1e09));
-vector2 radius = chu("radius");
-
-// Initialize point array.
-int pts[];
-
-// Iterate for each points.
-for(int i=0; i<points; i++){
-    
-    // Normalize point value.
-    float norm_w = 1.0/(points-1);
-    
-    // Get current iteration value.
-    float current_w = norm_w*i;
-    
-    // Compute expand factor for each coil.
-    float expand_factor = $PI*2*current_w*coil;
-    
-    // Expand in x and z axes based on expand factor, coil and radius.
-    float xaxis = sin(expand_factor)*expand_factor/coil;
-    xaxis*=radius.x;
-    float zaxis = cos(expand_factor)*expand_factor/coil;
-    zaxis*=radius.y;
-    
-    // Create position value.
-    vector pos = set(xaxis, 0, zaxis);
-    
-    // Create point and append to point array list. 
-    int pt = addpoint(0, pos);
-    append(pts, pt);
-}
-
-// Create poly line using point array.
-addprim(0, "polyline", pts);
 ```
 
 ## Smooth Geometry
