@@ -14,6 +14,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-line"> Create Line </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-sphere"> Create Sphere </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spiral"> Create Spiral </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spring"> Create Spring </a><br><br>
 </details>    
 
 # Geometry Creation
@@ -363,7 +364,7 @@ foreach(int pt; pts){
 > - **Input 3:** no-connected.
 
 ``` c
-""" Create spring. """;
+""" Create spiral. """;
 
 // Get number of points, length, coils and radius for the spring.
 int points = chi("points");
@@ -393,6 +394,57 @@ for(int i=0; i<points; i++){
     
     // Create position value.
     vector pos = set(xaxis, 0, zaxis);
+    
+    // Create point and append to point array list. 
+    int pt = addpoint(0, pos);
+    append(pts, pt);
+}
+
+// Create poly line using point array.
+addprim(0, "polyline", pts);
+```
+
+## Create Spring
+*Reference Code*: 3984189
+> [!NOTE]
+> Note that the snippet creates the spring with just a few parameters to modify because it was intended to create a basic spring. You can add more in the code if you require them.
+
+**create_spring**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create spring. """;
+
+// Get number of points, length, coils and radius for the spring.
+int points = chi("points");
+float length = chf("length");
+int coil = clamp(chi("coils"), 1, int(1e09));
+vector2 radius = chu("radius");
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each points.
+for(int i=0; i<points; i++){
+    
+    // Compute height value.
+    float height = length/(points-1);
+    
+    // Normalize height value.
+    float norm_h = height*i/length;
+    
+    // Compute expand factor for each coil.
+    float expand_factor = $PI*2*coil*norm_h;
+    float xaxis = sin(expand_factor)*radius.x;
+    float zaxis = cos(expand_factor)*radius.y;
+    
+    // Create position value.
+    vector pos = set(xaxis, height*i, zaxis);
     
     // Create point and append to point array list. 
     int pt = addpoint(0, pos);
@@ -3004,57 +3056,6 @@ string pattern = chs("pattern");
 
 // Check if name matches the pattern and set the group
 if(match(pattern, s@name)) setpointgroup(0, grp_name, @ptnum, 1);
-```
-
-## Create Spring
-*Reference Code*: 3984189
-> [!NOTE]
-> Note that the snippet creates the spring with just a few parameters to modify because it was intended to create a basic spring. You can add more in the code if you require them.
-
-**create_spring**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create spring. """;
-
-// Get number of points, length, coils and radius for the spring.
-int points = chi("points");
-float length = chf("length");
-int coil = clamp(chi("coils"), 1, int(1e09));
-vector2 radius = chu("radius");
-
-// Initialize point array.
-int pts[];
-
-// Iterate for each points.
-for(int i=0; i<points; i++){
-    
-    // Compute height value.
-    float height = length/(points-1);
-    
-    // Normalize height value.
-    float norm_h = height*i/length;
-    
-    // Compute expand factor for each coil.
-    float expand_factor = $PI*2*coil*norm_h;
-    float xaxis = sin(expand_factor)*radius.x;
-    float zaxis = cos(expand_factor)*radius.y;
-    
-    // Create position value.
-    vector pos = set(xaxis, height*i, zaxis);
-    
-    // Create point and append to point array list. 
-    int pt = addpoint(0, pos);
-    append(pts, pt);
-}
-
-// Create poly line using point array.
-addprim(0, "polyline", pts);
 ```
 
 ## From 01 to -11
