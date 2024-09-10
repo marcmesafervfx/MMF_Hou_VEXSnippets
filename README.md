@@ -11,6 +11,7 @@ This repository is designated to be a place where I put some of the VEX snippets
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-bound"> Create Bound </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-circle"> Create Circle </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-grid"> Create Grid </a><br><br>
+    &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-grid"> Create Hanging Catenary Wire </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-line"> Create Line </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-sphere"> Create Sphere </a><br><br>
     &emsp; :arrow_right: <a href="https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-spiral"> Create Spiral </a><br><br>
@@ -214,6 +215,69 @@ foreach(int p; pts){
     // Create poly.
     addprim(0, "poly", pt3, pt2, pt1, pt0);
 }
+```
+
+## Create Hanging Catenary Wire
+*Reference Code*: 26615300
+
+**hanging_pts**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to reference points.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create hanging catenary wires. """; 
+
+// Get the parabola amplitude and resolution from lines.
+float a = 1-ch('parabola_amplitude');                        
+float res = chi('res')+1;                                  
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each input point. 
+for(int i=1;i<npoints(0);i++){
+    
+    // Append current input point to the point array.
+    append(pts, i-1);
+    
+    // Get current point position and next point position. 
+    vector curr_pos = point(0,'P',i-1);
+    vector next_pos = point(0,'P',i);
+    
+    // Iterate to create points for the line based on resolution factor.
+    for(int b=1;b<res;b++){
+        
+        // Compute normalized line point value.
+        float curveu = b/res;
+        
+        // Compute positions for the points.
+        vector pos = curr_pos + ((next_pos-curr_pos)/res)*b;
+        
+        // Compute the amount of anchor displacement.
+        float disp_corner = a * cosh((curveu-0.5)/a);
+        
+        // Compute the amount of center displacement. 
+        float center_base = a * cosh((-0.5)/a);
+        
+        // Apply offsets/
+        pos.y += disp_corner-center_base;
+        
+        // Create point.
+        int pt = addpoint(0, pos);
+        
+        // Append point number to the point array.
+        append(pts, pt);
+    
+    }                                   
+}
+
+// Append last point to the list and create the polyline.
+append(pts, npoints(0)-1);
+addprim(0,"polyline",pts);
 ```
 
 ## Create Line
@@ -2025,69 +2089,6 @@ vector dir = to_pos-from_pos;
 
 // Export direction attribute.
 v@dir = dir;
-```
-
-## Hanging Catenary Wire
-*Reference Code*: 63831594
-
-**hanging_pts**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to reference points.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create hanging catenary wires. """; 
-
-// Get the parabola amplitude and resolution from lines.
-float a = 1-ch('parabola_amplitude');                        
-float res = chi('res')+1;                                  
-
-// Initialize point array.
-int pts[];
-
-// Iterate for each input point. 
-for(int i=1;i<npoints(0);i++){
-    
-    // Append current input point to the point array.
-    append(pts, i-1);
-    
-    // Get current point position and next point position. 
-    vector curr_pos = point(0,'P',i-1);
-    vector next_pos = point(0,'P',i);
-    
-    // Iterate to create points for the line based on resolution factor.
-    for(int b=1;b<res;b++){
-        
-        // Compute normalized line point value.
-        float curveu = b/res;
-        
-        // Compute positions for the points.
-        vector pos = curr_pos + ((next_pos-curr_pos)/res)*b;
-        
-        // Compute the amount of anchor displacement.
-        float disp_corner = a * cosh((curveu-0.5)/a);
-        
-        // Compute the amount of center displacement. 
-        float center_base = a * cosh((-0.5)/a);
-        
-        // Apply offsets/
-        pos.y += disp_corner-center_base;
-        
-        // Create point.
-        int pt = addpoint(0, pos);
-        
-        // Append point number to the point array.
-        append(pts, pt);
-    
-    }                                   
-}
-
-// Append last point to the list and create the polyline.
-append(pts, npoints(0)-1);
-addprim(0,"polyline",pts);
 ```
 
 ## UDIM Connectivity
