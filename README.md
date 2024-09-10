@@ -6,7 +6,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 [Create Box](https://github.com/marcmesafervfx/MMF_Hou_VEXSnippets/blob/main/README.md#create-box)
 # Index
 <details>
-  <summary>Click me</summary>
+  <summary><h3>Geometry Creation</h3></summary>
   
   ### Heading
   1. Foo
