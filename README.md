@@ -6,7 +6,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 # Index
 <details>
-    <summary> ## Geometry Creation </summary>
+    <summary><h3>Geometry Creation</h3></summary>
 </details>    
 
 ## Vector Along Curve
