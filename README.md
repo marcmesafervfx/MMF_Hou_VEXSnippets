@@ -21,6 +21,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Attribute From Map`](#attribute-from-map)
 * [`Basic Curvature Attribute`](#basic-curvature-attribute)
 * [`Blur Point Positions`](#blur-point-positions)
+* [`Checkboard Color`](#checkboard-color)
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
 * [`Color Fresnel`](#color-fresnel)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
@@ -432,6 +433,33 @@ pos/=len(nearpts)+1;
 
 // Set attribute value.
 v@P = pos;
+```
+
+## Checkboard Color
+*Reference Code*: 91425231
+
+**checkerboard**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create checker using ternary conditions. """;
+
+// Set the frequency for the scene.
+float freq = chf("frequency");
+
+// Compute vertical sections.
+v@Cd = (sin(v@P.x*freq)<0)?0:1;
+
+// Add horizontal sections.
+v@Cd += (sin(v@P.z*freq)<0)?0:1;
+
+// Check if there's coincidence and multiply by 0.
+v@Cd *= (v@Cd.r==2)?0:1;
 ```
 
 ## Cluster By Point Proximity
@@ -3136,33 +3164,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Create Checkboard
-*Reference Code*: 43837465
-
-**checkerboard**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create checker using ternary conditions. """;
-
-// Set the frequency for the scene.
-float freq = chf("frequency");
-
-// Compute vertical sections.
-v@Cd = (sin(v@P.x*freq)<0)?0:1;
-
-// Add horizontal sections.
-v@Cd += (sin(v@P.z*freq)<0)?0:1;
-
-// Check if there's coincidence and multiply by 0.
-v@Cd *= (v@Cd.r==2)?0:1;
 ```
 
 ## Basic Point Deform
