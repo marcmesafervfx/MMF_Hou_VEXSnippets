@@ -117,6 +117,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Edge Rotation Based`](#edge-rotation-based)
 * [`Extract Transform`](#extract-transform)
 * [`Peak Geometry`](#peak-geometry)
+* [`Push Point Over Ground`](#push-point-over-ground)
 * [`Recreate Bend Behaviour`](#recreate-bend-behaviour)
 * [`Smooth Geometry`](#smooth-geometry)
 * [`Sprite Orientation`](#sprite-orientation)
@@ -3142,6 +3143,42 @@ vector push = v@N*peak;
 v@P+=push;
 ```
 
+## Push Point Over Ground
+*Reference Code*: 56272568
+
+**push_pt**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Push point over the surface. """; 
+
+// Get maximum and minimum position values.
+vector max_bbox = getbbox_max(0);
+vector min_bbox = getbbox_min(0);
+
+if(sign(min_bbox.y)==-1){
+    // Compute normalize height.
+    float norm_height = fit(v@P.y, min_bbox.y, max_bbox.y, 1, 0);
+    
+    // Compute offset based on normalized height and add it to current position.
+    float pos = v@P.y+abs(min_bbox.y)*norm_height;
+    
+    // Remap normalized height.
+    norm_height = chramp("push_remap", norm_height);
+    
+    // Interpolate between current yaxis and new yaxis position using remapped norm_height.
+    float final_ypos = lerp(v@P.y, pos, norm_height);
+    
+    // Clamp negative values.
+    v@P.y=clamp(final_ypos, 0, max_bbox.y);
+}
+```
+
 ## Recreate Bend Behaviour
 *Reference Code*: 35046837
 
@@ -4164,42 +4201,6 @@ removeindex(prim_lst, -1);
 // Iterate for each of the overlap faces and remove them.
 foreach(int prim; prim_lst){
     removeprim(0, prim, 1);
-}
-```
-
-## Push Point Over Ground
-*Reference Code*: 56272568
-
-**push_pt**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Push point over the surface. """; 
-
-// Get maximum and minimum position values.
-vector max_bbox = getbbox_max(0);
-vector min_bbox = getbbox_min(0);
-
-if(sign(min_bbox.y)==-1){
-    // Compute normalize height.
-    float norm_height = fit(v@P.y, min_bbox.y, max_bbox.y, 1, 0);
-    
-    // Compute offset based on normalized height and add it to current position.
-    float pos = v@P.y+abs(min_bbox.y)*norm_height;
-    
-    // Remap normalized height.
-    norm_height = chramp("push_remap", norm_height);
-    
-    // Interpolate between current yaxis and new yaxis position using remapped norm_height.
-    float final_ypos = lerp(v@P.y, pos, norm_height);
-    
-    // Clamp negative values.
-    v@P.y=clamp(final_ypos, 0, max_bbox.y);
 }
 ```
 
