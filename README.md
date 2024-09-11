@@ -75,6 +75,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Create Spring`](#create-spring)
 * [`Create Torus`](#create-torus)
 * [`Create Tube`](#create-tube)
+* [`Create Velocity Trail`](#create-velocity-trail)
 
 </details>
 <details>
@@ -2157,6 +2158,33 @@ for(int i=0; i<len(first_prim); i++){
 
 ```
 
+## Create Velocity Trail
+*Reference Code*: 11042687
+
+**point_trail**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry with v@v attribute.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute basic particle trail using velocity. """; 
+
+// Compute velocity using fps.
+vector comp_vel = v@v*f@TimeInc;
+
+// Compute new position.
+vector new_pos = v@P-comp_vel;
+
+// Create point based on velocity.
+int pt = addpoint(0, new_pos);
+
+// Create polyline.
+addprim(0, "polyline", @ptnum, pt);
+```
+
 # Geometry Information And Reporters
 ## Check Point Inside Geometry
 *Reference Code*: 69877006
@@ -3855,33 +3883,6 @@ vector color = point(1, "Cd", equiv_pt);
 
 // Set attribute.
 v@Cd = color;
-```
-
-## Velocity Point Trail
-*Reference Code*: 50993777
-
-**point_trail**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry with v@v attribute.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute basic particle trail using velocity. """; 
-
-// Compute velocity using fps.
-vector comp_vel = v@v*f@TimeInc;
-
-// Compute new position.
-vector new_pos = v@P-comp_vel;
-
-// Create point based on velocity.
-int pt = addpoint(0, new_pos);
-
-// Create polyline.
-addprim(0, "polyline", @ptnum, pt);
 ```
 
 ## Push Points Volume
