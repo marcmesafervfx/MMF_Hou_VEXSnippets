@@ -95,6 +95,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Geometry Modifiers </summary>
 
 * [`Carve Primitive`](#carve-primitive)
+* [`Remove By Threshold`](#remove-by-threshold)
 
 </details>
 <details>
@@ -2466,6 +2467,36 @@ float trim = clamp(dist, 0, p);
 adjustPrimLength(0, @primnum, p, trim);
 ```
 
+## Remove By Threshold
+*Reference Code*: 30331484
+> [!NOTE]
+> You can remove other types of geometry using the corresponding remove functions.
+
+> [!TIP]
+> Remember that you can use the @id attribute instead of the @ptnum to be consistent, but it needs to be precomputed.
+
+**remove_points_by_threshold**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove by threshold. """;
+
+// Create a random value betweem 0 and 1 for each point.
+float rand_value = rand(@ptnum);
+
+// Check if the value is smaller than the threshold.
+if(rand_value<chf("threshold")){
+
+    // Remove point.
+    removepoint(0, @ptnum);
+}
+```
+
 # Group Management
 ## Attribute To Group
 *Reference Code*: 47201184
@@ -4179,36 +4210,6 @@ v@P = def_pos*xform;
 ```
 
 # ORGANIZE
-
-## Remove by threshold
-*Reference Code*: 9067034
-> [!NOTE]
-> You can remove other types of geometry using the corresponding remove functions.
-
-> [!TIP]
-> Remember that you can use the @id attribute instead of the @ptnum to be consistent, but it needs to be precomputed.
-
-**remove_points_by_threshold**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Remove by threshold. """;
-
-// Create a random value betweem 0 and 1 for each point.
-float rand_value = rand(@ptnum);
-
-// Check if the value is smaller than the threshold.
-if(rand_value<chf("threshold")){
-
-    // Remove point.
-    removepoint(0, @ptnum);
-}
-```
 
 ## Remove By Speed Threshold
 *Reference Code*: 9971578
