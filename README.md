@@ -49,7 +49,9 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary> Geometry Reporters </summary>
 
+* [`Error And Warning`](#error-and-warning)
 * [`NGon Detector`](#ngon-detector)
+* [`Unshared Points`](#unshared-points)
 
 </details>
 <details>
@@ -949,7 +951,35 @@ for(int i=0; i<len(first_prim); i++){
 
 ```
 
-# Geometry Reporter
+# Geometry Reporters
+## Error And Warning
+*Reference Code*: 21550162
+
+**err_warning**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Error and warning based on condition. """;
+
+// Get geometry type.
+string geo_type = primintrinsic(0, "typename", @primnum);
+
+// If volume or VDB, error.
+if(geo_type=="Volume" || geo_type=="VDB"){
+    error("The type %s is not valid. Please use a different type of geometry.", geo_type);
+}
+
+// If PackedGeometry, warning.
+else if(geo_type=="PackedGeometry"){
+    warning("The type %s is valid, but might output unexpected results.", geo_type);
+}
+```
+
 ## NGon Detector
 *Reference Code*: 50655883
 
@@ -972,6 +1002,54 @@ if(len(pts)>4){
     
     // Set point group.
     setprimgroup(0, "ngons", i@primnum, 1);
+}
+```
+
+## Unshared Points
+*Reference Code*: 82391305
+
+**unshared_points**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Group unshared points. """;
+
+// Get amount of points composing the current primitive.
+int pts = len(primpoints(0, @primnum));
+
+// Get initial half edge of the current primitive.
+int init_hedge = primhedge(0, @primnum);
+
+// Iterate as many times as points the primitive has.
+for(int i=0; i<pts; i++){
+
+    // Get next equivalent (opposite half edge) of the current half edge.
+    int equiv = hedge_nextequiv(0, init_hedge);
+    
+    // Get primitive number that contains the equivalent half edge.
+    int prim = hedge_prim(0, equiv);
+
+    // If the opposite primitive is the same as current, it means
+    // that it doesn't have another primitive connected.
+    if(prim==@primnum){
+    
+        // Check for the destiny and source point for the half edge.
+        int pt_dst = hedge_dstpoint(0, equiv);
+        int pt_src = hedge_srcpoint(0, equiv);
+        
+        // Set unshared point group.
+        setpointgroup(0, "unshared", pt_dst, 1);
+        setpointgroup(0, "unshared", pt_src, 1);
+    }
+    
+    // Once iteration is finished, move to the next half edge of the 
+    // same primitive.
+    init_hedge = hedge_next(0, init_hedge);
 }
 ```
 
@@ -1161,54 +1239,6 @@ if(rand_value<chf("threshold")){
 
     // Remove point.
     removepoint(0, @ptnum);
-}
-```
-
-## Unshared Points
-*Reference Code*: 82391305
-
-**unshared_points**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Group unshared points. """;
-
-// Get amount of points composing the current primitive.
-int pts = len(primpoints(0, @primnum));
-
-// Get initial half edge of the current primitive.
-int init_hedge = primhedge(0, @primnum);
-
-// Iterate as many times as points the primitive has.
-for(int i=0; i<pts; i++){
-
-    // Get next equivalent (opposite half edge) of the current half edge.
-    int equiv = hedge_nextequiv(0, init_hedge);
-    
-    // Get primitive number that contains the equivalent half edge.
-    int prim = hedge_prim(0, equiv);
-
-    // If the opposite primitive is the same as current, it means
-    // that it doesn't have another primitive connected.
-    if(prim==@primnum){
-    
-        // Check for the destiny and source point for the half edge.
-        int pt_dst = hedge_dstpoint(0, equiv);
-        int pt_src = hedge_srcpoint(0, equiv);
-        
-        // Set unshared point group.
-        setpointgroup(0, "unshared", pt_dst, 1);
-        setpointgroup(0, "unshared", pt_src, 1);
-    }
-    
-    // Once iteration is finished, move to the next half edge of the 
-    // same primitive.
-    init_hedge = hedge_next(0, init_hedge);
 }
 ```
 
@@ -2655,34 +2685,6 @@ while (pciterate(pc) > 0){
 
 // Export points array.
 i[]@nearpts = pts;
-```
-
-## Error And Warning
-*Reference Code*: 21550162
-
-**err_warning**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Error and warning based on condition. """;
-
-// Get geometry type.
-string geo_type = primintrinsic(0, "typename", @primnum);
-
-// If volume or VDB, error.
-if(geo_type=="Volume" || geo_type=="VDB"){
-    error("The type %s is not valid. Please use a different type of geometry.", geo_type);
-}
-
-// If PackedGeometry, warning.
-else if(geo_type=="PackedGeometry"){
-    warning("The type %s is valid, but might output unexpected results.", geo_type);
-}
 ```
 
 ## Attribute From Map
