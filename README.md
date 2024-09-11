@@ -105,6 +105,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Angle Between Two Vectors`](#angle-between-two-vectors)
 * [`Normalize Distance`](#normalize-distance)
 * [`Vector Along Curve`](#vector-along-curve)
+* [`Vector Between Positions`](#vector-between-positions)
 
 </details>
 <details>
@@ -2304,7 +2305,6 @@ vector4 orient = quaternion(matrix3(cam_xform));
 p@orient = orient;
 ```
 
-
 # Vectorial Management
 ## Angle Between Two Vectors
 *Reference Code*: 89221217
@@ -2460,6 +2460,35 @@ if(@ptnum==@numpt-1) tan*=-1;
 
 // Set attribute.
 v@tan = tan;
+```
+
+## Vector Between Positions
+*Reference Code*: 4300925
+> [!NOTE]
+> Note that this example is a basic exemplification of how we can get the direction vector between two positions. This snippet usually comes with additional functionality that is not being implemented here.
+ 
+**vector_between_pos**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get direction vector between two points. """;
+
+// Get point position to point to.
+vector to_pos = point(1, "P", @ptnum);
+
+// Get current point position to point from.
+vector from_pos = v@P;
+
+// Compute direction vector.
+vector dir = to_pos-from_pos;
+
+// Export direction attribute.
+v@dir = dir;
 ```
 
 # Volume Management
@@ -2989,35 +3018,6 @@ int pt = addpoint(0, new_pos);
 
 // Create polyline.
 addprim(0, "polyline", @ptnum, pt);
-```
-
-## Vector Between Positions
-*Reference Code*: 4300925
-> [!NOTE]
-> Note that this example is a basic exemplification of how we can get the direction vector between two positions. This snippet usually comes with additional functionality that is not being implemented here.
- 
-**vector_between_pos**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** connected to a geometry.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Get direction vector between two points. """;
-
-// Get point position to point to.
-vector to_pos = point(1, "P", @ptnum);
-
-// Get current point position to point from.
-vector from_pos = v@P;
-
-// Compute direction vector.
-vector dir = to_pos-from_pos;
-
-// Export direction attribute.
-v@dir = dir;
 ```
 
 ## Push Points Volume
