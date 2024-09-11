@@ -24,6 +24,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Camera Direction`](#camera-direction)
 * [`Camera Transformations`](#camera-transformations)
+* [`Camera View Direction Cull`](#camera-view-direction-cull)
 * [`Frustum Camera`](#frustum-camera)
 
 </details>
@@ -294,6 +295,81 @@ matrix cam_xform = optransform(cam);
 v@translate = cracktransform(0,0,0,{0,0,0},cam_xform);
 p@rotate = eulertoquaternion(cracktransform(0,0,1,{0,0,0},cam_xform), 0);
 4@xform = cam_xform;
+```
+
+## Camera View Direction Cull
+*Reference Code*: 77118676
+
+**view_cull**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Cull camera direction view. """;
+
+// Create function that returns prim intersection based on camera.
+int primIntersect(vector pos, cam){
+    vector dir = normalize(cam-pos);    
+    vector pst, uvw;
+    
+    int p = intersect(0, pos, dir*1e06, pst, uvw);
+    return p;
+}
+
+// Get camera and its position.
+string cam_name = chs("camera");
+matrix cam_xform = optransform(cam_name);
+vector cam = cracktransform(0,0,0,{0,0,0},cam_xform);
+
+// Create direction based on current position and camera.
+vector cam_dir = normalize(cam-v@P);
+
+// Create a peaked position.
+vector peak_pos = v@P+cam_dir*1e-3;
+
+// Check if current point intersects.
+int p = primIntersect(peak_pos, cam);
+
+// Get current point neighbours.
+int neigh[] = neighbours(0, @ptnum);
+
+// Initialize checker.
+int incheck;
+
+// If the primitive intersects.
+if(p!=-1){
+
+    // Iterate for each neighbour.
+    foreach(int i; neigh){
+        
+        // Get neighbour position.
+        vector neipos = point(0, 'P', i);
+        
+        // Get current point camera direction.
+        vector nei_cam_dir = normalize(cam-neipos);
+        
+        // Peak neighbour position using camera direction.
+        vector nei_peak_pos = neipos+nei_cam_dir*1e-3;
+        
+        // Check if current neighbour point intersects.
+        int neip = primIntersect(nei_peak_pos, cam);
+
+        // Check if neighbour intersects. If so, break and update incheck value.
+        if(neip==-1){ 
+            incheck=-1; break;         
+        }
+    }
+}
+
+// Remove point if looking to camera.
+if(p!=-1 && incheck!=-1){
+    removepoint(0, @ptnum);
+    
+}
 ```
 
 ## Frustum Camera
@@ -3725,81 +3801,6 @@ if(size==1){
 if(size==3){
     vector attr_val = pcfilter(handle, attr);
     setpointattrib(0, attr, @ptnum, attr_val);
-}
-```
-
-## Camera View Direction Cull
-*Reference Code*: 77118676
-
-**view_cull**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Cull camera direction view. """;
-
-// Create function that returns prim intersection based on camera.
-int primIntersect(vector pos, cam){
-    vector dir = normalize(cam-pos);    
-    vector pst, uvw;
-    
-    int p = intersect(0, pos, dir*1e06, pst, uvw);
-    return p;
-}
-
-// Get camera and its position.
-string cam_name = chs("camera");
-matrix cam_xform = optransform(cam_name);
-vector cam = cracktransform(0,0,0,{0,0,0},cam_xform);
-
-// Create direction based on current position and camera.
-vector cam_dir = normalize(cam-v@P);
-
-// Create a peaked position.
-vector peak_pos = v@P+cam_dir*1e-3;
-
-// Check if current point intersects.
-int p = primIntersect(peak_pos, cam);
-
-// Get current point neighbours.
-int neigh[] = neighbours(0, @ptnum);
-
-// Initialize checker.
-int incheck;
-
-// If the primitive intersects.
-if(p!=-1){
-
-    // Iterate for each neighbour.
-    foreach(int i; neigh){
-        
-        // Get neighbour position.
-        vector neipos = point(0, 'P', i);
-        
-        // Get current point camera direction.
-        vector nei_cam_dir = normalize(cam-neipos);
-        
-        // Peak neighbour position using camera direction.
-        vector nei_peak_pos = neipos+nei_cam_dir*1e-3;
-        
-        // Check if current neighbour point intersects.
-        int neip = primIntersect(nei_peak_pos, cam);
-
-        // Check if neighbour intersects. If so, break and update incheck value.
-        if(neip==-1){ 
-            incheck=-1; break;         
-        }
-    }
-}
-
-// Remove point if looking to camera.
-if(p!=-1 && incheck!=-1){
-    removepoint(0, @ptnum);
-    
 }
 ```
 
