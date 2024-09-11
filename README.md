@@ -14,6 +14,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>Attribute Management</summary>
 
+* [`Basic Curvature Attribute`](#basic-curvature-attribute)
 * [`Blur Point Positions`](#blur-point-positions)
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
@@ -136,6 +137,44 @@ f[]@array = new_smp_array;
 ```
 
 # Attribute Management
+## Basic Curvature Attribute
+*Reference Code*: 17683493
+
+**curvature**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry with v@N attribute.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute curavture. """;
+
+// Get neighbour points.
+int neig[] = neighbours(0, @ptnum);
+
+// Initialize curvature and iterate for each neighbour points.
+float curvature=0;
+foreach(int pt; neig){
+    
+    // Get normal from neighbour.
+    vector norm = point(0, "N", pt);
+    
+    // Compute dot product between neighbour normal anad current normal.
+    float dot = dot(norm, v@N);
+    
+    // Complement dot product.
+    float factor = 1-dot;
+    
+    // Add value to curvature.
+    curvature+=factor;
+}
+
+// Export curvature value.
+f@curvature = curvature / len(neig);
+```
+
 ## Blur Point Positions
 *Reference Code*: 26692791
 > [!TIP]
@@ -3177,45 +3216,6 @@ vector norm_pos = fit(v@P, min_bbox, max_bbox, 0, 1);
 // Export normalized positions in the color attribute.
 v@Cd = norm_pos;
 ```
-
-## Basic Curvature Attribute
-*Reference Code*: 17683493
-
-**curvature**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry with v@N attribute.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute curavture. """;
-
-// Get neighbour points.
-int neig[] = neighbours(0, @ptnum);
-
-// Initialize curvature and iterate for each neighbour points.
-float curvature=0;
-foreach(int pt; neig){
-    
-    // Get normal from neighbour.
-    vector norm = point(0, "N", pt);
-    
-    // Compute dot product between neighbour normal anad current normal.
-    float dot = dot(norm, v@N);
-    
-    // Complement dot product.
-    float factor = 1-dot;
-    
-    // Add value to curvature.
-    curvature+=factor;
-}
-
-// Export curvature value.
-f@curvature = curvature / len(neig);
-```
-
 
 ## Remove Unused Points
 *Reference Code*: 11943207
