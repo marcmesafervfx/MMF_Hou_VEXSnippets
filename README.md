@@ -19,7 +19,10 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
-    <summary>Camera Based Management</summary> 
+<summary>Camera Based Management</summary> 
+
+* [`Frustum Camera`](#frustum-camera)
+
 </details>
 <details>
     <summary>Conversion</summary>
@@ -195,6 +198,56 @@ i@cluster = cluster;
 
 // Set cluster value.
 i@cluster = nearpoint(1, v@P);
+```
+
+# Camera Based Management
+## Frustum Camera
+*Reference Code*: 38002708
+
+**frustum_camera**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a default box.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create camera frustum and make available the expansions. """;
+
+// Get camera path to create the frustum from.
+string cam = chs("camera");
+
+// Initialize expansion values (x,y).
+float expand_top = chf("expand_top");
+float expand_bottom = chf("expand_bottom");
+float expand_right = chf("expand_right");
+float expand_left = chf("expand_left");
+
+// Initialize clipping values (z).
+float near_clip = chf("near_clip");
+float far_clip = chf("far_clip");
+
+// Offset position to "convert" box position into normalized
+// coordinates.
+vector offset_pos = set(0.5, 0.5, -0.5);
+vector pos = v@P+offset_pos;
+
+// Apply expansions based on normalized positions.
+if(pos.y==1) pos.y+=expand_top;
+if(pos.y==0) pos.y-=expand_bottom;
+if(pos.x==1) pos.x+=expand_right;
+if(pos.x==0) pos.x-=expand_left;
+
+// Apply clipping based on normalized positions.
+if(pos.z==-1) pos.z-=far_clip;
+if(pos.z==0) pos.z-=near_clip;
+
+// Set position converting from NDC coordinates to world space.
+v@P = fromNDC(cam, pos);
+
+/* In this case we inverted the process. We created an "NDC" and
+we are transforming back to world space. */
 ```
 
 # Geometry Creation
@@ -901,41 +954,6 @@ float dist = distance(pos, v@P);
 f@dist = dist;
 ```
 
-## Vector Along Curve
-*Reference Code*: 72854126
-
-**vector_along_curve**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to the curve.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create tangent based on neighbours in a line. """;
-
-// Get neighbours of current point and capture it's position.
-int neigh[] = neighbours(0, @ptnum);
-vector pos = point(0, "P", neigh[-1]);
-
-// Get direction vector by subtracting the current position to
-// the neighbour one and normalize the vector to get the proper
-// length to work with.
-vector tan = normalize(v@P-pos);
-
-// Check if the current point is equal to the maximum points
-// minus one (ptnum starts from 0) and negate tangent to obtain
-// the opposite direction.
-if(@ptnum==@numpt-1) tan*=-1;
-
-// Set attribute.
-v@tan = tan;
-```
-
-# ORGANIZE
-
-
 > [!NOTE]
 > Use a promote attribute parameter to create a maximum distance value in Detail mode without removing the previous values to follow the next step.
 
@@ -1001,54 +1019,39 @@ for(int pt=0; pt<pts; pt++){
 }
 ```
 
-## Frustum Camera
-*Reference Code*: 38002708
+## Vector Along Curve
+*Reference Code*: 72854126
 
-**frustum_camera**
+**vector_along_curve**
 > [!IMPORTANT]
 > **Mode:** Points.
-> - **Input 0:** connected to a default box.
+> - **Input 0:** connected to the curve.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
 > - **Input 3:** no-connected.
 
 ``` c
-""" Create camera frustum and make available the expansions. """;
+""" Create tangent based on neighbours in a line. """;
 
-// Get camera path to create the frustum from.
-string cam = chs("camera");
+// Get neighbours of current point and capture it's position.
+int neigh[] = neighbours(0, @ptnum);
+vector pos = point(0, "P", neigh[-1]);
 
-// Initialize expansion values (x,y).
-float expand_top = chf("expand_top");
-float expand_bottom = chf("expand_bottom");
-float expand_right = chf("expand_right");
-float expand_left = chf("expand_left");
+// Get direction vector by subtracting the current position to
+// the neighbour one and normalize the vector to get the proper
+// length to work with.
+vector tan = normalize(v@P-pos);
 
-// Initialize clipping values (z).
-float near_clip = chf("near_clip");
-float far_clip = chf("far_clip");
+// Check if the current point is equal to the maximum points
+// minus one (ptnum starts from 0) and negate tangent to obtain
+// the opposite direction.
+if(@ptnum==@numpt-1) tan*=-1;
 
-// Offset position to "convert" box position into normalized
-// coordinates.
-vector offset_pos = set(0.5, 0.5, -0.5);
-vector pos = v@P+offset_pos;
-
-// Apply expansions based on normalized positions.
-if(pos.y==1) pos.y+=expand_top;
-if(pos.y==0) pos.y-=expand_bottom;
-if(pos.x==1) pos.x+=expand_right;
-if(pos.x==0) pos.x-=expand_left;
-
-// Apply clipping based on normalized positions.
-if(pos.z==-1) pos.z-=far_clip;
-if(pos.z==0) pos.z-=near_clip;
-
-// Set position converting from NDC coordinates to world space.
-v@P = fromNDC(cam, pos);
-
-/* In this case we inverted the process. We created an "NDC" and
-we are transforming back to world space. */
+// Set attribute.
+v@tan = tan;
 ```
+
+# ORGANIZE
 
 ## Remove by threshold
 *Reference Code*: 9067034
