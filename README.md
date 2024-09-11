@@ -19,6 +19,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Blur Point Positions`](#blur-point-positions)
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
+* [`Attribute To Group`](#attribute-to-group)
 
 </details>
 <details>
@@ -37,7 +38,6 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>Conversion Management</summary>
 
-* [`Convert Attribute To Group`](#convert-attribute-to-group)
 * [`Convert Group To Attribute`](#convert-group-to-attribute)
 * [`Convert Integer To String`](#convert-integer-to-string)
 * [`Convert String To Float`](#convert-string-to-float)
@@ -356,6 +356,39 @@ float curveu = float(@ptnum)/float(@numpt-1);
 f@curveu = curveu;
 ```
 
+## Attribute To Group
+*Reference Code*: 47201184
+> [!NOTE]
+> This example is being created in order to show how to convert a point string attribute into a point group. You can do the same process for the other geometry types, but you have to make sure that the attribute that you are using is a string.
+
+> [!WARNING]
+> Don't use attributes with a lot of different values... You don't want to get a lot of groups.  
+
+**attr_to_grp**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create checker using ternary conditions. """;
+
+// Set the frequency for the scene.
+float freq = chf("frequency");
+
+// Compute vertical sections.
+v@Cd = (sin(v@P.x*freq)<0)?0:1;
+
+// Add horizontal sections.
+v@Cd += (sin(v@P.z*freq)<0)?0:1;
+
+// Check if there's coincidence and multiply by 0.
+v@Cd *= (v@Cd.r==2)?0:1;
+```
+
+
 # Camera Based Management
 ## Camera Constraint
 *Reference Code*: 67107636
@@ -632,38 +665,6 @@ if(p!=-1 && incheck!=-1){
 }
 ```
 # Conversion Management
-## Convert Attribute To Group
-*Reference Code*: 78120939
-> [!NOTE]
-> This example is being created in order to show how to convert a point string attribute into a point group. You can do the same process for the other geometry types, but you have to make sure that the attribute that you are using is a string.
-
-> [!WARNING]
-> Don't use attributes with a lot of different values... You don't want to get a lot of groups.  
-
-**attr_to_grp**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create checker using ternary conditions. """;
-
-// Set the frequency for the scene.
-float freq = chf("frequency");
-
-// Compute vertical sections.
-v@Cd = (sin(v@P.x*freq)<0)?0:1;
-
-// Add horizontal sections.
-v@Cd += (sin(v@P.z*freq)<0)?0:1;
-
-// Check if there's coincidence and multiply by 0.
-v@Cd *= (v@Cd.r==2)?0:1;
-```
-
 ## Convert Group To Attribute
 *Reference Code*: 29125957
 > [!NOTE]
