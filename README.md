@@ -42,6 +42,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Convert Integer To String`](#convert-integer-to-string)
 * [`Convert String To Float`](#convert-string-to-float)
 * [`From 01 to -11`](#from-01-to--11)
+* [`Group To Array`](#group-to-array)
 * [`Point Cloud To Array`](#point-cloud-to-array)
 
 </details>
@@ -835,6 +836,38 @@ float ramp = fit01(rand, -1, 1);
 
 // Export -1 to 1 values.
 f@rand_vale = ramp;
+```
+
+## Group To Array
+*Reference Code*: 84965172
+> [!NOTE]
+> You can do the same process with different types of geometry. Just remember to modify the corresponding functions and geometry number.
+
+**str_to_grp**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert group string to group. """;
+
+// Get red group string and expand it to get a point array.
+string pt_grp_red = chs("group_red");
+int grp_red[] = expandpointgroup(0, pt_grp_red);
+
+// Get blue group string and expand it to get a point array.
+string pt_grp_blue = chs("group_blue");
+int grp_blue[] = expandpointgroup(0, pt_grp_blue);
+
+// Convert ptnum to float.
+float ptnum = float(@ptnum);
+
+// Check if current ptnum is in the list and set the color.
+if(find(grp_red, ptnum)>=0) v@Cd = {1,0,0};
+if(find(grp_blue, ptnum)>=0) v@Cd = {0,0,1};
 ```
 
 ## Point Cloud To Array
@@ -2875,38 +2908,6 @@ vector final_pos = lerp(v@P, pos, bias);
 
 // Set final position.
 v@P = final_pos;
-```
-
-## String Group To Group
-*Reference Code*: 56503018
-> [!NOTE]
-> You can do the same process with different types of geometry. Just remember to modify the corresponding functions and geometry number.
-
-**str_to_grp**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Convert group string to group. """;
-
-// Get red group string and expand it to get a point array.
-string pt_grp_red = chs("group_red");
-int grp_red[] = expandpointgroup(0, pt_grp_red);
-
-// Get blue group string and expand it to get a point array.
-string pt_grp_blue = chs("group_blue");
-int grp_blue[] = expandpointgroup(0, pt_grp_blue);
-
-// Convert ptnum to float.
-float ptnum = float(@ptnum);
-
-// Check if current ptnum is in the list and set the color.
-if(find(grp_red, ptnum)>=0) v@Cd = {1,0,0};
-if(find(grp_blue, ptnum)>=0) v@Cd = {0,0,1};
 ```
 
 ## Group Expand
