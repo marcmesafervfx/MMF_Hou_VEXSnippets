@@ -113,6 +113,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Dihedral Offset`](#dihedral-offset)
 * [`Edge Rotation Based`](#edge-rotation-based)
 * [`Extract Transform`](#extract-transform)
+* [`Peak Geometry`](#peak-geometry)
 * [`Recreate Bend Behaviour`](#recreate-bend-behaviour)
 * [`Smooth Geometry`](#smooth-geometry)
 * [`Sprite Orientation`](#sprite-orientation)
@@ -2936,6 +2937,30 @@ v@P*=xform;
 v@N*=matrix3(xform);
 ```
 
+## Peak Geometry
+*Reference Code*: 92501258
+
+**peak**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Peak object using normals. """;
+
+// Get peak value.
+float peak = chf("peak");
+
+// Mult normals and peak value.
+vector push = v@N*peak;
+
+// Add peak.
+v@P+=push;
+```
+
 ## Recreate Bend Behaviour
 *Reference Code*: 35046837
 
@@ -3907,30 +3932,6 @@ vector grad = volumegradient(1, 0, v@P);
 
 // Push points.
 if(dist<0.001) v@P -= normalize(grad)*dist;
-```
-
-## Peak Geometry
-*Reference Code*: 92501258
-
-**peak**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Peak object using normals. """;
-
-// Get peak value.
-float peak = chf("peak");
-
-// Mult normals and peak value.
-vector push = v@N*peak;
-
-// Add peak.
-v@P+=push;
 ```
 
 ## Carve Primitive
