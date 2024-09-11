@@ -83,6 +83,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Group Expand`](#group-expand)
 * [`Name Pattern To Group`](#name-pattern-to-group)
 * [`Remove Groups`](#remove-groups)
+* [`Remove Unused Groups`](#remove-unused-groups)
 
 </details>
 <details>
@@ -2139,6 +2140,33 @@ foreach(string grp; grp_list){
 }
 ```
 
+## Remove Unused Groups
+*Reference Code*: 98260679
+
+**remove_unused_grps**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove unused groups. """;
+
+// Get point groups and remove if number of items is 0.
+string pt_grps[] = detailintrinsic(0, "pointgroups");
+foreach(string grp; pt_grps) (npointsgroup(0, grp)==0)? removepointgroup(0, grp): 1;
+
+// Get prim groups and remove if number of items is 0.
+string prim_grps[] = detailintrinsic(0, "primitivegroups");
+foreach(string grp; prim_grps) (nprimitivesgroup(0, grp)==0)? removeprimgroup(0, grp): 1;
+
+// Get vertex groups and remove if number of items is 0.
+string vxt_grps[] = detailintrinsic(0, "vertexgroups");
+foreach(string grp; vxt_grps) (nverticesgroup(0, grp)==0)? removevertexgroup(0, grp): 1;
+```
+
 # Lens Shader
 ## STMap Lens Shader
 *Reference Code*: 77666090
@@ -3351,33 +3379,6 @@ vector4 color = colormap(base_color, uv);
 // Export color and Alpha.
 v@Cd = vector(color);
 f@Alpha = color.a;
-```
-
-## Remove Unused Groups
-*Reference Code*: 98260679
-
-**remove_unused_grps**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Remove unused groups. """;
-
-// Get point groups and remove if number of items is 0.
-string pt_grps[] = detailintrinsic(0, "pointgroups");
-foreach(string grp; pt_grps) (npointsgroup(0, grp)==0)? removepointgroup(0, grp): 1;
-
-// Get prim groups and remove if number of items is 0.
-string prim_grps[] = detailintrinsic(0, "primitivegroups");
-foreach(string grp; prim_grps) (nprimitivesgroup(0, grp)==0)? removeprimgroup(0, grp): 1;
-
-// Get vertex groups and remove if number of items is 0.
-string vxt_grps[] = detailintrinsic(0, "vertexgroups");
-foreach(string grp; vxt_grps) (nverticesgroup(0, grp)==0)? removevertexgroup(0, grp): 1;
 ```
 
 ## Flow Vector
