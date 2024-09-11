@@ -23,6 +23,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
 * [`Group To Attribute`](#group-to-attribute)
+* [`Normalized Point Density`](#normalized-point-density)
 * [`Point Attribute Transfer`](#point-attribute-transfer)
 * [`Remove Attributes`](#remove-attributes)
 * [`UDIM Connectivity`](#udim-connectivity)
@@ -524,6 +525,35 @@ foreach(string grp; grps){
     // Check if point in point group and create attribute if so.
     if(inpointgroup(0, grp, @ptnum)) setpointattrib(0, grp, @ptnum, 1);
 }
+```
+
+## Normalized Point Density
+*Reference Code*: 35108816
+
+**pt_density**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute normalized point density. """;
+
+// Get maximum points and radius to compute density.
+int maxpts = chi('max_points');
+float rad = chf('radius');
+
+// Get nearpoints from first input and remove current value.
+int pts[] = nearpoints(0, v@P, rad, maxpts);
+removevalue(pts, @ptnum);
+
+// Compute normalized density value based on maxpoints.
+float density = len(pts)/float(maxpts-1);
+
+// Export density attribute.
+f@density = density;
 ```
 
 ## Point Attribute Transfer
@@ -3787,35 +3817,6 @@ if(@Frame==10){
     // Print formatted string.
     printf("This condition runs at frame %d.", @Frame);
 }
-```
-
-## Normalized Point Density
-*Reference Code*: 35108816
-
-**pt_density**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute normalized point density. """;
-
-// Get maximum points and radius to compute density.
-int maxpts = chi('max_points');
-float rad = chf('radius');
-
-// Get nearpoints from first input and remove current value.
-int pts[] = nearpoints(0, v@P, rad, maxpts);
-removevalue(pts, @ptnum);
-
-// Compute normalized density value based on maxpoints.
-float density = len(pts)/float(maxpts-1);
-
-// Export density attribute.
-f@density = density;
 ```
 
 ## Inset Primitive
