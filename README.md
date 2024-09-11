@@ -96,6 +96,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Carve Primitive`](#carve-primitive)
 * [`Fix Primitive Overlap`](#fix-primitive-overlap)
+* [`Remove By Speed`](#remove-by-speed)
 * [`Remove By Threshold`](#remove-by-threshold)
 
 </details>
@@ -2518,6 +2519,30 @@ foreach(int prim; prim_lst){
 }
 ```
 
+## Remove By Speed
+*Reference Code*: 26542349
+
+**remove_speed**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to points with v@v attribute.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove based on speed. """;
+
+// Get speed threshold.
+float speed_thr = chf("speed_threshold");
+
+// Compute speed.
+float speed = length(v@v);
+
+// Remove based on speed.
+if(speed<speed_thr)removepoint(0, @ptnum);
+```
+
 ## Remove By Threshold
 *Reference Code*: 30331484
 > [!NOTE]
@@ -4261,30 +4286,6 @@ v@P = def_pos*xform;
 ```
 
 # ORGANIZE
-
-## Remove By Speed Threshold
-*Reference Code*: 9971578
-
-**remove_speed**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to points with v@v attribute.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Remove based on speed. """;
-
-// Get speed threshold.
-float speed_thr = chf("speed_threshold");
-
-// Compute speed.
-float speed = length(v@v);
-
-// Remove based on speed.
-if(speed<speed_thr)removepoint(0, @ptnum);
-```
 
 ## Remove Unused Points
 *Reference Code*: 11943207
