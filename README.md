@@ -45,6 +45,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Convert Integer To String`](#convert-integer-to-string)
 * [`Convert String To Float`](#convert-string-to-float)
+* [`Degrees To Dot Value`](#degrees-to-dot-value)
 * [`From 01 to -11`](#from-01-to--11)
 
 </details>
