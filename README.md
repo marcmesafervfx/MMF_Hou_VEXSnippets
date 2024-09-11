@@ -16,6 +16,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Blur Point Positions`](#blur-point-positions)
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
+* [`Compute Curveu From Line`](#compute-curveu-from-line)
 
 </details>
 <details>
@@ -199,6 +200,27 @@ i@cluster = cluster;
 
 // Set cluster value.
 i@cluster = nearpoint(1, v@P);
+```
+
+## Compute Curveu From Line
+*Reference Code*: 49138898
+
+**curveu**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a polyline.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute curveu. """;
+
+// Compute curveu based on amount of points and current ptnum.
+float curveu = float(@ptnum)/float(@numpt-1); 
+
+// Set value.
+f@curveu = curveu;
 ```
 
 # Camera Based Management
@@ -1106,27 +1128,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Compute Curveu From Line
-*Reference Code*: 49138898
-
-**curveu**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a polyline.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute curveu. """;
-
-// Compute curveu based on amount of points and current ptnum.
-float curveu = float(@ptnum)/float(@numpt-1); 
-
-// Set value.
-f@curveu = curveu;
 ```
 
 ## Angle Between Two Vectors
