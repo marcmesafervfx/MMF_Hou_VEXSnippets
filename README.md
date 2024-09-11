@@ -90,6 +90,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Transformation Management </summary>
 
 * [`Basic Transform With Matrix`](#basic-transform-with-matrix)
+* [`Dihedral Offset`](#dihedral-offset)
 * [`Extract Transform`](#extract-transform)
 
 </details>
@@ -1889,6 +1890,32 @@ translate(orig_matrix, trans);
 v@P*=orig_matrix;
 ```
 
+## Dihedral Offset
+*Reference Code*: 29263487
+> [!NOTE]
+> In the example, the normal is used to compute the offset matrix. You can eventually use your custom attribute just by changing the corresponding variable values.
+
+**compute_offset_matrix**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a rest geometry.
+> - **Input 1:** connected to a deformed geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute rotation offset matrix. """;
+
+// Get the up vector from input 1.
+vector N = v@opinput1_N;
+
+// Compute offset rotation with dihedral.
+matrix3 rot_offset = dihedral(v@N, N);
+
+// Store offset matrix.
+3@rot = rot_offset;
+```
+
 ## Extract Transform
 *Reference Code*: 30376309
 > [!NOTE]
@@ -2436,32 +2463,6 @@ xaxis = chramp("axis", xaxis);
 
 // Set color.
 v@Cd = xaxis;
-```
-
-## Dihedral Offset
-*Reference Code*: 29263487
-> [!NOTE]
-> In the example, the normal is used to compute the offset matrix. You can eventually use your custom attribute just by changing the corresponding variable values.
-
-**compute_offset_matrix**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a rest geometry.
-> - **Input 1:** connected to a deformed geometry.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute rotation offset matrix. """;
-
-// Get the up vector from input 1.
-vector N = v@opinput1_N;
-
-// Compute offset rotation with dihedral.
-matrix3 rot_offset = dihedral(v@N, N);
-
-// Store offset matrix.
-3@rot = rot_offset;
 ```
 
 ## Primitive Dimensions
