@@ -77,7 +77,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary> Group Management </summary>
 
-* [`Unshared Points`](#unshared-points)
+* [`Group Unshared Points`](#group-unshared-points)
 
 </details>
 <details>
@@ -1734,8 +1734,8 @@ printf("This is an example of how you would print a %% sign: %%\n\n", 1);
 ```
 
 # Group Management
-## Unshared Points
-*Reference Code*: 82391305
+## Group Unshared Points
+*Reference Code*: 25639790
 
 **unshared_points**
 > [!IMPORTANT]
