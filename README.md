@@ -50,7 +50,10 @@ This repository is designated to be a place where I put some of the VEX snippets
     <summary> Transformation Management </summary>
 </details>
 <details>
-    <summary> Vectorial Management </summary>
+<summary> Vectorial Management </summary>
+
+* [`Vector Along Curve`](#vector-along-curve)
+
 </details>
 <details>
     <summary> Water Deformers </summary>
@@ -738,7 +741,7 @@ for(int i=0; i<len(first_prim); i++){
 }
 
 ```
-
+# Vectorial Management
 ## Vector Along Curve
 *Reference Code*: 72854126
 
@@ -770,6 +773,8 @@ if(@ptnum==@numpt-1) tan*=-1;
 // Set attribute.
 v@tan = tan;
 ```
+
+# ORGANIZE
 
 ## Blur Point Positions
 *Reference Code*: 26692791
