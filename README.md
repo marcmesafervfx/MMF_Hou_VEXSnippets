@@ -80,8 +80,9 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Group Management </summary>
 
 * [`Attribute To Group`](#attribute-to-group)
-* [`Group Unshared Points`](#group-unshared-points)
 * [`Group Expand`](#group-expand)
+* [`Group Flat Edges`](#group-flat-edges)
+* [`Group Unshared Points`](#group-unshared-points)
 * [`Name Pattern To Group`](#name-pattern-to-group)
 * [`Remove Groups`](#remove-groups)
 * [`Remove Unused Groups`](#remove-unused-groups)
@@ -2060,6 +2061,74 @@ if(find(prims, @primnum)>=0){
 }
 ```
 
+## Group Flat Edges
+*Reference Code*: 50168045
+
+**flat_edges**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Group flat edges. """;
+
+// Get number of points for current primitive.
+int npts = len(primpoints(0, @primnum));
+
+// Get first half edge.
+int hedge = primhedge(0, @primnum);
+
+// Iterate for each of the prim points.
+for(int i=0; i<npts; i++){
+    
+    // Get next equivalent half edge and its primitive.
+    int next_equiv = hedge_nextequiv(0, hedge);
+    int prim = hedge_prim(0, next_equiv);
+    
+    // Get equivalent edge prim position.
+    vector equiv_pos = prim(0, "P", prim);
+    
+    // Get source and destiny points.
+    int src_pt = hedge_srcpoint(0, hedge);
+    int dst_pt = hedge_dstpoint(0, hedge);
+    
+    // Get position from source and destiny positions.
+    vector src_pos = point(0, "P", src_pt);
+    vector dst_pos = point(0, "P", dst_pt);
+    
+    // Get the middle point between destiny and source.
+    vector mid_pt = (dst_pos+src_pos)/2;
+    
+    // Get edge direction vector.
+    vector hedge_dir = normalize(dst_pos-src_pos);
+    
+    // Get get prim and equiv prim direction vector.
+    vector prim_dir = normalize(equiv_pos-v@P);
+    
+    // Compute the cross vector between half edge dir and prim dir.
+    vector ref_vec = normalize(cross(hedge_dir, prim_dir));
+    
+    // Get direction vector between edge mid point, current position 
+    // and equivalent prim position.
+    vector curr_vec = normalize(mid_pt-v@P);
+    vector equiv_vec = normalize(mid_pt-equiv_pos);    
+    
+    // Check the dot product using the reference vector. 
+    // 0.01 is used as a threshold value because dot product outputs really small values.
+    if(abs(dot(ref_vec, curr_vec))<0.01 && abs(dot(ref_vec, equiv_vec))<0.01){
+        
+        // Set edge group using source and destiny points.
+        setedgegroup(0, "flat_edge", src_pt, dst_pt, 1);
+    }
+    
+    // Update to next half edge.
+    hedge = hedge_next(0, hedge);
+}
+```
+
 ## Group Unshared Points
 *Reference Code*: 25639790
 
@@ -3458,74 +3527,6 @@ int count = neighbourcount(0, @ptnum);
 
 // Remove point if count is 0.
 if(count==0) removepoint(0, @ptnum);
-```
-
-## Group Flat Edges
-*Reference Code*: 50168045
-
-**flat_edges**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Group flat edges. """;
-
-// Get number of points for current primitive.
-int npts = len(primpoints(0, @primnum));
-
-// Get first half edge.
-int hedge = primhedge(0, @primnum);
-
-// Iterate for each of the prim points.
-for(int i=0; i<npts; i++){
-    
-    // Get next equivalent half edge and its primitive.
-    int next_equiv = hedge_nextequiv(0, hedge);
-    int prim = hedge_prim(0, next_equiv);
-    
-    // Get equivalent edge prim position.
-    vector equiv_pos = prim(0, "P", prim);
-    
-    // Get source and destiny points.
-    int src_pt = hedge_srcpoint(0, hedge);
-    int dst_pt = hedge_dstpoint(0, hedge);
-    
-    // Get position from source and destiny positions.
-    vector src_pos = point(0, "P", src_pt);
-    vector dst_pos = point(0, "P", dst_pt);
-    
-    // Get the middle point between destiny and source.
-    vector mid_pt = (dst_pos+src_pos)/2;
-    
-    // Get edge direction vector.
-    vector hedge_dir = normalize(dst_pos-src_pos);
-    
-    // Get get prim and equiv prim direction vector.
-    vector prim_dir = normalize(equiv_pos-v@P);
-    
-    // Compute the cross vector between half edge dir and prim dir.
-    vector ref_vec = normalize(cross(hedge_dir, prim_dir));
-    
-    // Get direction vector between edge mid point, current position 
-    // and equivalent prim position.
-    vector curr_vec = normalize(mid_pt-v@P);
-    vector equiv_vec = normalize(mid_pt-equiv_pos);    
-    
-    // Check the dot product using the reference vector. 
-    // 0.01 is used as a threshold value because dot product outputs really small values.
-    if(abs(dot(ref_vec, curr_vec))<0.01 && abs(dot(ref_vec, equiv_vec))<0.01){
-        
-        // Set edge group using source and destiny points.
-        setedgegroup(0, "flat_edge", src_pt, dst_pt, 1);
-    }
-    
-    // Update to next half edge.
-    hedge = hedge_next(0, hedge);
-}
 ```
 
 ## Degrees To Dot Value
