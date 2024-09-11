@@ -124,6 +124,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Timing Management </summary>
 
 * [`Pump Motion Attribute`](#pump-motion-attribute)
+* [`Run At Frame`](#run-at-frame)
 
 </details>
 <details>
@@ -3079,6 +3080,30 @@ pump = spline(array("linear"), pump, array(0, 1, 0, 1), array(0, 0.75, 0.9, 1));
 v@Cd = pump;
 ```
 
+## Run At Frame
+*Reference Code*: 87482557
+> [!NOTE]
+> This code is created to show how you can set up a condition using the @Frame. You can use it in different contexts, types of geometry and in more complex conditionals.
+
+**run_at_frame**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Run code at specific frame. """;
+
+// If frame is equal to 10, run the code.
+if(@Frame==10){
+    
+    // Print formatted string.
+    printf("This condition runs at frame %d.", @Frame);
+}
+```
+
 # Transformation And Deformation Management
 ## Advanced Point Deform
 *Reference Code*: 209363
@@ -4357,28 +4382,3 @@ vector def_pos = new_pos*wave_m;
 v@P = def_pos*xform;
 ```
 
-# ORGANIZE
-
-## Run At Frame
-*Reference Code*: 87482557
-> [!NOTE]
-> This code is created to show how you can set up a condition using the @Frame. You can use it in different contexts, types of geometry and in more complex conditionals.
-
-**run_at_frame**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Run code at specific frame. """;
-
-// If frame is equal to 10, run the code.
-if(@Frame==10){
-    
-    // Print formatted string.
-    printf("This condition runs at frame %d.", @Frame);
-}
-```
