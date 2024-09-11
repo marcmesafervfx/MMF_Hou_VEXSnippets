@@ -37,6 +37,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Create Grid`](#create-grid)
 * [`Create Hanging Catenary Wire`](#create-hanging-catenary-wire)
 * [`Create Line`](#create-line)
+* [`Create Primitive Centroid`](#create-primitive-centroid)
 * [`Create Sphere`](#create-sphere)
 * [`Create Spiral`](#create-spiral)
 * [`Create Spring`](#create-spring)
@@ -549,6 +550,30 @@ for(int i=0; i<points; i++){
 
 // Create poly line using point array.
 addprim(0, "polyline", pts);
+```
+
+## Create Primitive Centroid
+*Reference Code*: 68118455
+
+**primitive_centroid**
+> [!IMPORTANT]
+> **Mode:** Primitive.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute bbox center. """;
+
+// Get bounding box center.
+vector pos = v@P;
+
+// Create point using the computed position.
+addpoint(0, pos);
+
+// Remove unused primitive.
+removeprim(0, @primnum, 1);
 ```
 
 ## Create Sphere
@@ -1081,31 +1106,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-
-## Primitive Centroid
-*Reference Code*: 39725183
-
-**primitive_centroid**
-> [!IMPORTANT]
-> **Mode:** Primitive.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute bbox center. """;
-
-// Get bounding box center.
-vector pos = v@P;
-
-// Create point using the computed position.
-addpoint(0, pos);
-
-// Remove unused primitive.
-removeprim(0, @primnum, 1);
 ```
 
 ## Compute Curveu From Line
