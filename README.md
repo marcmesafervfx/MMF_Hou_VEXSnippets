@@ -42,7 +42,10 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
-    <summary> Geometry Reporters </summary>
+<summary> Geometry Reporters </summary>
+
+* [`NGon Detector`](#ngon-detector)
+
 </details>
 <details>
     <summary> Group Management </summary>
@@ -843,6 +846,33 @@ for(int i=0; i<len(first_prim); i++){
 }
 
 ```
+
+# Geometry Reporter
+## NGon Detector
+*Reference Code*: 50655883
+
+**ngon_detector**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Group ngons to fix them later. """;
+
+// Detect amount of points composing each primitive.
+int pts[] = primpoints(0, i@primnum);
+
+// Check if length of the array is bigger than 4.
+if(len(pts)>4){
+    
+    // Set point group.
+    setprimgroup(0, "ngons", i@primnum, 1);
+}
+```
+
 # Vectorial Management
 ## Vector Along Curve
 *Reference Code*: 72854126
@@ -878,30 +908,7 @@ v@tan = tan;
 
 # ORGANIZE
 
-## NGon Detector
-*Reference Code*: 50655883
 
-**ngon_detector**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Group ngons to fix them later. """;
-
-// Detect amount of points composing each primitive.
-int pts[] = primpoints(0, i@primnum);
-
-// Check if length of the array is bigger than 4.
-if(len(pts)>4){
-    
-    // Set point group.
-    setprimgroup(0, "ngons", i@primnum, 1);
-}
-```
 
 ## Normalize Distance
 *Reference Code*: 89906276
