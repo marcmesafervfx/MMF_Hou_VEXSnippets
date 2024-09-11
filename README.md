@@ -111,6 +111,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Vectorial Management </summary>
 
 * [`Angle Between Two Vectors`](#angle-between-two-vectors)
+* [`Flow Vector`](#flow-vector)
 * [`Normalize Distance`](#normalize-distance)
 * [`Two Vector Intersect`](#two-vector-intersect)
 * [`Vector Along Curve`](#vector-along-curve)
@@ -2666,6 +2667,38 @@ float full_angle = (int(sign(dot(axis, stable_axis)))==-1)? angle:360-angle;
 f@angle = full_angle;
 ```
 
+## Flow Vector
+*Reference Code*: 66138567
+> [!NOTE]
+> Note that you have a flow_vector_type parameter that allows you to choose between two different flow vectors.
+
+**flow_vector**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute flow vectors from object. """;
+
+// Get type of flow vector.
+int type = chi("flow_vector_type");
+
+// Initialize up vector and y axis.
+vector up = {0,1,0};
+vector yaxis = v@N;
+
+// Compute xaxis and zaxis using cross product.
+vector xaxis = normalize((cross(yaxis, up)));
+vector zaxis = normalize((cross(yaxis, xaxis)));
+
+// Export directional vector.
+v@dir = (type)? zaxis:xaxis;
+
+```
+
 ## Normalize Distance
 *Reference Code*: 89906276
 > [!NOTE]
@@ -3511,38 +3544,6 @@ vector final_pos = lerp(v@P, pos, bias);
 
 // Set final position.
 v@P = final_pos;
-```
-
-## Flow Vector
-*Reference Code*: 66138567
-> [!NOTE]
-> Note that you have a flow_vector_type parameter that allows you to choose between two different flow vectors.
-
-**flow_vector**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute flow vectors from object. """;
-
-// Get type of flow vector.
-int type = chi("flow_vector_type");
-
-// Initialize up vector and y axis.
-vector up = {0,1,0};
-vector yaxis = v@N;
-
-// Compute xaxis and zaxis using cross product.
-vector xaxis = normalize((cross(yaxis, up)));
-vector zaxis = normalize((cross(yaxis, xaxis)));
-
-// Export directional vector.
-v@dir = (type)? zaxis:xaxis;
-
 ```
 
 ## Normalize Point Positions
