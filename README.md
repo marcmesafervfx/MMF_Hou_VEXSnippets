@@ -63,7 +63,10 @@ This repository is designated to be a place where I put some of the VEX snippets
     <summary> Lens Shader </summary>
 </details>
 <details>
-    <summary> Transformation Management </summary>
+<summary> Transformation Management </summary>
+
+* [`Basic Transform With Matrix`](#basic-transform-with-matrix)
+
 </details>
 <details>
 <summary> Vectorial Management </summary>
@@ -1112,6 +1115,44 @@ for(int i=0; i<pts; i++){
 }
 ```
 
+# Transformation Management
+## Basic Transform With Matrix
+*Reference Code*: 32956689
+**transform**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Transform object based on input values.""";
+
+// Initialize world space matrix.
+matrix orig_matrix = ident();
+
+// Create scale vector and transform matrix.
+vector scale = chv("scale");
+scale(orig_matrix, scale);
+
+// Create rotation vector.
+vector rot = chv("rotation");
+
+// Rotate function uses radians, so we convert degrees to radians.
+// Value 1 stands for X. Value 2 stands for Y. Value 4 stands for Z.
+rotate(orig_matrix, radians(rot.x), 1);
+rotate(orig_matrix, radians(rot.y), 2);
+rotate(orig_matrix, radians(rot.z), 4);
+
+// Create translate vector and transform matrix.
+vector trans = chv("translation");
+translate(orig_matrix, trans);
+
+// Set transformations.
+v@P*=orig_matrix;
+```
+
 # Vectorial Management
 ## Angle Between Two Vectors
 *Reference Code*: 89221217
@@ -1299,43 +1340,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Basic Transform With Matrix
-*Reference Code*: 32956689
-**transform**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Transform object based on input values.""";
-
-// Initialize world space matrix.
-matrix orig_matrix = ident();
-
-// Create scale vector and transform matrix.
-vector scale = chv("scale");
-scale(orig_matrix, scale);
-
-// Create rotation vector.
-vector rot = chv("rotation");
-
-// Rotate function uses radians, so we convert degrees to radians.
-// Value 1 stands for X. Value 2 stands for Y. Value 4 stands for Z.
-rotate(orig_matrix, radians(rot.x), 1);
-rotate(orig_matrix, radians(rot.y), 2);
-rotate(orig_matrix, radians(rot.z), 4);
-
-// Create translate vector and transform matrix.
-vector trans = chv("translation");
-translate(orig_matrix, trans);
-
-// Set transformations.
-v@P*=orig_matrix;
 ```
 
 ## Extract Transform
