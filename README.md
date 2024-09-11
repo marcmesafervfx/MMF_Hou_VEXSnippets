@@ -119,6 +119,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Vectorial Management </summary>
 
 * [`Angle Between Two Vectors`](#angle-between-two-vectors)
+* [`Cone Vector From Position`](#cone-vector-from-position)
 * [`Flow Vector`](#flow-vector)
 * [`Flow Vector Reference Point`](#flow-vector-reference-point)
 * [`Normalize Distance`](#normalize-distance)
@@ -2962,6 +2963,46 @@ float full_angle = (int(sign(dot(axis, stable_axis)))==-1)? angle:360-angle;
 f@angle = full_angle;
 ```
 
+## Cone Vector From Position
+*Reference Code*: 14266560
+
+**cone_vector**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry with v@N attribute.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create cone vector based on reference center. """;
+
+// Get center, cone_direction and max angle. 
+vector cent = chv("center");
+vector yaxis = normalize(chv("cone_direction"));
+float max_angle = chf("max_angle");
+
+// Compute direction from current point to center.
+vector dir = normalize(v@P-cent);
+
+// Compute zaxis by crossing dir and cone direction.
+vector zaxis = normalize(cross(dir, yaxis));
+
+// Create matrix using direction and yaxis.
+matrix3 rot = maketransform(zaxis, yaxis);
+
+// Rotate matrix by maximum angle.
+rotate(rot, radians(-max_angle), zaxis);
+
+// Subtract yaxis.
+vector final_dir = set(getcomp(rot, 1, 0),
+                       getcomp(rot, 1, 1),
+                       getcomp(rot, 1, 2));
+
+// Export direction vector.
+v@dir = final_dir;
+```
+
 ## Flow Vector
 *Reference Code*: 66138567
 > [!NOTE]
@@ -4245,46 +4286,6 @@ for(int i = 0; i < iter; i++){
 // Export color ambient occlusion dividing the occlusion value by the iterations.
 // Then, fit values to contrast the color attribute.
 v@Cd = fit(1-occ/iter, src_min, src_max, 0, 1);
-```
-
-## Cone Vector From Position
-*Reference Code*: 14266560
-
-**cone_vector**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry with v@N attribute.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create cone vector based on reference center. """;
-
-// Get center, cone_direction and max angle. 
-vector cent = chv("center");
-vector yaxis = normalize(chv("cone_direction"));
-float max_angle = chf("max_angle");
-
-// Compute direction from current point to center.
-vector dir = normalize(v@P-cent);
-
-// Compute zaxis by crossing dir and cone direction.
-vector zaxis = normalize(cross(dir, yaxis));
-
-// Create matrix using direction and yaxis.
-matrix3 rot = maketransform(zaxis, yaxis);
-
-// Rotate matrix by maximum angle.
-rotate(rot, radians(-max_angle), zaxis);
-
-// Subtract yaxis.
-vector final_dir = set(getcomp(rot, 1, 0),
-                       getcomp(rot, 1, 1),
-                       getcomp(rot, 1, 2));
-
-// Export direction vector.
-v@dir = final_dir;
 ```
 
 ## Sample Sphere
