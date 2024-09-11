@@ -64,6 +64,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary> Vectorial Management </summary>
 
+* [`Angle Between Two Vectors`](#angle-between-two-vectors)
 * [`Normalize Distance`](#normalize-distance)
 * [`Vector Along Curve`](#vector-along-curve)
 
@@ -975,6 +976,39 @@ if(len(pts)>4){
 ```
 
 # Vectorial Management
+## Angle Between Two Vectors
+*Reference Code*: 89221217
+> [!NOTE]
+> In the example code, the v@up and the v@axis are computed already. If you need to compute the angle between two other vectors or other attributes, you can susbtitute the value of the up and axis variables.
+
+**angle_vectors**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute angle between two vectors. """;
+
+// Initialize values.
+vector up = v@up;
+vector axis = v@axis;
+
+// Get angle between two vectors.
+float angle = degrees(acos(dot(up, axis)));
+
+// Compute stable axis to check for values over 180.
+vector stable_axis = normalize(cross(up, cross({0,1,0}, up)));
+
+// Compute full 360 angle. 
+float full_angle = (int(sign(dot(axis, stable_axis)))==-1)? angle:360-angle;
+
+// Set angle value.
+f@angle = full_angle;
+```
+
 ## Normalize Distance
 *Reference Code*: 89906276
 > [!NOTE]
@@ -1128,39 +1162,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Angle Between Two Vectors
-*Reference Code*: 89221217
-> [!NOTE]
-> In the example code, the v@up and the v@axis are computed already. If you need to compute the angle between two other vectors or other attributes, you can susbtitute the value of the up and axis variables.
-
-**angle_vectors**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute angle between two vectors. """;
-
-// Initialize values.
-vector up = v@up;
-vector axis = v@axis;
-
-// Get angle between two vectors.
-float angle = degrees(acos(dot(up, axis)));
-
-// Compute stable axis to check for values over 180.
-vector stable_axis = normalize(cross(up, cross({0,1,0}, up)));
-
-// Compute full 360 angle. 
-float full_angle = (int(sign(dot(axis, stable_axis)))==-1)? angle:360-angle;
-
-// Set angle value.
-f@angle = full_angle;
 ```
 
 ## Unshared Points
