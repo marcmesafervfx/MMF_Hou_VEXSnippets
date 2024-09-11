@@ -96,6 +96,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Basic Transform With Matrix`](#basic-transform-with-matrix)
 * [`Dihedral Offset`](#dihedral-offset)
+* [`Edge Rotation Based`](#edge-rotation-based)
 * [`Extract Transform`](#extract-transform)
 * [`Sprite Orientation`](#sprite-orientation)
 
@@ -2244,6 +2245,77 @@ matrix3 rot_offset = dihedral(v@N, N);
 3@rot = rot_offset;
 ```
 
+## Edge Rotation Based
+*Reference Code*: 28567025
+> [!TIP]
+> You can add some additional logic to set up the edge that should be rotated. In this example, the rotation is done using the first half-edge.
+
+**rot_edge**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a 479350 unique_points wrangle that is connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Rotate using the edge. """;
+
+// Get degrees of rotation for the primitive.
+float degrees = chf("degrees");
+
+// Get prim points get number of maximum possible edges.
+int pts[] = primpoints(0, @primnum);
+int next_edge = clamp(chi("next_edge"), 0, len(pts)-1);
+
+// Initialize half edge.
+int hedge = primhedge(0, @primnum);
+
+// Update half edge if user inputs next edge. 
+for(int p=0; p<next_edge; p++){
+    hedge = hedge_next(0, hedge);
+}
+
+// Iterate for each prim point. 
+foreach(int pt; pts){
+    
+    // Get original position for current point.
+    vector orig_pos = point(0, "P", pt);
+    
+    // Get source and destiny half edge points.
+    int src_num = hedge_srcpoint(0, hedge);
+    int dst_num = hedge_dstpoint(0, hedge);
+    
+    // Get source and destiny half edge point positions.
+    vector src_pos = point(0, "P", src_num);
+    vector dst_pos = point(0, "P", dst_num);
+    
+    // Compute rotation direction. 
+    vector dir = normalize(dst_pos-src_pos);
+    
+    // Compute middle edge position.
+    vector mid_pos = (src_pos+dst_pos)/2;
+    
+    // Initialize matrix.
+    matrix xform = ident();
+    
+    // Transform points to the center of the world.
+    translate(xform, -mid_pos);
+    
+    // Rotate points based on angle.
+    rotate(xform, radians(degrees), dir);
+    
+    // Transform points back to the original position.
+    translate(xform, mid_pos);
+    
+    // Add new transformation to original position.
+    vector pos = orig_pos*xform;
+    
+    // Export point position.
+    setpointattrib(0, "P", pt, pos);
+}
+```
+
 ## Extract Transform
 *Reference Code*: 30376309
 > [!NOTE]
@@ -3938,77 +4010,6 @@ pump = spline(array("linear"), pump, array(0, 1, 0, 1), array(0, 0.75, 0.9, 1));
 
 // Export color pump attribute.
 v@Cd = pump;
-```
-
-## Edge Rotation Based
-*Reference Code*: 28567025
-> [!TIP]
-> You can add some additional logic to set up the edge that should be rotated. In this example, the rotation is done using the first half-edge.
-
-**rot_edge**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a 479350 unique_points wrangle that is connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Rotate using the edge. """;
-
-// Get degrees of rotation for the primitive.
-float degrees = chf("degrees");
-
-// Get prim points get number of maximum possible edges.
-int pts[] = primpoints(0, @primnum);
-int next_edge = clamp(chi("next_edge"), 0, len(pts)-1);
-
-// Initialize half edge.
-int hedge = primhedge(0, @primnum);
-
-// Update half edge if user inputs next edge. 
-for(int p=0; p<next_edge; p++){
-    hedge = hedge_next(0, hedge);
-}
-
-// Iterate for each prim point. 
-foreach(int pt; pts){
-    
-    // Get original position for current point.
-    vector orig_pos = point(0, "P", pt);
-    
-    // Get source and destiny half edge points.
-    int src_num = hedge_srcpoint(0, hedge);
-    int dst_num = hedge_dstpoint(0, hedge);
-    
-    // Get source and destiny half edge point positions.
-    vector src_pos = point(0, "P", src_num);
-    vector dst_pos = point(0, "P", dst_num);
-    
-    // Compute rotation direction. 
-    vector dir = normalize(dst_pos-src_pos);
-    
-    // Compute middle edge position.
-    vector mid_pos = (src_pos+dst_pos)/2;
-    
-    // Initialize matrix.
-    matrix xform = ident();
-    
-    // Transform points to the center of the world.
-    translate(xform, -mid_pos);
-    
-    // Rotate points based on angle.
-    rotate(xform, radians(degrees), dir);
-    
-    // Transform points back to the original position.
-    translate(xform, mid_pos);
-    
-    // Add new transformation to original position.
-    vector pos = orig_pos*xform;
-    
-    // Export point position.
-    setpointattrib(0, "P", pt, pos);
-}
 ```
 
 ## Infrared From Float Attribute
