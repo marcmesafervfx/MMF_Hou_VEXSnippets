@@ -37,6 +37,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Convert Attribute To Group`](#convert-attribute-to-group)
 * [`Convert Group To Attribute`](#convert-group-to-attribute)
+* [`Convert Integer To String`](#convert-integer-to-string)
 * [`Point Cloud To Array`](#point-cloud-to-array)
 
 </details>
@@ -614,6 +615,35 @@ foreach(string grp; grps){
     // Check if point in point group and create attribute if so.
     if(inpointgroup(0, grp, @ptnum)) setpointattrib(0, grp, @ptnum, 1);
 }
+```
+
+## Convert Integer To String
+*Reference Code*: 44470061
+> [!NOTE]
+> This example is being created in order to show how we can convert integers into strings, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
+
+> [!TIP]
+> You can use that snippet inputting the interations of a loop. For example, that would help you out to create proper naming for fracturing pieces.
+
+**int_to_str**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert integer values into strings. """;
+
+// Create or import the integer value.
+int value = 2;
+
+// Create a name including the converted integer value.
+string name = "piece_" + itoa(value);
+
+// Export string attribute.
+s@name = name;
 ```
 
 ## Point Cloud To Array
@@ -2456,35 +2486,6 @@ int pt = addpoint(0, new_pos);
 
 // Create polyline.
 addprim(0, "polyline", @ptnum, pt);
-```
-
-## Convert Integer To String
-*Reference Code*: 44470061
-> [!NOTE]
-> This example is being created in order to show how we can convert integers into strings, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
-
-> [!TIP]
-> You can use that snippet inputting the interations of a loop. For example, that would help you out to create proper naming for fracturing pieces.
-
-**int_to_str**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Convert integer values into strings. """;
-
-// Create or import the integer value.
-int value = 2;
-
-// Create a name including the converted integer value.
-string name = "piece_" + itoa(value);
-
-// Export string attribute.
-s@name = name;
 ```
 
 ## Convert String To Float
