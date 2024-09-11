@@ -72,7 +72,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
-<summary> Geometry Reporters </summary>
+<summary> Geometry Information And Reporters </summary>
 
 * [`Check Point Inside Geometry`](#check-point-inside-geometry)
 * [`Error And Warning`](#error-and-warning)
@@ -1917,7 +1917,7 @@ for(int i=0; i<len(first_prim); i++){
 
 ```
 
-# Geometry Reporters
+# Geometry Information And Reporters
 ## Check Point Inside Geometry
 *Reference Code*: 69877006
 > [!NOTE]
