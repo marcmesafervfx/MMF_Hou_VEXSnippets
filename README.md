@@ -72,11 +72,13 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`NGon Detector`](#ngon-detector)
 * [`Primitive Type Checker`](#primitive-type-checker)
 * [`Print Values`](#print-values)
-* [`Unshared Points`](#unshared-points)
 
 </details>
 <details>
-    <summary> Group Management </summary>
+<summary> Group Management </summary>
+
+* [`Unshared Points`](#unshared-points)
+
 </details>
 <details>
 <summary> Lens Shader </summary>
@@ -1731,6 +1733,7 @@ printf("This is an example of how you would print a integer value: %d\n\n", 1);
 printf("This is an example of how you would print a %% sign: %%\n\n", 1);
 ```
 
+# Group Management
 ## Unshared Points
 *Reference Code*: 82391305
 
@@ -1778,6 +1781,7 @@ for(int i=0; i<pts; i++){
     init_hedge = hedge_next(0, init_hedge);
 }
 ```
+
 # Lens Shader
 ## STMap Lens Shader
 *Reference Code*: 77666090
