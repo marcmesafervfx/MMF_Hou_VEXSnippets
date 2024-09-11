@@ -123,6 +123,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Jitter Points`](#jitter-points)
 * [`Peak Geometry`](#peak-geometry)
 * [`Push Point Over Ground`](#push-point-over-ground)
+* [`Ray Minimum Distance`](#ray-minimum-distance)
 * [`Recreate Bend Behaviour`](#recreate-bend-behaviour)
 * [`Smooth Geometry`](#smooth-geometry)
 * [`Sprite Orientation`](#sprite-orientation)
@@ -3382,6 +3383,27 @@ if(sign(min_bbox.y)==-1){
 }
 ```
 
+## Ray Minimum Distance
+*Reference Code*: 77468763
+
+**ray_min_dist**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a snapping geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Ray minimum distance without volumes. """;
+
+// Get closes position value.
+vector minpos = minpos(1, v@P);
+
+// Set position.
+v@P = minpos; 
+```
+
 ## Recreate Bend Behaviour
 *Reference Code*: 35046837
 
@@ -4115,27 +4137,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Ray Minimum Distance
-*Reference Code*: 77468763
-
-**ray_min_dist**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** connected to a snapping geometry.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Ray minimum distance without volumes. """;
-
-// Get closes position value.
-vector minpos = minpos(1, v@P);
-
-// Set position.
-v@P = minpos; 
 ```
 
 ## Carve Primitive
