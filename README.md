@@ -96,6 +96,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Carve Primitive`](#carve-primitive)
 * [`Fix Primitive Overlap`](#fix-primitive-overlap)
+* [`Fuse Points`](#fuse-points)
 * [`Remove By Speed`](#remove-by-speed)
 * [`Remove By Threshold`](#remove-by-threshold)
 * [`Remove Unused Points`](#remove-unused-points)
@@ -2520,6 +2521,55 @@ foreach(int prim; prim_lst){
 }
 ```
 
+## Fuse Points
+*Reference Code*: 28848869
+
+**fuse**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Fuse coincident points. """;
+
+// Get points in the same position.
+int nearpts[] = nearpoints(0, v@P, 1e-5, int(1e09));
+
+// Store last index.
+int keep_pt = nearpts[-1];
+
+// Remove last index
+removeindex(nearpts, -1);
+
+// Check if current point is the keep point. 
+if(keep_pt==@ptnum){
+    
+    // Iterate for each coincident points.
+    foreach(int pt; nearpts){
+        
+        // Get vertices for current point.
+        int vtxs[] = pointvertices(0, pt);
+        
+        // If the list contain vertices, run loop.
+        if(len(vtxs)!=0){
+            
+            // Iterate for each vertex.
+            foreach(int vtx; vtxs){
+                
+                // Set vertex for points.
+                setvertexpoint(0, -1, vtx, @ptnum);
+            }
+        }
+        
+        // Remove point.
+        removepoint(0, pt);
+    }
+}
+```
+
 ## Remove By Speed
 *Reference Code*: 26542349
 
@@ -4308,55 +4358,6 @@ v@P = def_pos*xform;
 ```
 
 # ORGANIZE
-
-## Fuse Points
-*Reference Code*: 28848869
-
-**fuse**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Fuse coincident points. """;
-
-// Get points in the same position.
-int nearpts[] = nearpoints(0, v@P, 1e-5, int(1e09));
-
-// Store last index.
-int keep_pt = nearpts[-1];
-
-// Remove last index
-removeindex(nearpts, -1);
-
-// Check if current point is the keep point. 
-if(keep_pt==@ptnum){
-    
-    // Iterate for each coincident points.
-    foreach(int pt; nearpts){
-        
-        // Get vertices for current point.
-        int vtxs[] = pointvertices(0, pt);
-        
-        // If the list contain vertices, run loop.
-        if(len(vtxs)!=0){
-            
-            // Iterate for each vertex.
-            foreach(int vtx; vtxs){
-                
-                // Set vertex for points.
-                setvertexpoint(0, -1, vtx, @ptnum);
-            }
-        }
-        
-        // Remove point.
-        removepoint(0, pt);
-    }
-}
-```
 
 ## Run At Frame
 *Reference Code*: 87482557
