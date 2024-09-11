@@ -139,6 +139,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Volume Management </summary>
 
 * [`Normalize Density Attribute`](#normalize-density-attribute)
+* [`Push Points Volume`](#push-points-volume)
 * [`Remap Density Reference Point`](#remap-density-reference-point)
 * [`Voxel Index And Rest`](#voxel-index-and-rest)
 
@@ -3676,6 +3677,30 @@ float den = fit(f@density, min_den, max_den, 0, 1);
 f@density = den;
 ```
 
+## Push Points Volume
+*Reference Code*: 73825197
+
+**push_points**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to points.
+> - **Input 1:** connected to sdf volume.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Push Points Outisde Volumes. """;
+
+// Compute signed distance field value.
+float dist = volumesample(1, 0, v@P);
+
+// Compute gradient from volume.
+vector grad = volumegradient(1, 0, v@P);
+
+// Push points.
+if(dist<0.001) v@P -= normalize(grad)*dist;
+```
+
 ## Remap Density Reference Point
 *Reference Code*: 22887045
 
@@ -3911,30 +3936,6 @@ vector color = point(1, "Cd", equiv_pt);
 
 // Set attribute.
 v@Cd = color;
-```
-
-## Push Points Volume
-*Reference Code*: 73825197
-
-**push_points**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to points.
-> - **Input 1:** connected to sdf volume.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Push Points Outisde Volumes. """;
-
-// Compute signed distance field value.
-float dist = volumesample(1, 0, v@P);
-
-// Compute gradient from volume.
-vector grad = volumegradient(1, 0, v@P);
-
-// Push points.
-if(dist<0.001) v@P -= normalize(grad)*dist;
 ```
 
 ## Carve Primitive
