@@ -23,6 +23,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
 * [`Group To Attribute`](#group-to-attribute)
 * [`Point Attribute Transfer`](#point-attribute-transfer)
+* [`UDIM Connectivity`](#udim-connectivity)
 
 </details>
 <details>
@@ -578,6 +579,33 @@ if(dist<max_dist){
         }
     }
 }
+```
+
+## UDIM Connectivity
+*Reference Code*: 93149288
+
+**connectivity_udim**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create attribute per UDIM. """;
+
+// Get uv information using parametric uvs (just to not have to convert to points or vertices). 
+vector2 uv = primuv(0, "uv", @primnum, {0.5,0.5});
+
+// Round up the uv values.
+uv = ceil(uv);
+
+// Construct UDIM value convention. 
+float uv_num = 1000 + (uv.x) + ((uv.y-1)*10);
+
+// Export uv name attribute.
+i@uv_name = int(uv_num);
 ```
 
 # Camera Based Management
@@ -2923,33 +2951,6 @@ vector dir = to_pos-from_pos;
 
 // Export direction attribute.
 v@dir = dir;
-```
-
-## UDIM Connectivity
-*Reference Code*: 93149288
-
-**connectivity_udim**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create attribute per UDIM. """;
-
-// Get uv information using parametric uvs (just to not have to convert to points or vertices). 
-vector2 uv = primuv(0, "uv", @primnum, {0.5,0.5});
-
-// Round up the uv values.
-uv = ceil(uv);
-
-// Construct UDIM value convention. 
-float uv_num = 1000 + (uv.x) + ((uv.y-1)*10);
-
-// Export uv name attribute.
-i@uv_name = int(uv_num);
 ```
 
 ## Push Points Volume
