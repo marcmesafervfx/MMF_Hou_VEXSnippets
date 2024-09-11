@@ -33,7 +33,6 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Normalized Point Density`](#normalized-point-density)
 * [`Point Attribute Transfer`](#point-attribute-transfer)
 * [`Remove Attributes`](#remove-attributes)
-* [`Smooth Geometry`](#smooth-geometry)
 * [`UDIM Connectivity`](#udim-connectivity)
 * [`Variant Attribute`](#variant-attribute)
 
@@ -90,6 +89,12 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
+<summary>Geometry Modifiers</summary>
+
+
+
+</details>
+<details>
 <summary> Group Management </summary>
 
 * [`Attribute To Group`](#attribute-to-group)
@@ -108,13 +113,14 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
-<summary> Transformation Management </summary>
+<summary> Transformation And Deformation Management </summary>
 
 * [`Basic Transform With Matrix`](#basic-transform-with-matrix)
 * [`Dihedral Offset`](#dihedral-offset)
 * [`Edge Rotation Based`](#edge-rotation-based)
 * [`Extract Transform`](#extract-transform)
 * [`Recreate Bend Behaviour`](#recreate-bend-behaviour)
+* [`Smooth Geometry`](#smooth-geometry)
 * [`Sprite Orientation`](#sprite-orientation)
 
 </details>
@@ -971,40 +977,6 @@ foreach(string attr; attr_list){
         warning("%s attribute doesn't exist or it is not valid.", attr);
     }
 }
-```
-
-## Smooth Geometry
-*Reference Code*: 99265810
-> [!TIP]
-> Add the snippet in a for loop and feedback each iteration to smooth the object multiple times. We are able to layer smooth interations with just one wrangle, but it takes too long to compute.
-
-**smooth_geo**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Smooth geometry. """;
-
-// Get point neighbours.
-int neis[] = neighbours(0, @ptnum);
-
-// Initialize median position with current position value.
-vector med_pos[] = array(v@P);
-
-// Iterate for each neighbour.
-foreach(int n; neis){
-
-    // Get neighbour position and append to median list.
-    vector pos = point(0, "P", n);
-    append(med_pos, pos);
-}
-
-// Export position attribute by dividing all positions by number of points.
-v@P = sum(med_pos) / (len(neis)+1);
 ```
 
 ## UDIM Connectivity
@@ -2764,7 +2736,7 @@ $P = set(0, 0, 0);
 $I = set(c.x, c.y / aspect, (fo/ap));
 ```
 
-# Transformation Management
+# Transformation And Deformation Management
 ## Basic Transform With Matrix
 *Reference Code*: 32956689
 **transform**
@@ -3043,6 +3015,40 @@ if(deformed_pos.x>0 && bend_angle!=0){
     // Export final postion.
     v@P = final_pos*invert(init_rot)+origin;
 }
+```
+
+## Smooth Geometry
+*Reference Code*: 99265810
+> [!TIP]
+> Add the snippet in a for loop and feedback each iteration to smooth the object multiple times. We are able to layer smooth interations with just one wrangle, but it takes too long to compute.
+
+**smooth_geo**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Smooth geometry. """;
+
+// Get point neighbours.
+int neis[] = neighbours(0, @ptnum);
+
+// Initialize median position with current position value.
+vector med_pos[] = array(v@P);
+
+// Iterate for each neighbour.
+foreach(int n; neis){
+
+    // Get neighbour position and append to median list.
+    vector pos = point(0, "P", n);
+    append(med_pos, pos);
+}
+
+// Export position attribute by dividing all positions by number of points.
+v@P = sum(med_pos) / (len(neis)+1);
 ```
 
 ## Sprite Orientation
