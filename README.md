@@ -23,6 +23,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
 * [`Group To Attribute`](#group-to-attribute)
+* [`Noise Edge Mask`](#noise-edge-mask)
 * [`Normalized Point Density`](#normalized-point-density)
 * [`Point Attribute Transfer`](#point-attribute-transfer)
 * [`Remove Attributes`](#remove-attributes)
@@ -525,6 +526,33 @@ foreach(string grp; grps){
     // Check if point in point group and create attribute if so.
     if(inpointgroup(0, grp, @ptnum)) setpointattrib(0, grp, @ptnum, 1);
 }
+```
+
+## Noise Edge Mask
+*Reference Code*: 72728404
+
+**noise_edge_mask**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Noise mask edge based on x axis. """;
+
+// Displace position and store it in a variable.
+vector pos = v@P+noise(v@P*chf("frequency"))*chf("amplitude");
+
+// Normalize the xaxis position.
+float xaxis = fit(pos.x, getbbox_min(0).x, getbbox_max(0).x, 0, 1);
+
+// Remap normalize x axis position values and contrast them.
+xaxis = chramp("axis", xaxis);
+
+// Set color.
+v@Cd = xaxis;
 ```
 
 ## Normalized Point Density
@@ -3153,33 +3181,6 @@ foreach(int npt; npts){
 //Get final offset based on the influence of the weights
 vector finaloffset = sumoffsets / sumweights;
 v@P += finaloffset;
-```
-
-## Noise Edge Mask
-*Reference Code*: 72728404
-
-**noise_edge_mask**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Noise mask edge based on x axis. """;
-
-// Displace position and store it in a variable.
-vector pos = v@P+noise(v@P*chf("frequency"))*chf("amplitude");
-
-// Normalize the xaxis position.
-float xaxis = fit(pos.x, getbbox_min(0).x, getbbox_max(0).x, 0, 1);
-
-// Remap normalize x axis position values and contrast them.
-xaxis = chramp("axis", xaxis);
-
-// Set color.
-v@Cd = xaxis;
 ```
 
 ## Primitive Dimensions
