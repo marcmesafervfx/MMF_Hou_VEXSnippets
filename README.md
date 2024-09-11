@@ -39,7 +39,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Convert Group To Attribute`](#convert-group-to-attribute)
 * [`Convert Integer To String`](#convert-integer-to-string)
 * [`Convert String To Float`](#convert-string-to-float)
-* [`From 01 to -11`](#from-010-to--11)
+* [`From 01 to -11`](#from-01-to--11)
 * [`Point Cloud To Array`](#point-cloud-to-array)
 
 </details>
