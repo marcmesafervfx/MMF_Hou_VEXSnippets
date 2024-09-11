@@ -127,6 +127,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Two Vector Intersect`](#two-vector-intersect)
 * [`Vector Along Curve`](#vector-along-curve)
 * [`Vector Between Positions`](#vector-between-positions)
+* [`Vector Sample Sphere`](#vector-sample-sphere)
 
 </details>
 <details>
@@ -3310,6 +3311,65 @@ vector dir = to_pos-from_pos;
 v@dir = dir;
 ```
 
+## Vector Sample Sphere
+*Reference Code*: 20906416
+> [!NOTE]
+> Note that there are two examples that show how to get a directional vector inside a sphere. The purpose of this example is to show how to do it in two different ways, not to exemplify it any specific context.
+
+**sample_sphere_manual**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Sample sphere. """;
+
+// Get amount of samples.
+int samples = chi("samples");
+
+// Iterate for each sample.
+for(int i=0; i<samples; i++){
+
+    // Compute direction using iteration value.
+    vector pos = normalize(set(fit01(rand(i), -1, 1),
+                               fit01(rand(i+1), -1, 1),
+                               fit01(rand(i+2), -1, 1)));
+
+    // Create point using computed position.                
+    addpoint(0, pos);
+}
+```
+**sample_sphere_func**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Sample sphere. """;
+
+// Get amount of samples.
+int samples = chi("samples");
+
+// Iterate for each sample.
+for(int i=0; i<samples; i++){
+    
+    // Compute create random seed. 
+    vector seed = rand(i);
+    
+    // Compute normalized position using sample sphere uniform. 
+    vector pos = normalize(sample_sphere_uniform(seed));
+    
+    // Create point using computed position.                
+    addpoint(0, pos);
+}
+```
+
 # Volume Management
 ## Normalize Density Attribute
 *Reference Code*: 86444637
@@ -4287,63 +4347,4 @@ for(int i = 0; i < iter; i++){
 // Export color ambient occlusion dividing the occlusion value by the iterations.
 // Then, fit values to contrast the color attribute.
 v@Cd = fit(1-occ/iter, src_min, src_max, 0, 1);
-```
-
-## Sample Sphere
-*Reference Code*: 35200305
-> [!NOTE]
-> Note that there are two examples that show how to get a directional vector inside a sphere. The purpose of this example is to show how to do it in two different ways, not to exemplify it any specific context.
-
-**sample_sphere_manual**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Sample sphere. """;
-
-// Get amount of samples.
-int samples = chi("samples");
-
-// Iterate for each sample.
-for(int i=0; i<samples; i++){
-
-    // Compute direction using iteration value.
-    vector pos = normalize(set(fit01(rand(i), -1, 1),
-                               fit01(rand(i+1), -1, 1),
-                               fit01(rand(i+2), -1, 1)));
-
-    // Create point using computed position.                
-    addpoint(0, pos);
-}
-```
-**sample_sphere_func**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Sample sphere. """;
-
-// Get amount of samples.
-int samples = chi("samples");
-
-// Iterate for each sample.
-for(int i=0; i<samples; i++){
-    
-    // Compute create random seed. 
-    vector seed = rand(i);
-    
-    // Compute normalized position using sample sphere uniform. 
-    vector pos = normalize(sample_sphere_uniform(seed));
-    
-    // Create point using computed position.                
-    addpoint(0, pos);
-}
 ```
