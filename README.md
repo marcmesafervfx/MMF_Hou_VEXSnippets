@@ -92,6 +92,12 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
+<summary> Geometry Modifiers </summary>
+
+
+
+</details>
+<details>
 <summary> Group Management </summary>
 
 * [`Attribute To Group`](#attribute-to-group)
@@ -107,6 +113,12 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Lens Shader </summary>
 
 * [`STMap Lens Shader`](#stmap-lens-shader)
+
+</details>
+<details>
+<summary> Timing Management </summary>
+
+* [`Pump Motion Attribute`](#pump-motion-attribute)
 
 </details>
 <details>
@@ -2423,6 +2435,8 @@ printf("This is an example of how you would print a integer value: %d\n\n", 1);
 printf("This is an example of how you would print a %% sign: %%\n\n", 1);
 ```
 
+# Geometry Modifiers
+
 # Group Management
 ## Attribute To Group
 *Reference Code*: 47201184
@@ -2827,6 +2841,34 @@ $P = set(0, 0, 0);
 
 // Set ray direction and length based on focus length and aperture.
 $I = set(c.x, c.y / aspect, (fo/ap));
+```
+
+# Timing Management
+## Pump Motion Attribute
+*Reference Code*: 88325985
+
+**pump**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create pump values. """;
+
+// Get ratio for the pump.
+float ratio = chf("ratio");
+
+// Compute pump using ratio and normalize it.
+float pump = (f@Frame%ratio)/ratio;
+
+// Compute pump spline.
+pump = spline(array("linear"), pump, array(0, 1, 0, 1), array(0, 0.75, 0.9, 1));
+
+// Export color pump attribute.
+v@Cd = pump;
 ```
 
 # Transformation And Deformation Management
@@ -4335,31 +4377,4 @@ if(@Frame==10){
     // Print formatted string.
     printf("This condition runs at frame %d.", @Frame);
 }
-```
-
-## Pump Motion Attribute
-*Reference Code*: 88325985
-
-**pump**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create pump values. """;
-
-// Get ratio for the pump.
-float ratio = chf("ratio");
-
-// Compute pump using ratio and normalize it.
-float pump = (f@Frame%ratio)/ratio;
-
-// Compute pump spline.
-pump = spline(array("linear"), pump, array(0, 1, 0, 1), array(0, 0.75, 0.9, 1));
-
-// Export color pump attribute.
-v@Cd = pump;
 ```
