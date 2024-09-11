@@ -37,6 +37,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Convert Attribute To Group`](#convert-attribute-to-group)
 * [`Convert Group To Attribute`](#convert-group-to-attribute)
+* [`Point Cloud To Array`](#point-cloud-to-array)
 
 </details>
 
@@ -613,6 +614,41 @@ foreach(string grp; grps){
     // Check if point in point group and create attribute if so.
     if(inpointgroup(0, grp, @ptnum)) setpointattrib(0, grp, @ptnum, 1);
 }
+```
+
+## Point Cloud To Array
+*Reference Code*: 49343432
+
+**pc_array**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a geometry to capture from.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Point cloud to attribute array, """;
+
+// Create point cloud based on distance and maximum points
+int pc = pcopen(1, 'P', v@P, ch('distance'), chi('maxpts'));
+
+// Initialize pts array and iterate for each point in the point cloud.
+int pts[];
+while (pciterate(pc) > 0){
+    
+    // Initialize current point number.
+    int currentpt;
+    
+    // Import current point number.
+    pcimport(pc, 'point.number', currentpt);
+    
+    // Append to point array.
+    append(pts, currentpt);
+}
+
+// Export points array.
+i[]@nearpts = pts;
 ```
 
 # Geometry Creation
@@ -2922,41 +2958,6 @@ if(find(prims, @primnum)>=0){
         prev = step_conn;    
     } 
 }
-```
-
-## Point Cloud To Array
-*Reference Code*: 49343432
-
-**pc_array**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** connected to a geometry to capture from.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Point cloud to attribute array, """;
-
-// Create point cloud based on distance and maximum points
-int pc = pcopen(1, 'P', v@P, ch('distance'), chi('maxpts'));
-
-// Initialize pts array and iterate for each point in the point cloud.
-int pts[];
-while (pciterate(pc) > 0){
-    
-    // Initialize current point number.
-    int currentpt;
-    
-    // Import current point number.
-    pcimport(pc, 'point.number', currentpt);
-    
-    // Append to point array.
-    append(pts, currentpt);
-}
-
-// Export points array.
-i[]@nearpts = pts;
 ```
 
 ## Attribute From Map
