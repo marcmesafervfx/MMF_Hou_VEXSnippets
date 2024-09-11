@@ -24,6 +24,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Checkboard Color`](#checkboard-color)
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
 * [`Color Fresnel`](#color-fresnel)
+* [`Color Normalized Age`](#color-normalized-age)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
 * [`Group To Attribute`](#group-to-attribute)
 * [`Noise Edge Mask`](#noise-edge-mask)
@@ -552,6 +553,35 @@ float dot = dot(dir, v@N);
 
 // Fit dot values.
 vector color = fit(dot, chf("min_color"), chf("max_color"), 1, 0); 
+
+// Export color attribute.
+v@Cd = color;
+```
+
+## Color Normalized Age
+*Reference Code*: 66781383
+> [!NOTE]
+> You can use the @nage built-in attribute, which contains the same value as the nage variable from the code.
+
+> [!TIP]
+> Change the color ramp user parameter to color in order to visualize the proper ramp.
+
+**colorize**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to points with f@age and f@life attributes.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Normalize particle age. """;
+
+// Compute normalized age.
+float nage = f@age/f@life;
+
+// Remap color using normalized age.
+vector color = chramp("color", nage);
 
 // Export color attribute.
 v@Cd = color;
@@ -3648,35 +3678,6 @@ vector push = v@N*peak;
 
 // Add peak.
 v@P+=push;
-```
-
-## Color Normalized Age
-*Reference Code*: 66781383
-> [!NOTE]
-> You can use the @nage built-in attribute, which contains the same value as the nage variable from the code.
-
-> [!TIP]
-> Change the color ramp user parameter to color in order to visualize the proper ramp.
-
-**colorize**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to points with f@age and f@life attributes.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Normalize particle age. """;
-
-// Compute normalized age.
-float nage = f@age/f@life;
-
-// Remap color using normalized age.
-vector color = chramp("color", nage);
-
-// Export color attribute.
-v@Cd = color;
 ```
 
 ## Carve Primitive
