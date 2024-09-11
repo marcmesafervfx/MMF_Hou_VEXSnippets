@@ -21,6 +21,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Basic Curvature Attribute`](#basic-curvature-attribute)
 * [`Blur Point Positions`](#blur-point-positions)
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
+* [`Color Fresnel`](#color-fresnel)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
 * [`Group To Attribute`](#group-to-attribute)
 * [`Noise Edge Mask`](#noise-edge-mask)
@@ -446,6 +447,42 @@ i@cluster = cluster;
 
 // Set cluster value.
 i@cluster = nearpoint(1, v@P);
+```
+
+## Color Fresnel
+*Reference Code*: 4646091
+
+**fresnel**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute fresnel from camera. """;
+
+// Get camera to extract transformations.
+string cam = chs("camera");
+
+// Extract transformation from operator.
+matrix cam_xform = optransform(cam);
+
+// Get positon from the matrix.
+vector pos = cracktransform(0,0,0,0,cam_xform);
+
+// Get direction from current point to camera.
+vector dir = normalize(pos-v@P);
+
+// Compute dot product.
+float dot = dot(dir, v@N);
+
+// Fit dot values.
+vector color = fit(dot, chf("min_color"), chf("max_color"), 1, 0); 
+
+// Export color attribute.
+v@Cd = color;
 ```
 
 ## Compute Curveu From Line
@@ -4054,42 +4091,6 @@ if(type==1 && size==1){
     // Export color attribute.
     v@Cd = color;
 }
-```
-
-## Create Color Fresnel
-*Reference Code*: 67615692
-
-**fresnel**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute fresnel from camera. """;
-
-// Get camera to extract transformations.
-string cam = chs("camera");
-
-// Extract transformation from operator.
-matrix cam_xform = optransform(cam);
-
-// Get positon from the matrix.
-vector pos = cracktransform(0,0,0,0,cam_xform);
-
-// Get direction from current point to camera.
-vector dir = normalize(pos-v@P);
-
-// Compute dot product.
-float dot = dot(dir, v@N);
-
-// Fit dot values.
-vector color = fit(dot, chf("min_color"), chf("max_color"), 1, 0); 
-
-// Export color attribute.
-v@Cd = color;
 ```
 
 ## Recreate Bend Behaviour
