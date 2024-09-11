@@ -20,6 +20,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Attribute Blur`](#attribute-blur)
 * [`Attribute From Map`](#attribute-from-map)
 * [`Basic Curvature Attribute`](#basic-curvature-attribute)
+* [`Basic Refract Model SOPs`](#basic-refract-model-sops)
 * [`Blur Point Positions`](#blur-point-positions)
 * [`Checkboard Color`](#checkboard-color)
 * [`Cluster By Point Proximity`](#cluster-by-point-proximity)
@@ -398,6 +399,49 @@ foreach(int pt; neig){
 
 // Export curvature value.
 f@curvature = curvature / len(neig);
+```
+
+## Basic Refract Model SOPs
+*Reference Code*: 85292031
+> [!NOTE]
+> Note that the code doesn't represent a perfect refraction model, it is just an approximation. The air_index parameter will allow you to modify the refractive deformation.
+ 
+**refract_model**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a refractive geometry.
+> - **Input 1:** connected to a geometry with v@Cd attribute.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create basic refaction model. """;
+
+// Get camera position.
+string cam = chs("camera");
+matrix cam_xform = optransform(cam);
+vector cam_pos = cracktransform(0,0,0,{0,0,0},cam_xform);
+
+// Get air medium.
+float air_index = chf("air_index");
+
+// Get camera direction to point.
+vector dir = normalize(v@P-cam_pos);
+
+// Compute refract model using the refract function.
+vector refract = refract(dir, normalize(v@N), air_index);
+
+// Initialize position and uvw for intersect function.
+vector pos; vector uvw;
+
+// Intersect using direction from camera.
+int prim = intersect(1, v@P, refract*1e09, pos, uvw);
+
+// Get color vector.
+vector color = primuv(1, "Cd", prim, uvw);
+
+// Export color attribute.
+v@Cd = color;
 ```
 
 ## Blur Point Positions
@@ -4109,49 +4153,6 @@ vector pos = lerp(v@P, prim_pos, inset);
 
 // Export position attribute.
 v@P = pos;
-```
-
-## Basic Refract Model SOPs
-*Reference Code*: 85292031
-> [!NOTE]
-> Note that the code doesn't represent a perfect refraction model, it is just an approximation. The air_index parameter will allow you to modify the refractive deformation.
- 
-**refract_model**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a refractive geometry.
-> - **Input 1:** connected to a geometry with v@Cd attribute.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create basic refaction model. """;
-
-// Get camera position.
-string cam = chs("camera");
-matrix cam_xform = optransform(cam);
-vector cam_pos = cracktransform(0,0,0,{0,0,0},cam_xform);
-
-// Get air medium.
-float air_index = chf("air_index");
-
-// Get camera direction to point.
-vector dir = normalize(v@P-cam_pos);
-
-// Compute refract model using the refract function.
-vector refract = refract(dir, normalize(v@N), air_index);
-
-// Initialize position and uvw for intersect function.
-vector pos; vector uvw;
-
-// Intersect using direction from camera.
-int prim = intersect(1, v@P, refract*1e09, pos, uvw);
-
-// Get color vector.
-vector color = primuv(1, "Cd", prim, uvw);
-
-// Export color attribute.
-v@Cd = color;
 ```
 
 ## Pump Motion Attribute
