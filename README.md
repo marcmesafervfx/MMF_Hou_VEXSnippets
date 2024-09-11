@@ -100,7 +100,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary> Volume Management </summary>
 
-* [`Voxel Index And Rest`](#voxel_index_and_rest)
+* [`Voxel Index And Rest`](#voxel-index-and-rest)
 
 </details>
 <details>
