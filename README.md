@@ -109,6 +109,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Dihedral Offset`](#dihedral-offset)
 * [`Edge Rotation Based`](#edge-rotation-based)
 * [`Extract Transform`](#extract-transform)
+* [`Recreate Bend Behaviour`](#recreate-bend-behaviour)
 * [`Sprite Orientation`](#sprite-orientation)
 
 </details>
@@ -2757,6 +2758,81 @@ v@P*=xform;
 v@N*=matrix3(xform);
 ```
 
+## Recreate Bend Behaviour
+*Reference Code*: 35046837
+
+**bend**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Recreate bend behaviour. """;
+
+// Get origin and capture direction vector to offset can capture deformation.
+vector origin = chv("origin");
+vector cap_dir = chv("capture_direction");
+
+// Get capture length and bend angle.
+float caplen = chf("caplen");
+float bend_angle = chf("bend_angle");
+
+// If the bend angle is less than 0.01, clamp the value.
+bend_angle = (abs(bend_angle)<0.01)? sign(bend_angle)*0.01:bend_angle;
+
+// Get offset matrix between two vectors.
+matrix3 init_rot = dihedral(cap_dir,{1,0,0});
+
+// Transform object to comfortable position.
+vector deformed_pos = v@P-origin;
+deformed_pos*=init_rot;
+
+// If the deformed position in x (comfortable position) is bigger than 0 and the angle is not 0, run the code.
+// This method won't compute deformation if values are below the origin.
+if(deformed_pos.x>0 && bend_angle!=0){
+
+    // Compute normalized position.
+    float capture_u = deformed_pos.x / caplen;
+    
+    // Compute radius of the transforming circumference.
+    float rad = caplen/radians(bend_angle);
+    
+    // Initialize final position.
+    vector final_pos;
+    
+    // If point is over the capture value, run the code.
+    if(capture_u>=1){
+    
+        // Initialize rotation matrix and rotate points.
+        matrix rot = ident();
+        rotate(rot, radians(bend_angle), 4);
+        
+        // Create final position for points over the capture length.
+        final_pos = set(deformed_pos.x-caplen, deformed_pos.y-rad, deformed_pos.z)*rot+set(0, rad, 0);
+    }
+    else{
+        
+        // Create angle values for each point.
+        float norm_bend = capture_u*bend_angle;
+        float bend_amt = radians(norm_bend);
+        
+        // Initialize rotation matrix and rotate points.
+        matrix rot = ident();
+        rotate(rot, bend_amt, 4);
+        
+        // Create final position for points inside the capture length.
+        final_pos = set(0, deformed_pos.y-rad, deformed_pos.z)*rot+set(0, rad, 0);
+    
+    }
+    
+    // Export final postion.
+    v@P = final_pos*invert(init_rot)+origin;
+}
+```
+
 ## Sprite Orientation
 *Reference Code*: 29873726
 > [!TIP]
@@ -4094,81 +4170,6 @@ if(type==1 && size==1){
     
     // Export color attribute.
     v@Cd = color;
-}
-```
-
-## Recreate Bend Behaviour
-*Reference Code*: 35046837
-
-**bend**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Recreate bend behaviour. """;
-
-// Get origin and capture direction vector to offset can capture deformation.
-vector origin = chv("origin");
-vector cap_dir = chv("capture_direction");
-
-// Get capture length and bend angle.
-float caplen = chf("caplen");
-float bend_angle = chf("bend_angle");
-
-// If the bend angle is less than 0.01, clamp the value.
-bend_angle = (abs(bend_angle)<0.01)? sign(bend_angle)*0.01:bend_angle;
-
-// Get offset matrix between two vectors.
-matrix3 init_rot = dihedral(cap_dir,{1,0,0});
-
-// Transform object to comfortable position.
-vector deformed_pos = v@P-origin;
-deformed_pos*=init_rot;
-
-// If the deformed position in x (comfortable position) is bigger than 0 and the angle is not 0, run the code.
-// This method won't compute deformation if values are below the origin.
-if(deformed_pos.x>0 && bend_angle!=0){
-
-    // Compute normalized position.
-    float capture_u = deformed_pos.x / caplen;
-    
-    // Compute radius of the transforming circumference.
-    float rad = caplen/radians(bend_angle);
-    
-    // Initialize final position.
-    vector final_pos;
-    
-    // If point is over the capture value, run the code.
-    if(capture_u>=1){
-    
-        // Initialize rotation matrix and rotate points.
-        matrix rot = ident();
-        rotate(rot, radians(bend_angle), 4);
-        
-        // Create final position for points over the capture length.
-        final_pos = set(deformed_pos.x-caplen, deformed_pos.y-rad, deformed_pos.z)*rot+set(0, rad, 0);
-    }
-    else{
-        
-        // Create angle values for each point.
-        float norm_bend = capture_u*bend_angle;
-        float bend_amt = radians(norm_bend);
-        
-        // Initialize rotation matrix and rotate points.
-        matrix rot = ident();
-        rotate(rot, bend_amt, 4);
-        
-        // Create final position for points inside the capture length.
-        final_pos = set(0, deformed_pos.y-rad, deformed_pos.z)*rot+set(0, rad, 0);
-    
-    }
-    
-    // Export final postion.
-    v@P = final_pos*invert(init_rot)+origin;
 }
 ```
 
