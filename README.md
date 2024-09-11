@@ -94,7 +94,7 @@ foreach(float val; smp_array){
 f[]@array = new_smp_array;
 ```
 
-# Attribute Manipulation
+# Attribute Management
 ## Blur Point Positions
 *Reference Code*: 26692791
 > [!TIP]
