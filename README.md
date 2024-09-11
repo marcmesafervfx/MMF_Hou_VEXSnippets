@@ -120,6 +120,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Edge Rotation Based`](#edge-rotation-based)
 * [`Extract Transform`](#extract-transform)
 * [`Inset Primitive`](#inset-primitive)
+* [`Jitter Points`](#jitter-points)
 * [`Peak Geometry`](#peak-geometry)
 * [`Push Point Over Ground`](#push-point-over-ground)
 * [`Recreate Bend Behaviour`](#recreate-bend-behaviour)
@@ -3280,6 +3281,47 @@ vector pos = lerp(v@P, prim_pos, inset);
 v@P = pos;
 ```
 
+## Jitter Points
+*Reference Code*: 55905505
+
+**jitter_pts**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a scatter node.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Jitter point position. """;
+
+// Create function to rand values between -1 and 1.
+function float randVal(int id; float seed){
+    
+    // Randomize values between -1 and 1 and return the value.
+    float rand = fit01(rand(id+seed), -1, 1);
+    return rand;
+}
+
+// Initialize jitter parameters.
+int is_id = chi("id");
+string id_attr = chs("id_attribute");
+float scale = chf("scale");
+float seed = chf("seed");
+vector axis_scale = chv("axis_scale");
+
+// Check if user wants to input id attribute.
+int id = (is_id==1)?point(0, id_attr, @ptnum):@ptnum;
+
+// Create directional vector.
+vector dir = set(randVal(id, seed),
+                 randVal(id, seed+1),
+                 randVal(id, seed+2))*axis_scale;
+
+// Set new position.
+v@P+=(dir*scale);
+```
+
 ## Peak Geometry
 *Reference Code*: 92501258
 
@@ -4073,47 +4115,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Jitter Points
-*Reference Code*: 55905505
-
-**jitter_pts**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a scatter node.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Jitter point position. """;
-
-// Create function to rand values between -1 and 1.
-function float randVal(int id; float seed){
-    
-    // Randomize values between -1 and 1 and return the value.
-    float rand = fit01(rand(id+seed), -1, 1);
-    return rand;
-}
-
-// Initialize jitter parameters.
-int is_id = chi("id");
-string id_attr = chs("id_attribute");
-float scale = chf("scale");
-float seed = chf("seed");
-vector axis_scale = chv("axis_scale");
-
-// Check if user wants to input id attribute.
-int id = (is_id==1)?point(0, id_attr, @ptnum):@ptnum;
-
-// Create directional vector.
-vector dir = set(randVal(id, seed),
-                 randVal(id, seed+1),
-                 randVal(id, seed+2))*axis_scale;
-
-// Set new position.
-v@P+=(dir*scale);
 ```
 
 ## Ray Minimum Distance
