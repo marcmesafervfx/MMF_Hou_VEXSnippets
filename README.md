@@ -43,6 +43,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Convert String To Float`](#convert-string-to-float)
 * [`From 01 to -11`](#from-01-to--11)
 * [`Group To Array`](#group-to-array)
+* [`Name Pattern To Group`](#name-pattern-to-group)
 * [`Point Cloud To Array`](#point-cloud-to-array)
 
 </details>
@@ -873,6 +874,30 @@ float ptnum = float(@ptnum);
 // Check if current ptnum is in the list and set the color.
 if(find(grp_red, ptnum)>=0) v@Cd = {1,0,0};
 if(find(grp_blue, ptnum)>=0) v@Cd = {0,0,1};
+```
+
+## Name Pattern To Group
+*Reference Code*: 54775006
+> [!NOTE]
+> Note that in this example we check the pattern using the name attribute. You can use a different string attribute and add some more complexity to the conditional to make it more useful.
+
+**name_to_grp**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry with s@name attribute.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert name attribute pattern into group. """;
+
+// Get group name and pattern.
+string grp_name = chs("group_name");
+string pattern = chs("pattern");
+
+// Check if name matches the pattern and set the group
+if(match(pattern, s@name)) setpointgroup(0, grp_name, @ptnum, 1);
 ```
 
 ## Point Cloud To Array
@@ -3528,30 +3553,6 @@ removeindex(prim_lst, -1);
 foreach(int prim; prim_lst){
     removeprim(0, prim, 1);
 }
-```
-
-## Name Pattern To Group
-*Reference Code*: 54775006
-> [!NOTE]
-> Note that in this example we check the pattern using the name attribute. You can use a different string attribute and add some more complexity to the conditional to make it more useful.
-
-**name_to_grp**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry with s@name attribute.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Convert name attribute pattern into group. """;
-
-// Get group name and pattern.
-string grp_name = chs("group_name");
-string pattern = chs("pattern");
-
-// Check if name matches the pattern and set the group
-if(match(pattern, s@name)) setpointgroup(0, grp_name, @ptnum, 1);
 ```
 
 ## Push Point Over Ground
