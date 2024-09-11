@@ -23,9 +23,11 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary>Camera Based Management</summary> 
 
 * [`Camera Direction`](#camera-direction)
+* [`Camera Frustum`](#camera-frustum)
+* [`Camera Frustum Cull`](#camera-frustum-cull)
 * [`Camera Transformations`](#camera-transformations)
 * [`Camera View Direction Cull`](#camera-view-direction-cull)
-* [`Frustum Camera`](#frustum-camera)
+
 
 </details>
 <details>
@@ -269,6 +271,94 @@ vector dir = {0,0,-1}*matrix3(cam_xform);
 v@cam_dir = dir;
 ```
 
+## Camera Frustum
+*Reference Code*: 1082246
+
+**frustum_camera**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a default box.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create camera frustum and make available the expansions. """;
+
+// Get camera path to create the frustum from.
+string cam = chs("camera");
+
+// Initialize expansion values (x,y).
+float expand_top = chf("expand_top");
+float expand_bottom = chf("expand_bottom");
+float expand_right = chf("expand_right");
+float expand_left = chf("expand_left");
+
+// Initialize clipping values (z).
+float near_clip = chf("near_clip");
+float far_clip = chf("far_clip");
+
+// Offset position to "convert" box position into normalized
+// coordinates.
+vector offset_pos = set(0.5, 0.5, -0.5);
+vector pos = v@P+offset_pos;
+
+// Apply expansions based on normalized positions.
+if(pos.y==1) pos.y+=expand_top;
+if(pos.y==0) pos.y-=expand_bottom;
+if(pos.x==1) pos.x+=expand_right;
+if(pos.x==0) pos.x-=expand_left;
+
+// Apply clipping based on normalized positions.
+if(pos.z==-1) pos.z-=far_clip;
+if(pos.z==0) pos.z-=near_clip;
+
+// Set position converting from NDC coordinates to world space.
+v@P = fromNDC(cam, pos);
+
+/* In this case we inverted the process. We created an "NDC" and
+we are transforming back to world space. */
+```
+
+## Camera Frustum Cull
+*Reference Code*: 62282432
+> [!NOTE]
+> This example is created to show how to cull primitives based on camera view. You can cull other types of geometry using the same method and the corresponding functions.
+
+**cull_geo**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Cull based on camera view. """;
+
+// Get culling camera.
+string cam = chs("camera");
+
+// Initialize expansion values (x,y) and depth values.
+float expand_top = chf("expand_top");
+float expand_bottom = chf("expand_bottom");
+float expand_right = chf("expand_right");
+float expand_left = chf("expand_left");
+float far = chf("far_clip");
+float near = chf("near_clip");
+
+// Convert coordinates to NDC.
+vector pos = toNDC(cam, v@P);
+
+// Check if something is outside the camera and remove it.
+if(pos.y>(1+expand_top)) removeprim(0, @primnum, 1);
+if(pos.y<(-expand_bottom)) removeprim(0, @primnum, 1);
+if(pos.x<(-expand_left)) removeprim(0, @primnum, 1);
+if(pos.x>(1+expand_right)) removeprim(0, @primnum, 1);
+if(pos.z>(-near)) removeprim(0, @primnum, 1);
+if(pos.z<(-far)) removeprim(0, @primnum, 1);
+```
+
 ## Camera Transformations
 *Reference Code*: 51915380
 > [!NOTE]
@@ -370,55 +460,6 @@ if(p!=-1 && incheck!=-1){
     removepoint(0, @ptnum);
     
 }
-```
-
-## Frustum Camera
-*Reference Code*: 38002708
-
-**frustum_camera**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a default box.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create camera frustum and make available the expansions. """;
-
-// Get camera path to create the frustum from.
-string cam = chs("camera");
-
-// Initialize expansion values (x,y).
-float expand_top = chf("expand_top");
-float expand_bottom = chf("expand_bottom");
-float expand_right = chf("expand_right");
-float expand_left = chf("expand_left");
-
-// Initialize clipping values (z).
-float near_clip = chf("near_clip");
-float far_clip = chf("far_clip");
-
-// Offset position to "convert" box position into normalized
-// coordinates.
-vector offset_pos = set(0.5, 0.5, -0.5);
-vector pos = v@P+offset_pos;
-
-// Apply expansions based on normalized positions.
-if(pos.y==1) pos.y+=expand_top;
-if(pos.y==0) pos.y-=expand_bottom;
-if(pos.x==1) pos.x+=expand_right;
-if(pos.x==0) pos.x-=expand_left;
-
-// Apply clipping based on normalized positions.
-if(pos.z==-1) pos.z-=far_clip;
-if(pos.z==0) pos.z-=near_clip;
-
-// Set position converting from NDC coordinates to world space.
-v@P = fromNDC(cam, pos);
-
-/* In this case we inverted the process. We created an "NDC" and
-we are transforming back to world space. */
 ```
 
 # Geometry Creation
@@ -3453,45 +3494,6 @@ foreach(int n; neis){
 
 // Export position attribute by dividing all positions by number of points.
 v@P = sum(med_pos) / (len(neis)+1);
-```
-
-## Cull Geometry Camera View
-*Reference Code*: 4197627
-> [!NOTE]
-> This example is created to show how to cull primitives based on camera view. You can cull other types of geometry using the same method and the corresponding functions.
-
-**cull_geo**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Cull based on camera view. """;
-
-// Get culling camera.
-string cam = chs("camera");
-
-// Initialize expansion values (x,y) and depth values.
-float expand_top = chf("expand_top");
-float expand_bottom = chf("expand_bottom");
-float expand_right = chf("expand_right");
-float expand_left = chf("expand_left");
-float far = chf("far_clip");
-float near = chf("near_clip");
-
-// Convert coordinates to NDC.
-vector pos = toNDC(cam, v@P);
-
-// Check if something is outside the camera and remove it.
-if(pos.y>(1+expand_top)) removeprim(0, @primnum, 1);
-if(pos.y<(-expand_bottom)) removeprim(0, @primnum, 1);
-if(pos.x<(-expand_left)) removeprim(0, @primnum, 1);
-if(pos.x>(1+expand_right)) removeprim(0, @primnum, 1);
-if(pos.z>(-near)) removeprim(0, @primnum, 1);
-if(pos.z<(-far)) removeprim(0, @primnum, 1);
 ```
 
 ## Constraint To Camera
