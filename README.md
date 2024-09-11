@@ -31,6 +31,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Normalized Point Density`](#normalized-point-density)
 * [`Point Attribute Transfer`](#point-attribute-transfer)
 * [`Remove Attributes`](#remove-attributes)
+* [`Smooth Geometry`](#smooth-geometry)
 * [`UDIM Connectivity`](#udim-connectivity)
 * [`Variant Attribute`](#variant-attribute)
 
@@ -851,6 +852,40 @@ foreach(string attr; attr_list){
         warning("%s attribute doesn't exist or it is not valid.", attr);
     }
 }
+```
+
+## Smooth Geometry
+*Reference Code*: 99265810
+> [!TIP]
+> Add the snippet in a for loop and feedback each iteration to smooth the object multiple times. We are able to layer smooth interations with just one wrangle, but it takes too long to compute.
+
+**smooth_geo**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Smooth geometry. """;
+
+// Get point neighbours.
+int neis[] = neighbours(0, @ptnum);
+
+// Initialize median position with current position value.
+vector med_pos[] = array(v@P);
+
+// Iterate for each neighbour.
+foreach(int n; neis){
+
+    // Get neighbour position and append to median list.
+    vector pos = point(0, "P", n);
+    append(med_pos, pos);
+}
+
+// Export position attribute by dividing all positions by number of points.
+v@P = sum(med_pos) / (len(neis)+1);
 ```
 
 ## UDIM Connectivity
@@ -3942,40 +3977,6 @@ if(sign(min_bbox.y)==-1){
     // Clamp negative values.
     v@P.y=clamp(final_ypos, 0, max_bbox.y);
 }
-```
-
-## Smooth Geometry
-*Reference Code*: 99265810
-> [!TIP]
-> Add the snippet in a for loop and feedback each iteration to smooth the object multiple times. We are able to layer smooth interations with just one wrangle, but it takes too long to compute.
-
-**smooth_geo**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Smooth geometry. """;
-
-// Get point neighbours.
-int neis[] = neighbours(0, @ptnum);
-
-// Initialize median position with current position value.
-vector med_pos[] = array(v@P);
-
-// Iterate for each neighbour.
-foreach(int n; neis){
-
-    // Get neighbour position and append to median list.
-    vector pos = point(0, "P", n);
-    append(med_pos, pos);
-}
-
-// Export position attribute by dividing all positions by number of points.
-v@P = sum(med_pos) / (len(neis)+1);
 ```
 
 ## Run At Frame
