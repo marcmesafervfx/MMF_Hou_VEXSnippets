@@ -82,6 +82,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Group Unshared Points`](#group-unshared-points)
 * [`Group Expand`](#group-expand)
 * [`Name Pattern To Group`](#name-pattern-to-group)
+* [`Remove Groups`](#remove-groups)
 
 </details>
 <details>
@@ -2099,6 +2100,44 @@ string pattern = chs("pattern");
 if(match(pattern, s@name)) setpointgroup(0, grp_name, @ptnum, 1);
 ```
 
+## Remove Groups
+*Reference Code*: 73004854
+> [!NOTE]
+> This example is created to show how to remove point groups. You can remove other groups from other geometry types by using the corresponding geometry type functions.
+
+**remove_grps**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove point attributes. """;
+
+// Get groups to remove and separate them.
+string grps = chs("groups");
+string grp_list[] = split(grps, " ");
+
+// Get all groups.
+string grp_check[] = detailintrinsic(0, "primgroups");
+
+// Iterate for each group in the list.
+foreach(string grp; grp_list){
+    
+    // If the group exists, remove it.
+    if(find(grp_check, grp)>=0){
+        removepointgroup(0, grp);
+    }
+    
+    // If the group doesn't exist, raise a warning.
+    else{
+        warning("%s group doesn't exist or it is not valid.", grp);
+    }
+}
+```
+
 # Lens Shader
 ## STMap Lens Shader
 *Reference Code*: 77666090
@@ -3240,44 +3279,6 @@ vector4 color = colormap(base_color, uv);
 // Export color and Alpha.
 v@Cd = vector(color);
 f@Alpha = color.a;
-```
-
-## Remove Groups
-*Reference Code*: 73004854
-> [!NOTE]
-> This example is created to show how to remove point groups. You can remove other groups from other geometry types by using the corresponding geometry type functions.
-
-**remove_grps**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Remove point attributes. """;
-
-// Get groups to remove and separate them.
-string grps = chs("groups");
-string grp_list[] = split(grps, " ");
-
-// Get all groups.
-string grp_check[] = detailintrinsic(0, "primgroups");
-
-// Iterate for each group in the list.
-foreach(string grp; grp_list){
-    
-    // If the group exists, remove it.
-    if(find(grp_check, grp)>=0){
-        removepointgroup(0, grp);
-    }
-    
-    // If the group doesn't exist, raise a warning.
-    else{
-        warning("%s group doesn't exist or it is not valid.", grp);
-    }
-}
 ```
 
 ## Remove Unused Groups
