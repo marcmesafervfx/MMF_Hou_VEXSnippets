@@ -51,6 +51,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary> Geometry Reporters </summary>
 
+* [`Check Point Inside Geometry`](#check-point-inside-geometry)
 * [`Error And Warning`](#error-and-warning)
 * [`NGon Detector`](#ngon-detector)
 * [`Primitive Type Checker`](#primitive-type-checker)
@@ -1020,6 +1021,59 @@ for(int i=0; i<len(first_prim); i++){
 ```
 
 # Geometry Reporters
+## Check Point Inside Geometry
+*Reference Code*: 69877006
+> [!NOTE]
+> Note that there are two different approaches to getting a similar result. The check_inside_pts_geo is limited because it requires a clean geometry without self-intersections, but it doesn't require an additional step converting the geometry into sdf. Meantime, the check_inside_pts_vol is more stable for self-intersecting geometries, but it requires the mentioned additional step.
+
+**check_inside_pts_geo**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a bounding geometry.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Check if point is inside of geometry without volumes. """;
+
+// Initialize primitive and parametric coords.
+vector uvw; int prim;
+
+// Capture primitive and parametric coords.
+xyzdist(1, v@P, prim, uvw);
+
+// Get position and normal ray intersection information.
+vector pos = primuv(1, "P", prim, uvw);
+vector norm = primuv(1, "N", prim, uvw);
+
+// Compute direction vector between two points.
+vector dir = normalize(v@P-pos);
+
+// Check dot product between direction and normal.
+float dot = dot(dir, norm);
+
+// Create a group to contain the inside points.
+if(dot<0) setpointgroup(0, "inside", @ptnum, 1);
+```
+**check_inside_pts_vol**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a bounding sdf volume.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Check if point is inside of geometry with volumes. """;
+
+// Sample signed distance field volume.
+float dist = volumesample(1, 0, v@P);
+
+// Create a group to contain the inside points.
+if(dist<0) setpointgroup(0, "inside", @ptnum, 1);
+```
+
 ## Error And Warning
 *Reference Code*: 21550162
 
@@ -1795,59 +1849,6 @@ vector dir = set(randVal(id, seed),
 
 // Set new position.
 v@P+=(dir*scale);
-```
-
-## Check Point Inside Geometry
-*Reference Code*: 69877006
-> [!NOTE]
-> Note that there are two different approaches to getting a similar result. The check_inside_pts_geo is limited because it requires a clean geometry without self-intersections, but it doesn't require an additional step converting the geometry into sdf. Meantime, the check_inside_pts_vol is more stable for self-intersecting geometries, but it requires the mentioned additional step.
-
-**check_inside_pts_geo**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** connected to a bounding geometry.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Check if point is inside of geometry without volumes. """;
-
-// Initialize primitive and parametric coords.
-vector uvw; int prim;
-
-// Capture primitive and parametric coords.
-xyzdist(1, v@P, prim, uvw);
-
-// Get position and normal ray intersection information.
-vector pos = primuv(1, "P", prim, uvw);
-vector norm = primuv(1, "N", prim, uvw);
-
-// Compute direction vector between two points.
-vector dir = normalize(v@P-pos);
-
-// Check dot product between direction and normal.
-float dot = dot(dir, norm);
-
-// Create a group to contain the inside points.
-if(dot<0) setpointgroup(0, "inside", @ptnum, 1);
-```
-**check_inside_pts_vol**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** connected to a bounding sdf volume.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Check if point is inside of geometry with volumes. """;
-
-// Sample signed distance field volume.
-float dist = volumesample(1, 0, v@P);
-
-// Create a group to contain the inside points.
-if(dist<0) setpointgroup(0, "inside", @ptnum, 1);
 ```
 
 ## Ray Minimum Distance
