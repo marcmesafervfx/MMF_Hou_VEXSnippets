@@ -78,6 +78,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Attribute To Group`](#attribute-to-group)
 * [`Group Unshared Points`](#group-unshared-points)
+* [`Group Expand`](#group-expand)
 * [`Name Pattern To Group`](#name-pattern-to-group)
 
 </details>
@@ -1834,6 +1835,132 @@ v@Cd += (sin(v@P.z*freq)<0)?0:1;
 v@Cd *= (v@Cd.r==2)?0:1;
 ```
 
+## Group Expand
+*Reference Code*: 10643779
+> [!CAUTION]
+> This method doesn't replace the group expand functionality. If you pretend to expand the groups a lot, please use the group expand node because adding too many expansion steps could result in a memory related crash.
+
+> [!NOTE]
+> Note that there are 2 examples: expand_point_grp and expand_prim_grp. The expand_prim_grp required a different and a bit slower approach compared to expand_point_grp because the intention of this snippet is to try to mimic the output from the group expand node. You could use the same process as the expand_point_grp for primitives just by using the polyneighbour function and modifying other geometry type related functions.
+
+**expand_point_grp**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Expand point group. """;
+
+// Get expand steps. 
+int steps = chi("steps");
+
+// Get group name and get points in the group.
+string pt_grp = chs("point_group");
+int pts[] = expandpointgroup(0, pt_grp);
+
+// Initialize previous primitive group.
+int prev[] = array(@ptnum);
+
+// Check if the current point is in the group.
+if(find(pts, @ptnum)>=0){
+
+    // Iterate for each of the steps.
+    for(int i=0; i<steps; i++){
+        
+        // Initialize neighbour points array.
+        int step_neis[];
+        
+        // Interate for each previous point.
+        foreach(int a; prev){
+            
+            // Get neighbour points.
+            int neis[] = neighbours(0, a);
+            
+            // Iterate for each of the neighbours.
+            foreach(int nei; neis){
+                
+                // Check if point is already in the group.
+                if(find(pts, nei)<0){
+                    
+                    // Append point to setp_neis and set point group.
+                    append(step_neis, nei);
+                    setpointgroup(0, pt_grp, nei, 1);
+                }
+            } 
+        }
+        
+         // Update last step points.
+        prev = step_neis;
+    }
+}
+```
+**expand_prim_grp**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Expand primitive group. """;
+
+// Get expand steps. 
+int steps = chi("steps");
+
+// Get group name and get primitives in the group.
+string prim_grp = chs("primitive_group");
+int prims[] = expandprimgroup(0, prim_grp);
+
+// Initialize previous primitive group.
+int prev[] = array(@primnum);
+
+// Check if the current primitive is in the group.
+if(find(prims, @primnum)>=0){
+    
+    // Iterate for each of the steps.
+    for(int i=0; i<steps; i++){
+        
+        // Initialize connected prims array.
+        int step_conn[];
+        
+        // Interate for each previous primitive.
+        foreach(int a; prev){
+            
+            // Get points from primitive.
+            int prim_pts[] = primpoints(0, a);
+            
+            // Initialize adjacent prims and iterate for each point.
+            int adj[];
+            foreach(int pt; prim_pts){
+            
+                // Get primitives from points and append them to adj.
+                int pt_prims[] = pointprims(0, pt);
+                foreach(int prim; pt_prims){
+                    append(adj, prim);
+                }
+            }
+            
+            // Iterate for each of adjacent primitives.
+            foreach(int prim; adj){
+                if(find(prims, prim)<0 && find(prev, prim)<0 && find(step_conn, prim)<0){
+                    
+                    // Append primitive to setp_conn and set prim group.
+                    append(step_conn, prim);
+                    setprimgroup(0, prim_grp, prim, 1);  
+                }     
+            }
+        }
+        
+        // Update last step prims.
+        prev = step_conn;    
+    } 
+}
+```
+
 ## Group Unshared Points
 *Reference Code*: 25639790
 
@@ -3016,133 +3143,6 @@ vector final_pos = lerp(v@P, pos, bias);
 
 // Set final position.
 v@P = final_pos;
-```
-
-## Group Expand
-*Reference Code*: 10643779
-> [!CAUTION]
-> This method doesn't replace the group expand functionality. If you pretend to expand the groups a lot, please use the group expand node because adding too many expansion steps could result in a memory related crash.
-
-> [!NOTE]
-> Note that there are 2 examples: expand_point_grp and expand_prim_grp. The expand_prim_grp required a different and a bit slower approach compared to expand_point_grp because the intention of this snippet is to try to mimic the output from the group expand node. You could use the same process as the expand_point_grp for primitives just by using the polyneighbour function and modifying other geometry type related functions.
-
-**expand_point_grp**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Expand point group. """;
-
-// Get expand steps. 
-int steps = chi("steps");
-
-// Get group name and get points in the group.
-string pt_grp = chs("point_group");
-int pts[] = expandpointgroup(0, pt_grp);
-
-// Initialize previous primitive group.
-int prev[] = array(@ptnum);
-
-// Check if the current point is in the group.
-if(find(pts, @ptnum)>=0){
-
-    // Iterate for each of the steps.
-    for(int i=0; i<steps; i++){
-        
-        // Initialize neighbour points array.
-        int step_neis[];
-        
-        // Interate for each previous point.
-        foreach(int a; prev){
-            
-            // Get neighbour points.
-            int neis[] = neighbours(0, a);
-            
-            // Iterate for each of the neighbours.
-            foreach(int nei; neis){
-                
-                // Check if point is already in the group.
-                if(find(pts, nei)<0){
-                    
-                    // Append point to setp_neis and set point group.
-                    append(step_neis, nei);
-                    setpointgroup(0, pt_grp, nei, 1);
-                }
-            } 
-        }
-        
-         // Update last step points.
-        prev = step_neis;
-    }
-}
-```
-
-**expand_prim_grp**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Expand primitive group. """;
-
-// Get expand steps. 
-int steps = chi("steps");
-
-// Get group name and get primitives in the group.
-string prim_grp = chs("primitive_group");
-int prims[] = expandprimgroup(0, prim_grp);
-
-// Initialize previous primitive group.
-int prev[] = array(@primnum);
-
-// Check if the current primitive is in the group.
-if(find(prims, @primnum)>=0){
-    
-    // Iterate for each of the steps.
-    for(int i=0; i<steps; i++){
-        
-        // Initialize connected prims array.
-        int step_conn[];
-        
-        // Interate for each previous primitive.
-        foreach(int a; prev){
-            
-            // Get points from primitive.
-            int prim_pts[] = primpoints(0, a);
-            
-            // Initialize adjacent prims and iterate for each point.
-            int adj[];
-            foreach(int pt; prim_pts){
-            
-                // Get primitives from points and append them to adj.
-                int pt_prims[] = pointprims(0, pt);
-                foreach(int prim; pt_prims){
-                    append(adj, prim);
-                }
-            }
-            
-            // Iterate for each of adjacent primitives.
-            foreach(int prim; adj){
-                if(find(prims, prim)<0 && find(prev, prim)<0 && find(step_conn, prim)<0){
-                    
-                    // Append primitive to setp_conn and set prim group.
-                    append(step_conn, prim);
-                    setprimgroup(0, prim_grp, prim, 1);  
-                }     
-            }
-        }
-        
-        // Update last step prims.
-        prev = step_conn;    
-    } 
-}
 ```
 
 ## Attribute From Map
