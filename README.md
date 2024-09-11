@@ -22,6 +22,8 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>Camera Based Management</summary> 
 
+* [`Camera Direction`](#camera-direction)
+* [`Camera Transformations`](#camera-transformations)
 * [`Frustum Camera`](#frustum-camera)
 
 </details>
@@ -227,6 +229,63 @@ f@curveu = curveu;
 ```
 
 # Camera Based Management
+## Camera Direction
+*Reference Code*: 2930099
+> [!NOTE]
+> Note that this example is created in Detail, but it can be implemented in other geometry types.
+
+**cam_dir**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get camera direction. """;
+
+// Get camera to extract transformations.
+string cam = chs("camera");
+
+// Extract transformation from operator.
+matrix cam_xform = optransform(cam);
+
+// Transform static direction with rotation matrix.
+vector dir = {0,0,-1}*matrix3(cam_xform);
+
+// Export camera direction. 
+v@cam_dir = dir;
+```
+
+## Camera Transformations
+*Reference Code*: 51915380
+> [!NOTE]
+> Note that this example is created in Detail, but it can be implemented in other geometry types.
+
+**cam_transform**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get camera transformations. """;
+
+// Get camera to extract transformations.
+string cam = chs("camera");
+
+// Extract transformation from operator.
+matrix cam_xform = optransform(cam);
+
+// Export translate and rotation quaternion.
+v@translate = cracktransform(0,0,0,{0,0,0},cam_xform);
+p@rotate = eulertoquaternion(cracktransform(0,0,1,{0,0,0},cam_xform), 0);
+4@xform = cam_xform;
+```
+
 ## Frustum Camera
 *Reference Code*: 38002708
 
@@ -3213,63 +3272,6 @@ float ramp = fit01(rand, -1, 1);
 
 // Export -1 to 1 values.
 f@rand_vale = ramp;
-```
-
-## Camera Transformations
-*Reference Code*: 51915380
-> [!NOTE]
-> Note that this example is created in Detail, but it can be implemented in other geometry types.
-
-**cam_transform**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Get camera transformations. """;
-
-// Get camera to extract transformations.
-string cam = chs("camera");
-
-// Extract transformation from operator.
-matrix cam_xform = optransform(cam);
-
-// Export translate and rotation quaternion.
-v@translate = cracktransform(0,0,0,{0,0,0},cam_xform);
-p@rotate = eulertoquaternion(cracktransform(0,0,1,{0,0,0},cam_xform), 0);
-4@xform = cam_xform;
-```
-
-## Camera Direction
-*Reference Code*: 2930099
-> [!NOTE]
-> Note that this example is created in Detail, but it can be implemented in other geometry types.
-
-**cam_dir**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Get camera direction. """;
-
-// Get camera to extract transformations.
-string cam = chs("camera");
-
-// Extract transformation from operator.
-matrix cam_xform = optransform(cam);
-
-// Transform static direction with rotation matrix.
-vector dir = {0,0,-1}*matrix3(cam_xform);
-
-// Export camera direction. 
-v@cam_dir = dir;
 ```
 
 ## Push Point Over Ground
