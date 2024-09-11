@@ -24,6 +24,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Camera Constraint`](#camera-constraint)
 * [`Camera Direction`](#camera-direction)
+* [`Camera Flatten Object`](#camera-flatten-object)
 * [`Camera Frustum`](#camera-frustum)
 * [`Camera Frustum Cull`](#camera-frustum-cull)
 * [`Camera Transformations`](#camera-transformations)
@@ -296,6 +297,35 @@ vector dir = {0,0,-1}*matrix3(cam_xform);
 
 // Export camera direction. 
 v@cam_dir = dir;
+```
+
+## Camera Flatten Object
+*Reference Code*: 31941042
+
+**flat_camera**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Flatten objects based on camera perspective. """;
+
+// Get depth and camera.
+float depth = chf("depth");
+string cam = chs("camera");
+
+// Transform to NDC and flatten points.
+vector ndc_flatten = toNDC(cam, v@P);
+ndc_flatten.z=-depth;
+
+// Transform back to world position.
+vector flatten = fromNDC(cam, ndc_flatten);
+
+// Export position.
+v@P = flatten;
 ```
 
 ## Camera Frustum
@@ -3521,35 +3551,6 @@ foreach(int n; neis){
 
 // Export position attribute by dividing all positions by number of points.
 v@P = sum(med_pos) / (len(neis)+1);
-```
-
-## Flatten Object Camera Perspective
-*Reference Code*: 89071933
-
-**flat_camera**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Flatten objects based on camera perspective. """;
-
-// Get depth and camera.
-float depth = chf("depth");
-string cam = chs("camera");
-
-// Transform to NDC and flatten points.
-vector ndc_flatten = toNDC(cam, v@P);
-ndc_flatten.z=-depth;
-
-// Transform back to world position.
-vector flatten = fromNDC(cam, ndc_flatten);
-
-// Export position.
-v@P = flatten;
 ```
 
 ## Run At Frame
