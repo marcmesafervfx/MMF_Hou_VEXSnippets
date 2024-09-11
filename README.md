@@ -28,6 +28,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Color Fresnel`](#color-fresnel)
 * [`Color Normalized Age`](#color-normalized-age)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
+* [`Find Equivalent Ptnum`](#find-equivalent-ptnum)
 * [`Group To Attribute`](#group-to-attribute)
 * [`Noise Edge Mask`](#noise-edge-mask)
 * [`Normalized Point Density`](#normalized-point-density)
@@ -730,6 +731,32 @@ float curveu = float(@ptnum)/float(@numpt-1);
 
 // Set value.
 f@curveu = curveu;
+```
+
+## Find Equivalent Ptnum
+*Reference Code*: 39128540
+> [!NOTE]
+> In this example I use an integer value, but you can use a string one if you'd like. In addition, this process can be done in different types of geometries.
+
+**find_equiv_ptnum**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a geometry with at least a coinciding attribute with Input 0.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Find equivalent value and set the color using integer values. """;
+
+// Find equivalent point using int attribute.
+int equiv_pt = findattribval(1, "point", "id", i@id);
+
+// Get attribute using equivalent point.
+vector color = point(1, "Cd", equiv_pt);
+
+// Set attribute.
+v@Cd = color;
 ```
 
 ## Group To Attribute
@@ -3910,32 +3937,6 @@ vector minpos = minpos(1, v@P);
 
 // Set position.
 v@P = minpos; 
-```
-
-## Find Equivalent Ptnum
-*Reference Code*: 39128540
-> [!NOTE]
-> In this example I use an integer value, but you can use a string one if you'd like. In addition, this process can be done in different types of geometries.
-
-**find_equiv_ptnum**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** connected to a geometry with at least a coinciding attribute with Input 0.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Find equivalent value and set the color using integer values. """;
-
-// Find equivalent point using int attribute.
-int equiv_pt = findattribval(1, "point", "id", i@id);
-
-// Get attribute using equivalent point.
-vector color = point(1, "Cd", equiv_pt);
-
-// Set attribute.
-v@Cd = color;
 ```
 
 ## Carve Primitive
