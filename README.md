@@ -32,6 +32,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Group To Attribute`](#group-to-attribute)
 * [`Infrared From Float Attribute`](#infrared-from-float-attribute)
 * [`Noise Edge Mask`](#noise-edge-mask)
+* [`Normalize Point Positions`](#normalize-point-positions)
 * [`Normalized Point Density`](#normalized-point-density)
 * [`Point Attribute Transfer`](#point-attribute-transfer)
 * [`Remove Attributes`](#remove-attributes)
@@ -883,6 +884,31 @@ xaxis = chramp("axis", xaxis);
 
 // Set color.
 v@Cd = xaxis;
+```
+
+## Normalize Point Positions
+*Reference Code*: 6378648
+
+**norm_pt_pos**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Normalize position values. """;
+
+// Get bouding box max and min sizes.
+vector max_bbox = getbbox_max(0);
+vector min_bbox = getbbox_min(0);
+
+// Normalize position values.
+vector norm_pos = fit(v@P, min_bbox, max_bbox, 0, 1);
+
+// Export normalized positions in the color attribute.
+v@Cd = norm_pos;
 ```
 
 ## Normalized Point Density
@@ -4095,31 +4121,6 @@ float speed = length(v@v);
 
 // Remove based on speed.
 if(speed<speed_thr)removepoint(0, @ptnum);
-```
-
-## Normalize Point Positions
-*Reference Code*: 6378648
-
-**norm_pt_pos**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Normalize position values. """;
-
-// Get bouding box max and min sizes.
-vector max_bbox = getbbox_max(0);
-vector min_bbox = getbbox_min(0);
-
-// Normalize position values.
-vector norm_pos = fit(v@P, min_bbox, max_bbox, 0, 1);
-
-// Export normalized positions in the color attribute.
-v@Cd = norm_pos;
 ```
 
 ## Remove Unused Points
