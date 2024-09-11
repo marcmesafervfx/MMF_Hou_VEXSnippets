@@ -12,7 +12,10 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
-    <summary>Attribute Management</summary>
+<summary>Attribute Management</summary>
+
+* [`Blur Point Positions`](#blur-point-positions)
+
 </details>
 <details>
     <summary>Camera Based Management</summary> 
@@ -89,6 +92,49 @@ foreach(float val; smp_array){
 
 // Store array attribute.
 f[]@array = new_smp_array;
+```
+
+# Attribute Manipulation
+## Blur Point Positions
+*Reference Code*: 26692791
+> [!TIP]
+> Create a for-loop and iterate the attribute wrangle with feedback.
+
+**blur_position**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a scatter node.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Blur based on nearpoints. """;
+
+// Get maximum distance and maximum points.
+float maxdist = chf("maxdist");
+int maxpts = chi("maxpts");
+
+// Get near points based on distance and max points.
+int nearpts[] = nearpoints(0, v@P, maxdist, maxpts);
+
+// Initialize pos variable with current position value.
+vector pos = v@P;
+
+// Iterate for each of the near points.
+foreach(int i; nearpts){
+    
+    // Add value to the pos variable.
+    pos += point(0, "P", i); 
+}
+
+// Divide position by the amount of near points that you iterated.
+// We add an additional value because of the initial value of the
+// current position.
+pos/=len(nearpts)+1;
+
+// Set attribute value.
+v@P = pos;
 ```
 
 # Geometry Creation
@@ -775,48 +821,6 @@ v@tan = tan;
 ```
 
 # ORGANIZE
-
-## Blur Point Positions
-*Reference Code*: 26692791
-> [!TIP]
-> Create a for-loop and iterate the attribute wrangle with feedback.
-
-**blur_position**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a scatter node.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Blur based on nearpoints. """;
-
-// Get maximum distance and maximum points.
-float maxdist = chf("maxdist");
-int maxpts = chi("maxpts");
-
-// Get near points based on distance and max points.
-int nearpts[] = nearpoints(0, v@P, maxdist, maxpts);
-
-// Initialize pos variable with current position value.
-vector pos = v@P;
-
-// Iterate for each of the near points.
-foreach(int i; nearpts){
-    
-    // Add value to the pos variable.
-    pos += point(0, "P", i); 
-}
-
-// Divide position by the amount of near points that you iterated.
-// We add an additional value because of the initial value of the
-// current position.
-pos/=len(nearpts)+1;
-
-// Set attribute value.
-v@P = pos;
-```
 
 ## Cluster By Point Proximity
 *Reference Code*: 45043176
