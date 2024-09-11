@@ -68,6 +68,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Transformation Management </summary>
 
 * [`Basic Transform With Matrix`](#basic-transform-with-matrix)
+* [`Extract Transform`](#extract_transform)
 
 </details>
 <details>
@@ -1199,6 +1200,77 @@ translate(orig_matrix, trans);
 v@P*=orig_matrix;
 ```
 
+## Extract Transform
+*Reference Code*: 30376309
+> [!NOTE]
+> This method pretends to output a similar result as a extract transform node would do.
+
+**get_offset_matrix**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** connected to a rest geometry.
+> - **Input 2:** connected to a transformed geometry.
+> - **Input 3:** no-connected.
+
+``` c
+"""Retrieve offset comparing original rest and moving poses. """;
+
+// Get point neighbour point.
+int nb_pts = neighbour(1, 0, 0);
+
+// Get the position of transformed point.
+vector nb_pos = point(2, 'P', 0);
+
+// Compute zaxis based on current and neighbour point direction. 
+vector zaxis = normalize(nb_pos - point(2, 'P', nb_pts));
+
+// Use normal to create y axis.
+vector yaxis = point(2, "N", 0);
+
+// Store transformation matrix from transformed axis and position point.
+matrix trans_xform = maketransform(zaxis, yaxis, nb_pos);
+
+// Get the position of rest point.
+nb_pos = point(1, "P", 0);
+
+// Compute zaxis based on current and neighbour point direction. 
+zaxis = normalize(point(1, "P", 0) - point(1, 'P', nb_pts));
+
+// Use normal to create y axis.
+yaxis = point(1, "N", 0);
+
+// Store transformation matrix from rest axis and position point.
+matrix rest_xform = maketransform(zaxis, yaxis, nb_pos);
+
+// Compute offset matrix by inverting rest matrix.
+matrix totalxform = invert(rest_xform)*trans_xform;
+
+// Create point and set the attribute.
+int pt = addpoint(0, {0,0,0});
+setpointattrib(0, "xform", pt, totalxform);
+```
+**set_transformations**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a rest geometry.
+> - **Input 1:** connected to the get_offset_matrix node.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Reset transformations. """;
+
+// Retrieve xform attribute.
+matrix xform = point(1, "xform", 0);
+
+// Apply transformations to the position.
+v@P*=xform;
+
+// Apply transformations to the normal.
+v@N*=matrix3(xform);
+```
+
 # Vectorial Management
 ## Angle Between Two Vectors
 *Reference Code*: 89221217
@@ -1386,77 +1458,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Extract Transform
-*Reference Code*: 30376309
-> [!NOTE]
-> This method pretends to output a similar result as a extract transform node would do.
-
-**get_offset_matrix**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** connected to a rest geometry.
-> - **Input 2:** connected to a transformed geometry.
-> - **Input 3:** no-connected.
-
-``` c
-"""Retrieve offset comparing original rest and moving poses. """;
-
-// Get point neighbour point.
-int nb_pts = neighbour(1, 0, 0);
-
-// Get the position of transformed point.
-vector nb_pos = point(2, 'P', 0);
-
-// Compute zaxis based on current and neighbour point direction. 
-vector zaxis = normalize(nb_pos - point(2, 'P', nb_pts));
-
-// Use normal to create y axis.
-vector yaxis = point(2, "N", 0);
-
-// Store transformation matrix from transformed axis and position point.
-matrix trans_xform = maketransform(zaxis, yaxis, nb_pos);
-
-// Get the position of rest point.
-nb_pos = point(1, "P", 0);
-
-// Compute zaxis based on current and neighbour point direction. 
-zaxis = normalize(point(1, "P", 0) - point(1, 'P', nb_pts));
-
-// Use normal to create y axis.
-yaxis = point(1, "N", 0);
-
-// Store transformation matrix from rest axis and position point.
-matrix rest_xform = maketransform(zaxis, yaxis, nb_pos);
-
-// Compute offset matrix by inverting rest matrix.
-matrix totalxform = invert(rest_xform)*trans_xform;
-
-// Create point and set the attribute.
-int pt = addpoint(0, {0,0,0});
-setpointattrib(0, "xform", pt, totalxform);
-```
-**set_transformations**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a rest geometry.
-> - **Input 1:** connected to the get_offset_matrix node.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Reset transformations. """;
-
-// Retrieve xform attribute.
-matrix xform = point(1, "xform", 0);
-
-// Apply transformations to the position.
-v@P*=xform;
-
-// Apply transformations to the normal.
-v@N*=matrix3(xform);
 ```
 
 ## Create Checkboard
