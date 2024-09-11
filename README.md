@@ -1050,6 +1050,35 @@ float value = rand(atoi(utfval));
 f@value = value;
 ```
 
+## Degrees To Dot Value
+*Reference Code*: 59668810
+> [!NOTE]
+> This code is created to show how you can convert degrees into dot values, not to use it in any specific geometry or context example.
+
+**degree_to_dot**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create checker using ternary conditions. """;
+
+// Set the frequency for the scene.
+float freq = chf("frequency");
+
+// Compute vertical sections.
+v@Cd = (sin(v@P.x*freq)<0)?0:1;
+
+// Add horizontal sections.
+v@Cd += (sin(v@P.z*freq)<0)?0:1;
+
+// Check if there's coincidence and multiply by 0.
+v@Cd *= (v@Cd.r==2)?0:1;
+```
+
 ## From 01 to -11
 *Reference Code*: 25761785
 > [!NOTE]
@@ -3527,35 +3556,6 @@ int count = neighbourcount(0, @ptnum);
 
 // Remove point if count is 0.
 if(count==0) removepoint(0, @ptnum);
-```
-
-## Degrees To Dot Value
-*Reference Code*: 59668810
-> [!NOTE]
-> This code is created to show how you can convert degrees into dot values, not to use it in any specific geometry or context example.
-
-**degree_to_dot**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create checker using ternary conditions. """;
-
-// Set the frequency for the scene.
-float freq = chf("frequency");
-
-// Compute vertical sections.
-v@Cd = (sin(v@P.x*freq)<0)?0:1;
-
-// Add horizontal sections.
-v@Cd += (sin(v@P.z*freq)<0)?0:1;
-
-// Check if there's coincidence and multiply by 0.
-v@Cd *= (v@Cd.r==2)?0:1;
 ```
 
 ## Flow Vector Reference Point
