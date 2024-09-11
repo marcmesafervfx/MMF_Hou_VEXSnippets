@@ -36,6 +36,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary>Conversion Management</summary>
 
 * [`Convert Attribute To Group`](#convert-attribute-to-group)
+* [`Convert Group To Attribute`](#convert-group-to-attribute)
 
 </details>
 
@@ -552,6 +553,66 @@ v@Cd += (sin(v@P.z*freq)<0)?0:1;
 
 // Check if there's coincidence and multiply by 0.
 v@Cd *= (v@Cd.r==2)?0:1;
+```
+
+## Convert Group To Attribute
+*Reference Code*: 29125957
+> [!NOTE]
+> This example is being created in order to show how to convert a point group into a point attribute. You can do the same process for the other geometry types.
+
+> [!NOTE]
+> Note that in this code you have two different methods: attr_creation and attr_name_array. Both output a really different result, so check what would be convinient for you.
+
+> [!WARNING]
+> If you want to use the attr_creation method is better to check for how many groups you have in your current geometry... You don't want to get a lot of attributes.  
+
+**attr_name_array**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert attribute into groups. """;
+
+// Get all point groups.
+string grps[] = detailintrinsic(0, "pointgroups");
+
+// Initialize point group array.
+string pt_grps[];
+
+// Iterate for each available point group.
+foreach(string grp; grps){
+    
+    // Check if point in point group and append if so.
+    if (inpointgroup(0, grp, @ptnum)) append(pt_grps, grp);
+}
+
+// Export array of point groups for current point.
+s[]@grp_attr = pt_grps;
+```
+**attr_creation**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert attribute into groups. """;
+
+// Get all point groups.
+string grps[] = detailintrinsic(0, "pointgroups");
+
+// Iterate for each available point group.
+foreach(string grp; grps){
+    
+    // Check if point in point group and create attribute if so.
+    if(inpointgroup(0, grp, @ptnum)) setpointattrib(0, grp, @ptnum, 1);
+}
 ```
 
 # Geometry Creation
@@ -2509,66 +2570,6 @@ float uv_num = 1000 + (uv.x) + ((uv.y-1)*10);
 
 // Export uv name attribute.
 i@uv_name = int(uv_num);
-```
-
-## Convert Group To Attribute
-*Reference Code*: 29125957
-> [!NOTE]
-> This example is being created in order to show how to convert a point group into a point attribute. You can do the same process for the other geometry types.
-
-> [!NOTE]
-> Note that in this code you have two different methods: attr_creation and attr_name_array. Both output a really different result, so check what would be convinient for you.
-
-> [!WARNING]
-> If you want to use the attr_creation method is better to check for how many groups you have in your current geometry... You don't want to get a lot of attributes.  
-
-**attr_name_array**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Convert attribute into groups. """;
-
-// Get all point groups.
-string grps[] = detailintrinsic(0, "pointgroups");
-
-// Initialize point group array.
-string pt_grps[];
-
-// Iterate for each available point group.
-foreach(string grp; grps){
-    
-    // Check if point in point group and append if so.
-    if (inpointgroup(0, grp, @ptnum)) append(pt_grps, grp);
-}
-
-// Export array of point groups for current point.
-s[]@grp_attr = pt_grps;
-```
-**attr_creation**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Convert attribute into groups. """;
-
-// Get all point groups.
-string grps[] = detailintrinsic(0, "pointgroups");
-
-// Iterate for each available point group.
-foreach(string grp; grps){
-    
-    // Check if point in point group and create attribute if so.
-    if(inpointgroup(0, grp, @ptnum)) setpointattrib(0, grp, @ptnum, 1);
-}
 ```
 
 ## Push Points Volume
