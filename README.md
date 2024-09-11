@@ -17,6 +17,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>Attribute Management</summary>
 
+* [`Ambient Occlusion Attribute`](#ambient-occlusion-attribute)
 * [`Attribute Blur`](#attribute-blur)
 * [`Attribute From Map`](#attribute-from-map)
 * [`Basic Curvature Attribute`](#basic-curvature-attribute)
@@ -297,6 +298,77 @@ f[]@array = new_smp_array;
 ```
 
 # Attribute Management
+## Ambient Occlusion Attribute
+*Reference Code*: 61836333
+> [!TIP]
+> You can use the sample_hemisphere instead of the custom function. In this case, the code shows a different way to create a hemishpere.
+
+**occlusion**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute ambient occlusion. """; 
+
+// Create function to random vector in a hemisphere. You can use sample_hemisphere instead.
+function vector hemisphere(vector norm; vector2 seed){
+    
+    // Initialize up vector
+    vector up = {0,1,0};
+    
+    // Get normal offset matrix.
+    matrix3 offset = dihedral(up, norm);
+    
+    // Compute direction using seed values.
+    vector dir = normalize(set(fit01(rand(seed.x), -1, 1),
+                               rand(seed.y),
+                               fit01(rand(seed.x+123), -1, 1)));
+    
+    // Return direction vector.                 
+    return dir*offset;
+}
+
+// Get iteration, radius, source min and source max values.
+int iter = chi("iterations"); 
+float rad = chf("radius"); 
+float src_min = chf("source_min");
+float src_max = chf("source_max");
+
+// Peak position to avoid intersection with itself.
+vector peak_pos = v@P+v@N*1e-6;
+
+// Initialize occlusion values.
+float occ=0.0;
+
+// Iterate for each iteration value.
+for(int i = 0; i < iter; i++){
+    
+    // Compute seed value using interation value.
+    vector2 seed = rand(@ptnum + i);
+    
+    // Get direction vector.
+    vector dir = hemisphere(v@N, seed);
+    
+    // Initialize position and uvw values.
+    vector inter_pos, uvw;
+    
+    // Get primitive intersection values and overwrite intersect position and uvw.
+    float prim = intersect(0,peak_pos, dir*rad, inter_pos, uvw);
+    
+    // If the primitive intersects, add value to the occlusion based on radius distance.
+    if(prim != -1) occ += fit(distance(inter_pos, v@P), 0, rad, 1, 0);
+
+}
+
+// Export color ambient occlusion dividing the occlusion value by the iterations.
+// Then, fit values to contrast the color attribute.
+v@Cd = fit(1-occ/iter, src_min, src_max, 0, 1);
+```
+
 ## Attribute Blur
 *Reference Code*: 66979067
 
@@ -4276,75 +4348,4 @@ if(type==1 && size==1){
     // Export color attribute.
     v@Cd = color;
 }
-```
-
-## Ambient Occlusion Attribute
-*Reference Code*: 61836333
-> [!TIP]
-> You can use the sample_hemisphere instead of the custom function. In this case, the code shows a different way to create a hemishpere.
-
-**occlusion**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute ambient occlusion. """; 
-
-// Create function to random vector in a hemisphere. You can use sample_hemisphere instead.
-function vector hemisphere(vector norm; vector2 seed){
-    
-    // Initialize up vector
-    vector up = {0,1,0};
-    
-    // Get normal offset matrix.
-    matrix3 offset = dihedral(up, norm);
-    
-    // Compute direction using seed values.
-    vector dir = normalize(set(fit01(rand(seed.x), -1, 1),
-                               rand(seed.y),
-                               fit01(rand(seed.x+123), -1, 1)));
-    
-    // Return direction vector.                 
-    return dir*offset;
-}
-
-// Get iteration, radius, source min and source max values.
-int iter = chi("iterations"); 
-float rad = chf("radius"); 
-float src_min = chf("source_min");
-float src_max = chf("source_max");
-
-// Peak position to avoid intersection with itself.
-vector peak_pos = v@P+v@N*1e-6;
-
-// Initialize occlusion values.
-float occ=0.0;
-
-// Iterate for each iteration value.
-for(int i = 0; i < iter; i++){
-    
-    // Compute seed value using interation value.
-    vector2 seed = rand(@ptnum + i);
-    
-    // Get direction vector.
-    vector dir = hemisphere(v@N, seed);
-    
-    // Initialize position and uvw values.
-    vector inter_pos, uvw;
-    
-    // Get primitive intersection values and overwrite intersect position and uvw.
-    float prim = intersect(0,peak_pos, dir*rad, inter_pos, uvw);
-    
-    // If the primitive intersects, add value to the occlusion based on radius distance.
-    if(prim != -1) occ += fit(distance(inter_pos, v@P), 0, rad, 1, 0);
-
-}
-
-// Export color ambient occlusion dividing the occlusion value by the iterations.
-// Then, fit values to contrast the color attribute.
-v@Cd = fit(1-occ/iter, src_min, src_max, 0, 1);
 ```
