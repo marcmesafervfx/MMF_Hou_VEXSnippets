@@ -98,7 +98,10 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
-    <summary> Volume Management </summary>
+<summary> Volume Management </summary>
+
+* [`Voxel Index And Rest`](#voxel_index_and_rest)
+
 </details>
 <details>
     <summary> Water Deformers </summary>
@@ -1997,6 +2000,44 @@ if(@ptnum==@numpt-1) tan*=-1;
 v@tan = tan;
 ```
 
+# Volume Management
+## Voxel Index And Rest
+*Reference Code*: 8712550
+> [!TIP]
+> This code exports the necessary values to work with the volumerasterizelattice. You can potentially deform the exported points and the volumerasterizelattice will deform the volumes using the i@ix, i@iy, i@iz and v@rest attributes.
+
+> [!NOTE]
+> In order to create geometry with a volumewrangle, you'll need to turn on the Only Output Created Geometry in the Bindings tab.
+
+**voxel_index**
+> [!IMPORTANT]
+> **Mode:** Volume.
+> - **Input 0:** connected to a density volume.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Compute rest and index values for volumes. """;
+
+// Create point for each voxel.
+int pt = addpoint(0, v@P);
+
+// Convert position to rest position.
+vector index = volumepostoindex(0, 0, v@P);
+
+// Store rest position.
+setpointattrib(0, "rest", pt, v@P);
+
+// Create index for each axis and export it as integer.
+setpointattrib(0, "ix", pt, int(index.x));
+setpointattrib(0, "iy", pt, int(index.y));
+setpointattrib(0, "iz", pt, int(index.z));
+
+// Set density to 0 to be able to generate geometry.
+@density=0;
+```
+
 # ORGANIZE
 
 ## Remove by threshold
@@ -2343,42 +2384,7 @@ vector minpos = minpos(1, v@P);
 v@P = minpos; 
 ```
 
-## Voxel Index And Rest
-*Reference Code*: 8712550
-> [!TIP]
-> This code exports the necessary values to work with the volumerasterizelattice. You can potentially deform the exported points and the volumerasterizelattice will deform the volumes using the i@ix, i@iy, i@iz and v@rest attributes.
 
-> [!NOTE]
-> In order to create geometry with a volumewrangle, you'll need to turn on the Only Output Created Geometry in the Bindings tab.
-
-**voxel_index**
-> [!IMPORTANT]
-> **Mode:** Volume.
-> - **Input 0:** connected to a density volume.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Compute rest and index values for volumes. """;
-
-// Create point for each voxel.
-int pt = addpoint(0, v@P);
-
-// Convert position to rest position.
-vector index = volumepostoindex(0, 0, v@P);
-
-// Store rest position.
-setpointattrib(0, "rest", pt, v@P);
-
-// Create index for each axis and export it as integer.
-setpointattrib(0, "ix", pt, int(index.x));
-setpointattrib(0, "iy", pt, int(index.y));
-setpointattrib(0, "iz", pt, int(index.z));
-
-// Set density to 0 to be able to generate geometry.
-@density=0;
-```
 
 ## Most Repeated Value Array
 *Reference Code*: 30011921
