@@ -9,6 +9,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary>Array Management</summary>
 
 * [`Most Repeated Value Array`](#most-repeated-value-array)
+* [`Point Cloud To Array`](#point-cloud-to-array)
 * [`Remove Array Duplicates`](#remove-array-duplicates)
 
 </details>
@@ -33,7 +34,6 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Camera Transformations`](#camera-transformations)
 * [`Camera View Direction Cull`](#camera-view-direction-cull)
 
-
 </details>
 <details>
 <summary>Conversion Management</summary>
@@ -42,7 +42,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Convert String To Float`](#convert-string-to-float)
 * [`From 01 to -11`](#from-01-to--11)
 * [`Group To Array`](#group-to-array)
-* [`Point Cloud To Array`](#point-cloud-to-array)
+
 
 </details>
 
@@ -166,6 +166,41 @@ foreach(float val; unique_vals){
 
 // Store max repeated attribute.
 f@max_repeated = max_repeated;
+```
+
+## Point Cloud To Array
+*Reference Code*: 49343432
+
+**pc_array**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a geometry to capture from.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Point cloud to attribute array, """;
+
+// Create point cloud based on distance and maximum points
+int pc = pcopen(1, 'P', v@P, ch('distance'), chi('maxpts'));
+
+// Initialize pts array and iterate for each point in the point cloud.
+int pts[];
+while (pciterate(pc) > 0){
+    
+    // Initialize current point number.
+    int currentpt;
+    
+    // Import current point number.
+    pcimport(pc, 'point.number', currentpt);
+    
+    // Append to point array.
+    append(pts, currentpt);
+}
+
+// Export points array.
+i[]@nearpts = pts;
 ```
 
 ## Remove Array Duplicates
@@ -842,41 +877,6 @@ float ptnum = float(@ptnum);
 // Check if current ptnum is in the list and set the color.
 if(find(grp_red, ptnum)>=0) v@Cd = {1,0,0};
 if(find(grp_blue, ptnum)>=0) v@Cd = {0,0,1};
-```
-
-## Point Cloud To Array
-*Reference Code*: 49343432
-
-**pc_array**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** connected to a geometry to capture from.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Point cloud to attribute array, """;
-
-// Create point cloud based on distance and maximum points
-int pc = pcopen(1, 'P', v@P, ch('distance'), chi('maxpts'));
-
-// Initialize pts array and iterate for each point in the point cloud.
-int pts[];
-while (pciterate(pc) > 0){
-    
-    // Initialize current point number.
-    int currentpt;
-    
-    // Import current point number.
-    pcimport(pc, 'point.number', currentpt);
-    
-    // Append to point array.
-    append(pts, currentpt);
-}
-
-// Export points array.
-i[]@nearpts = pts;
 ```
 
 # Geometry Creation
