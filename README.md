@@ -116,6 +116,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Angle Between Two Vectors`](#angle-between-two-vectors)
 * [`Flow Vector`](#flow-vector)
+* [`Flow Vector Reference Point`](#flow-vector-reference-point)
 * [`Normalize Distance`](#normalize-distance)
 * [`Two Vector Intersect`](#two-vector-intersect)
 * [`Vector Along Curve`](#vector-along-curve)
@@ -2823,7 +2824,42 @@ vector zaxis = normalize((cross(yaxis, xaxis)));
 
 // Export directional vector.
 v@dir = (type)? zaxis:xaxis;
+```
 
+## Flow Vector Reference Point
+*Reference Code*: 75398837
+
+**flow_vector**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry with v@N attribute.
+> - **Input 1:** connected to a point reference.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Flow vector using a reference point position. """;
+
+// Initialize up vector.
+vector up = {0,1,0};
+
+// Get point reference position.
+vector pos = point(1, "P", 0);
+
+// Normalize direction vector.
+vector dir = normalize(v@P-pos);
+
+// Compute cross vector.
+vector cross = normalize(cross(dir, v@N));
+
+// Compute flow vector.
+vector flow = normalize(cross(v@N, cross));
+
+// Compute dot product between direction and normal.
+float dot = dot(dir, v@N);
+
+// Export dir attribute. 
+v@dir = lerp(flow, dir, dot);
 ```
 
 ## Normalize Distance
@@ -3668,42 +3704,6 @@ int count = neighbourcount(0, @ptnum);
 
 // Remove point if count is 0.
 if(count==0) removepoint(0, @ptnum);
-```
-
-## Flow Vector Reference Point
-*Reference Code*: 75398837
-
-**flow_vector**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry with v@N attribute.
-> - **Input 1:** connected to a point reference.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Flow vector using a reference point position. """;
-
-// Initialize up vector.
-vector up = {0,1,0};
-
-// Get point reference position.
-vector pos = point(1, "P", 0);
-
-// Normalize direction vector.
-vector dir = normalize(v@P-pos);
-
-// Compute cross vector.
-vector cross = normalize(cross(dir, v@N));
-
-// Compute flow vector.
-vector flow = normalize(cross(v@N, cross));
-
-// Compute dot product between direction and normal.
-float dot = dot(dir, v@N);
-
-// Export dir attribute. 
-v@dir = lerp(flow, dir, dot);
 ```
 
 ## Fuse Points
