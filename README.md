@@ -31,6 +31,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Point Attribute Transfer`](#point-attribute-transfer)
 * [`Remove Attributes`](#remove-attributes)
 * [`UDIM Connectivity`](#udim-connectivity)
+* [`Variant Attribute`](#variant-attribute)
 
 </details>
 <details>
@@ -845,6 +846,30 @@ float uv_num = 1000 + (uv.x) + ((uv.y-1)*10);
 
 // Export uv name attribute.
 i@uv_name = int(uv_num);
+```
+
+## Variant Attribute
+*Reference Code*: 43837465
+
+**var_attr**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to points.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create random integer values. """;
+
+// Get amount of integer values.
+int count = chi("count");
+
+// Fit random value using count.
+int var = int(fit01(rand(@ptnum), 0, count));
+
+// Set variant attribute.
+i@variant = var;
 ```
 
 # Camera Based Management
@@ -3964,30 +3989,6 @@ vector pos = lerp(v@P, prim_pos, inset);
 
 // Export position attribute.
 v@P = pos;
-```
-
-## Variant Attribute
-*Reference Code*: 43837465
-
-**var_attr**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to points.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create random integer values. """;
-
-// Get amount of integer values.
-int count = chi("count");
-
-// Fit random value using count.
-int var = int(fit01(rand(@ptnum), 0, count));
-
-// Set variant attribute.
-i@variant = var;
 ```
 
 ## Basic Refract Model SOPs
