@@ -77,6 +77,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Check Point Inside Geometry`](#check-point-inside-geometry)
 * [`Error And Warning`](#error-and-warning)
 * [`NGon Detector`](#ngon-detector)
+* [`Primitive Dimensions`](#primitive-dimensions)
 * [`Primitive Type Checker`](#primitive-type-checker)
 * [`Print Values`](#print-values)
 
@@ -2024,6 +2025,28 @@ if(len(pts)>4){
 }
 ```
 
+## Primitive Dimensions
+*Reference Code*: 9604585
+> [!TIP]
+> You can eventually accumulate the values to get a similar output as the measure node would return.
+
+**measure**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get dimension values from intrinsic attributes. """;
+
+// Set volume, area and perimeter.
+f@volume = primintrinsic(0, "measuredvolume", @primnum);
+f@area = primintrinsic(0, "measuredarea", @primnum);
+f@perimeter = primintrinsic(0, "measuredarea", @primnum);
+```
+
 ## Primitive Type Checker
 *Reference Code*: 914613
 > [!NOTE]
@@ -3290,28 +3313,6 @@ foreach(int npt; npts){
 //Get final offset based on the influence of the weights
 vector finaloffset = sumoffsets / sumweights;
 v@P += finaloffset;
-```
-
-## Primitive Dimensions
-*Reference Code*: 9604585
-> [!TIP]
-> You can eventually accumulate the values to get a similar output as the measure node would return.
-
-**measure**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Get dimension values from intrinsic attributes. """;
-
-// Set volume, area and perimeter.
-f@volume = primintrinsic(0, "measuredvolume", @primnum);
-f@area = primintrinsic(0, "measuredarea", @primnum);
-f@perimeter = primintrinsic(0, "measuredarea", @primnum);
 ```
 
 ## Jitter Points
