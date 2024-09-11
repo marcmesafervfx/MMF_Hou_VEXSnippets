@@ -89,12 +89,6 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 </details>
 <details>
-<summary>Geometry Modifiers</summary>
-
-
-
-</details>
-<details>
 <summary> Group Management </summary>
 
 * [`Attribute To Group`](#attribute-to-group)
