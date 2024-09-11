@@ -30,6 +30,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
 * [`Find Equivalent Ptnum`](#find-equivalent-ptnum)
 * [`Group To Attribute`](#group-to-attribute)
+* [`Infrared From Float Attribute`](#infrared-from-float-attribute)
 * [`Noise Edge Mask`](#noise-edge-mask)
 * [`Normalized Point Density`](#normalized-point-density)
 * [`Point Attribute Transfer`](#point-attribute-transfer)
@@ -817,6 +818,42 @@ foreach(string grp; grps){
     
     // Check if point in point group and create attribute if so.
     if(inpointgroup(0, grp, @ptnum)) setpointattrib(0, grp, @ptnum, 1);
+}
+```
+
+## Infrared From Float Attribute
+*Reference Code*: 56068393
+
+**infrared**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create color attribute to visualize values. """;
+
+// Get attribute name, type and size.
+string attr = chs("attribute");
+int type = attribtype(0, "point", attr);
+int size = attribsize(0, "point", attr);
+
+// The attribute must be float.
+if(type==1 && size==1){
+
+    // Fit attribute values based on min and max values.
+    float att_val = fit(point(0, attr, @ptnum), chf("minimum_value"), chf("maximum_value"), 0, 1);
+    
+    // Get infrared values.
+    vector values[] = array({0.2,0,1}, {0,0.85,1}, {0,1,0.1}, {0.95,1,0}, {1,0,0});
+    
+    // Compute spline with values and sample position.
+    vector color = spline("linear", att_val, values);
+    
+    // Export color attribute.
+    v@Cd = color;
 }
 ```
 
@@ -4320,40 +4357,4 @@ pump = spline(array("linear"), pump, array(0, 1, 0, 1), array(0, 0.75, 0.9, 1));
 
 // Export color pump attribute.
 v@Cd = pump;
-```
-
-## Infrared From Float Attribute
-*Reference Code*: 56068393
-
-**infrared**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Create color attribute to visualize values. """;
-
-// Get attribute name, type and size.
-string attr = chs("attribute");
-int type = attribtype(0, "point", attr);
-int size = attribsize(0, "point", attr);
-
-// The attribute must be float.
-if(type==1 && size==1){
-
-    // Fit attribute values based on min and max values.
-    float att_val = fit(point(0, attr, @ptnum), chf("minimum_value"), chf("maximum_value"), 0, 1);
-    
-    // Get infrared values.
-    vector values[] = array({0.2,0,1}, {0,0.85,1}, {0,1,0.1}, {0.95,1,0}, {1,0,0});
-    
-    // Compute spline with values and sample position.
-    vector color = spline("linear", att_val, values);
-    
-    // Export color attribute.
-    v@Cd = color;
-}
 ```
