@@ -22,6 +22,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>Camera Based Management</summary> 
 
+* [`Camera Constraint`](#camera-constraint)
 * [`Camera Direction`](#camera-direction)
 * [`Camera Frustum`](#camera-frustum)
 * [`Camera Frustum Cull`](#camera-frustum-cull)
@@ -242,6 +243,32 @@ f@curveu = curveu;
 ```
 
 # Camera Based Management
+## Camera Constraint
+*Reference Code*: 67107636
+
+**cst_to_camera**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a wrangle snippet 51915380 Camera Transformations.
+> - **Input 1:** connected to a timeshift node (set the reference frame), which is connected to wrangle snippet 51915380.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Constraint object to camera. """;
+
+// Get old and new computed matrix.
+matrix xform_old = detail(2, "xform");
+matrix xform_new = detail(1, "xform");
+
+// Get offset matrix.
+matrix offset_xform = invert(xform_old)*xform_new;
+
+// Transform position and normals.
+v@P*=offset_xform;
+v@N*=matrix3(offset_xform);
+```
+
 ## Camera Direction
 *Reference Code*: 2930099
 > [!NOTE]
@@ -3494,32 +3521,6 @@ foreach(int n; neis){
 
 // Export position attribute by dividing all positions by number of points.
 v@P = sum(med_pos) / (len(neis)+1);
-```
-
-## Constraint To Camera
-*Reference Code*: 92090423
-
-**cst_to_camera**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a wrangle snippet 51915380 Camera Transformations.
-> - **Input 1:** connected to a timeshift node (set the reference frame), which is connected to wrangle snippet 51915380.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Constraint object to camera. """;
-
-// Get old and new computed matrix.
-matrix xform_old = detail(2, "xform");
-matrix xform_new = detail(1, "xform");
-
-// Get offset matrix.
-matrix offset_xform = invert(xform_old)*xform_new;
-
-// Transform position and normals.
-v@P*=offset_xform;
-v@N*=matrix3(offset_xform);
 ```
 
 ## Flatten Object Camera Perspective
