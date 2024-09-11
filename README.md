@@ -119,6 +119,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Dihedral Offset`](#dihedral-offset)
 * [`Edge Rotation Based`](#edge-rotation-based)
 * [`Extract Transform`](#extract-transform)
+* [`Inset Primitive`](#inset-primitive)
 * [`Peak Geometry`](#peak-geometry)
 * [`Push Point Over Ground`](#push-point-over-ground)
 * [`Recreate Bend Behaviour`](#recreate-bend-behaviour)
@@ -3212,6 +3213,73 @@ v@P*=xform;
 v@N*=matrix3(xform);
 ```
 
+## Inset Primitive
+*Reference Code*: 479350
+
+**unique_points**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Unique points to split primitives. """;
+
+// Get prim position and its points.
+vector prim_pos = v@P;
+int prim_pts[] = primpoints(0, @primnum);
+
+// Initialize point array.
+int pts[];
+
+// Iterate for each point in the primitive.
+foreach(int pt; prim_pts){
+
+    // Get current point position and normal.
+    vector pt_pos = point(0, "P", pt);
+    vector normal = point(0, "N", pt);
+    
+    // Create the new point and set the normal.
+    int new_pt = addpoint(0, pt_pos);
+    setpointattrib(0, "N", new_pt, normal);
+    
+    // Append current point to the points array.
+    append(pts, new_pt);
+}
+
+// Create new primitive and remove current one. 
+addprim(0, "poly", pts);
+removeprim(0, @primnum, 1);
+```
+**inset_prims**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to unique_points.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Inset primitives. """;
+
+// Get inset value.
+float inset = chf("inset");
+
+// Get primitive connected to current point.
+int pt_prim = pointprims(0, @ptnum)[0];
+
+// Get connected primitive position. 
+vector prim_pos = prim(0, "P", pt_prim);
+
+// Linear interpolation based on inset.
+vector pos = lerp(v@P, prim_pos, inset);
+
+// Export position attribute.
+v@P = pos;
+```
+
 ## Peak Geometry
 *Reference Code*: 92501258
 
@@ -4265,73 +4333,6 @@ if(@Frame==10){
     // Print formatted string.
     printf("This condition runs at frame %d.", @Frame);
 }
-```
-
-## Inset Primitive
-*Reference Code*: 479350
-
-**unique_points**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Unique points to split primitives. """;
-
-// Get prim position and its points.
-vector prim_pos = v@P;
-int prim_pts[] = primpoints(0, @primnum);
-
-// Initialize point array.
-int pts[];
-
-// Iterate for each point in the primitive.
-foreach(int pt; prim_pts){
-
-    // Get current point position and normal.
-    vector pt_pos = point(0, "P", pt);
-    vector normal = point(0, "N", pt);
-    
-    // Create the new point and set the normal.
-    int new_pt = addpoint(0, pt_pos);
-    setpointattrib(0, "N", new_pt, normal);
-    
-    // Append current point to the points array.
-    append(pts, new_pt);
-}
-
-// Create new primitive and remove current one. 
-addprim(0, "poly", pts);
-removeprim(0, @primnum, 1);
-```
-**inset_prims**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to unique_points.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Inset primitives. """;
-
-// Get inset value.
-float inset = chf("inset");
-
-// Get primitive connected to current point.
-int pt_prim = pointprims(0, @ptnum)[0];
-
-// Get connected primitive position. 
-vector prim_pos = prim(0, "P", pt_prim);
-
-// Linear interpolation based on inset.
-vector pos = lerp(v@P, prim_pos, inset);
-
-// Export position attribute.
-v@P = pos;
 ```
 
 ## Pump Motion Attribute
