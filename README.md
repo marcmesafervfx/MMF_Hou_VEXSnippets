@@ -53,6 +53,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Error And Warning`](#error-and-warning)
 * [`NGon Detector`](#ngon-detector)
+* [`Print Values`](#print-values)
 * [`Unshared Points`](#unshared-points)
 
 </details>
@@ -1065,6 +1066,30 @@ if(len(pts)>4){
     // Set point group.
     setprimgroup(0, "ngons", i@primnum, 1);
 }
+```
+
+## Print Values
+*Reference Code*: 37135085
+> [!NOTE]
+> Note that this example is not created in any context because it is intended to be a basic example. You can consult the SideFX VEX Functions to get more into details, but those are the techniques that I commonly use to debug my code.
+ 
+**report**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Print values to the console. """;
+
+// Print depending on the dataype.
+printf("This is an example of how you would print a vector value: %g\n\n", {0,1,0});
+printf("This is an example of how you would print a float value: %f\n\n", $PI);
+printf("This is an example of how you would print a string value: %s\n\n", "Hello World!");
+printf("This is an example of how you would print a integer value: %d\n\n", 1);
+printf("This is an example of how you would print a %% sign: %%\n\n", 1);
 ```
 
 ## Unshared Points
@@ -3464,30 +3489,6 @@ if(@Frame==10){
     // Print formatted string.
     printf("This condition runs at frame %d.", @Frame);
 }
-```
-
-## Print Values
-*Reference Code*: 37135085
-> [!NOTE]
-> Note that this example is not created in any context because it is intended to be a basic example. You can consult the SideFX VEX Functions to get more into details, but those are the techniques that I commonly use to debug my code.
- 
-**report**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Print values to the console. """;
-
-// Print depending on the dataype.
-printf("This is an example of how you would print a vector value: %g\n\n", {0,1,0});
-printf("This is an example of how you would print a float value: %f\n\n", $PI);
-printf("This is an example of how you would print a string value: %s\n\n", "Hello World!");
-printf("This is an example of how you would print a integer value: %d\n\n", 1);
-printf("This is an example of how you would print a %% sign: %%\n\n", 1);
 ```
 
 ## Normalized Point Density
