@@ -94,7 +94,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary> Geometry Modifiers </summary>
 
-
+* [`Carve Primitive`](#carve-primitive)
 
 </details>
 <details>
@@ -2436,6 +2436,35 @@ printf("This is an example of how you would print a %% sign: %%\n\n", 1);
 ```
 
 # Geometry Modifiers
+## Carve Primitive
+*Reference Code*: 46938032
+
+**carve**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a polyline.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Carve curve. """;
+
+// Include groom library.
+#include <groom.h>
+
+// Get the distance to keep.
+float dist = chf('distance');
+
+// Get intrinsic perimeter
+float p = primintrinsic(0, 'measuredperimeter', @primnum);
+
+// Clamp distance.
+float trim = clamp(dist, 0, p);
+
+// Adjust the primitive length.
+adjustPrimLength(0, @primnum, p, trim);
+```
 
 # Group Management
 ## Attribute To Group
@@ -4179,36 +4208,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Carve Primitive
-*Reference Code*: 46938032
-
-**carve**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a polyline.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Carve curve. """;
-
-// Include groom library.
-#include <groom.h>
-
-// Get the distance to keep.
-float dist = chf('distance');
-
-// Get intrinsic perimeter
-float p = primintrinsic(0, 'measuredperimeter', @primnum);
-
-// Clamp distance.
-float trim = clamp(dist, 0, p);
-
-// Adjust the primitive length.
-adjustPrimLength(0, @primnum, p, trim);
 ```
 
 ## Remove By Speed Threshold
