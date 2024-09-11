@@ -110,6 +110,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Transformation And Deformation Management </summary>
 
 * [`Advanced Point Deform`](#advanced-point-deform)
+* [`Basic Point Deform`](#basic-point-deform)
 * [`Basic Transform With Matrix`](#basic-transform-with-matrix)
 * [`Dihedral Offset`](#dihedral-offset)
 * [`Edge Rotation Based`](#edge-rotation-based)
@@ -2856,6 +2857,34 @@ vector finaloffset = sumoffsets / sumweights;
 v@P += finaloffset;
 ```
 
+## Basic Point Deform
+*Reference Code*: 39569619
+> [!NOTE]
+> The simplicity of the method makes the process quite limitated. The deformed rest geometry should be quite similar as the geometry that you want to deform in terms of shape.
+
+**point_deform**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry to deform.
+> - **Input 1:** connected to a deformed rest geometry.
+> - **Input 2:** connected to a deformed animated geometry.
+> - **Input 3:** no-connected.
+
+``` c
+""" Deform poitn position based on rest and animated geometry. """; 
+
+// Initialize primitive and uv intrinsic coordinates.
+int prim; vector uvw;
+xyzdist(1, v@P, prim, uvw);
+
+// Retrieve the position value from the animated geometry.
+vector pos = primuv(2, "P", prim, uvw);
+
+// Set position.
+v@P = pos;
+```
+
+
 ## Basic Transform With Matrix
 *Reference Code*: 32956689
 **transform**
@@ -3794,33 +3823,6 @@ if(rand_value<chf("threshold")){
     // Remove point.
     removepoint(0, @ptnum);
 }
-```
-
-## Basic Point Deform
-*Reference Code*: 39569619
-> [!NOTE]
-> The simplicity of the method makes the process quite limitated. The deformed rest geometry should be quite similar as the geometry that you want to deform in terms of shape.
-
-**point_deform**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry to deform.
-> - **Input 1:** connected to a deformed rest geometry.
-> - **Input 2:** connected to a deformed animated geometry.
-> - **Input 3:** no-connected.
-
-``` c
-""" Deform poitn position based on rest and animated geometry. """; 
-
-// Initialize primitive and uv intrinsic coordinates.
-int prim; vector uvw;
-xyzdist(1, v@P, prim, uvw);
-
-// Retrieve the position value from the animated geometry.
-vector pos = primuv(2, "P", prim, uvw);
-
-// Set position.
-v@P = pos;
 ```
 
 ## Jitter Points
