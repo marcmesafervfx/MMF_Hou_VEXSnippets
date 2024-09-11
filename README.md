@@ -4,7 +4,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 :warning: The current repository is in development.
 
-# Index 
+# VEX Snippet Index 
 <details>
 <summary>Array Management</summary>
 
