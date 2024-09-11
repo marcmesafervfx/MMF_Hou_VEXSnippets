@@ -17,6 +17,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <details>
 <summary>Attribute Management</summary>
 
+* [`Attribute Blur`](#attribute-blur)
 * [`Attribute From Map`](#attribute-from-map)
 * [`Basic Curvature Attribute`](#basic-curvature-attribute)
 * [`Blur Point Positions`](#blur-point-positions)
@@ -285,6 +286,44 @@ f[]@array = new_smp_array;
 ```
 
 # Attribute Management
+## Attribute Blur
+*Reference Code*: 66979067
+
+**blur_attrib**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Blur attributes. """;
+
+// Get attribute to be blurred.
+string attr = chs("attribute");
+
+// Get attribute size.
+int size = attribsize(0, "point", attr);
+
+// Get maximum points and clamp value by 1.
+int max_pts = clamp(chi("max_points"), 1, int(1e09));
+
+// Create point cloud.
+int handle = pcopen(0, "P", v@P, 1e09, max_pts);
+
+// Check if value is float and export it.
+if(size==1){
+    float attr_val = pcfilter(handle, attr);
+    setpointattrib(0, attr, @ptnum, attr_val);
+}
+// Check if value is vector and export it.
+if(size==3){
+    vector attr_val = pcfilter(handle, attr);
+    setpointattrib(0, attr, @ptnum, attr_val);
+}
+```
+
 ## Attribute From Map
 *Reference Code*: 11700711
 > [!TIP]
@@ -3947,44 +3986,6 @@ int var = int(fit01(rand(@ptnum), 0, count));
 
 // Set variant attribute.
 i@variant = var;
-```
-
-## Blur Attributes
-*Reference Code*: 55835080
-
-**blur_attrib**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Blur attributes. """;
-
-// Get attribute to be blurred.
-string attr = chs("attribute");
-
-// Get attribute size.
-int size = attribsize(0, "point", attr);
-
-// Get maximum points and clamp value by 1.
-int max_pts = clamp(chi("max_points"), 1, int(1e09));
-
-// Create point cloud.
-int handle = pcopen(0, "P", v@P, 1e09, max_pts);
-
-// Check if value is float and export it.
-if(size==1){
-    float attr_val = pcfilter(handle, attr);
-    setpointattrib(0, attr, @ptnum, attr_val);
-}
-// Check if value is vector and export it.
-if(size==3){
-    vector attr_val = pcfilter(handle, attr);
-    setpointattrib(0, attr, @ptnum, attr_val);
-}
 ```
 
 ## Basic Refract Model SOPs
