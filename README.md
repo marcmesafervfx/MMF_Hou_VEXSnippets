@@ -38,6 +38,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Convert Attribute To Group`](#convert-attribute-to-group)
 * [`Convert Group To Attribute`](#convert-group-to-attribute)
 * [`Convert Integer To String`](#convert-integer-to-string)
+* [`Convert String To Float`](#convert-string-to-float)
 * [`Point Cloud To Array`](#point-cloud-to-array)
 
 </details>
