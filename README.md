@@ -98,6 +98,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 * [`Fix Primitive Overlap`](#fix-primitive-overlap)
 * [`Remove By Speed`](#remove-by-speed)
 * [`Remove By Threshold`](#remove-by-threshold)
+* [`Remove Unused Points`](#remove-unused-points)
 
 </details>
 <details>
@@ -2573,6 +2574,27 @@ if(rand_value<chf("threshold")){
 }
 ```
 
+## Remove Unused Points
+*Reference Code*: 11943207
+
+**remove_unused_pts**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Remove unused points. """;
+
+// Get neighbour count.
+int count = neighbourcount(0, @ptnum);
+
+// Remove point if count is 0.
+if(count==0) removepoint(0, @ptnum);
+```
+
 # Group Management
 ## Attribute To Group
 *Reference Code*: 47201184
@@ -4286,27 +4308,6 @@ v@P = def_pos*xform;
 ```
 
 # ORGANIZE
-
-## Remove Unused Points
-*Reference Code*: 11943207
-
-**remove_unused_pts**
-> [!IMPORTANT]
-> **Mode:** Points.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Remove unused points. """;
-
-// Get neighbour count.
-int count = neighbourcount(0, @ptnum);
-
-// Remove point if count is 0.
-if(count==0) removepoint(0, @ptnum);
-```
 
 ## Fuse Points
 *Reference Code*: 28848869
