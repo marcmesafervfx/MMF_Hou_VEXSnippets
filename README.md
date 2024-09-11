@@ -646,6 +646,71 @@ string name = "piece_" + itoa(value);
 s@name = name;
 ```
 
+## Convert String To Float
+*Reference Code*: 46533271
+> [!NOTE]
+> This example is being created in order to show how we can convert strings into floats, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
+
+> [!NOTE]
+> The str_to_flt_shash is unlikely to return the same values using different strings, but it can happen. The str_to_flt_utf won't return the same values if we use the raw utf value.
+
+**str_to_flt_shash**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert string values into floating values (basic way). """;
+
+// Create or import the integer value.
+string name = "string";
+
+// Create a random value using the string.
+float value = rand(random_shash(name));
+
+// Export float attribute.
+f@name = value;
+```
+**str_to_flt_utf**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Convert string values into floating values (basic way). """;
+
+// Create or import the integer value.
+string name = "string";
+
+// Decode string using utf8.
+int values[] = decodeutf8(name);
+
+// Initialize utfval.
+string utfval="";
+
+// Loop for each of the values.
+foreach(int v; values){
+    
+    // Convert integer to string.
+    string val = itoa(v);
+    
+    // Concat with previous iteration. 
+    utfval+=val;
+}
+
+// Create random value converting string to integer.
+float value = rand(atoi(utfval));
+
+// Export float attribute.
+f@value = value;
+```
+
 ## Point Cloud To Array
 *Reference Code*: 49343432
 
@@ -2486,71 +2551,6 @@ int pt = addpoint(0, new_pos);
 
 // Create polyline.
 addprim(0, "polyline", @ptnum, pt);
-```
-
-## Convert String To Float
-*Reference Code*: 46533271
-> [!NOTE]
-> This example is being created in order to show how we can convert strings into floats, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
-
-> [!NOTE]
-> The str_to_flt_shash is unlikely to return the same values using different strings, but it can happen. The str_to_flt_utf won't return the same values if we use the raw utf value.
-
-**str_to_flt_shash**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Convert string values into floating values (basic way). """;
-
-// Create or import the integer value.
-string name = "string";
-
-// Create a random value using the string.
-float value = rand(random_shash(name));
-
-// Export float attribute.
-f@name = value;
-```
-**str_to_flt_utf**
-> [!IMPORTANT]
-> **Mode:** Detail.
-> - **Input 0:** no-connected.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Convert string values into floating values (basic way). """;
-
-// Create or import the integer value.
-string name = "string";
-
-// Decode string using utf8.
-int values[] = decodeutf8(name);
-
-// Initialize utfval.
-string utfval="";
-
-// Loop for each of the values.
-foreach(int v; values){
-    
-    // Convert integer to string.
-    string val = itoa(v);
-    
-    // Concat with previous iteration. 
-    utfval+=val;
-}
-
-// Create random value converting string to integer.
-float value = rand(atoi(utfval));
-
-// Export float attribute.
-f@value = value;
 ```
 
 ## Vector Between Positions
