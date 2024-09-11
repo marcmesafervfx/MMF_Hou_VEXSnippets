@@ -68,7 +68,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Transformation Management </summary>
 
 * [`Basic Transform With Matrix`](#basic-transform-with-matrix)
-* [`Extract Transform`](#extract_transform)
+* [`Extract Transform`](#extract-transform)
 
 </details>
 <details>
