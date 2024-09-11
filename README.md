@@ -53,6 +53,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 
 * [`Error And Warning`](#error-and-warning)
 * [`NGon Detector`](#ngon-detector)
+* [`Primitive Type Checker`](#primitive-type-checker)
 * [`Print Values`](#print-values)
 * [`Unshared Points`](#unshared-points)
 
@@ -1068,6 +1069,26 @@ if(len(pts)>4){
 }
 ```
 
+## Primitive Type Checker
+*Reference Code*: 914613
+> [!NOTE]
+> Checking the primitive type can allow you to treat the input geometry in a different way. For example, if the input geometry is packed, you'll probably require to apply a different treatment compared to an unpacked one. 
+
+**prim_type**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Get primitive type from intrinsic attributes. """;
+
+// Set primitive type.
+s@prim_type = primintrinsic(0, "typename", @primnum);
+```
+
 ## Print Values
 *Reference Code*: 37135085
 > [!NOTE]
@@ -1688,26 +1709,6 @@ matrix3 rot_offset = dihedral(v@N, N);
 f@volume = primintrinsic(0, "measuredvolume", @primnum);
 f@area = primintrinsic(0, "measuredarea", @primnum);
 f@perimeter = primintrinsic(0, "measuredarea", @primnum);
-```
-
-## Primitive Type Checker
-*Reference Code*: 914613
-> [!NOTE]
-> Checking the primitive type can allow you to treat the input geometry in a different way. For example, if the input geometry is packed, you'll probably require to apply a different treatment compared to an unpacked one. 
-
-**prim_type**
-> [!IMPORTANT]
-> **Mode:** Primitives.
-> - **Input 0:** connected to a geometry.
-> - **Input 1:** no-connected.
-> - **Input 2:** no-connected.
-> - **Input 3:** no-connected.
-
-``` c
-""" Get primitive type from intrinsic attributes. """;
-
-// Set primitive type.
-s@prim_type = primintrinsic(0, "typename", @primnum);
 ```
 
 ## Jitter Points
