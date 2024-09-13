@@ -3871,19 +3871,45 @@ f@angle = full_angle;
 > - **Input 3:** no-connected.
 
 ``` c
-""" Create checker using ternary conditions. """;
+""" Circle and vector intersection. """;
 
-// Set the frequency for the scene.
-float freq = chf("frequency");
+// x(t) = x0 + t * vx and y(t) = y0 + t * vy being t the distance along the vector.
+// (x − xc)^2 + (y − yc)^2 = r^2 circle equation.
 
-// Compute vertical sections.
-v@Cd = (sin(v@P.x*freq)<0)?0:1;
+// Initialize default values.
+vector pt_pos = chv("point_position");
+vector ref_dir = normalize(chv("point_direction"));
+vector circle_center = chv("circle_center");
+float rad = chf("radius");
+float angle = chf("angle");
 
-// Add horizontal sections.
-v@Cd += (sin(v@P.z*freq)<0)?0:1;
+// Get center difference.
+vector cent_diff = pt_pos-circle_center;
 
-// Check if there's coincidence and multiply by 0.
-v@Cd *= (v@Cd.r==2)?0:1;
+// Coeficients cuadratic equation.
+float A = dot(ref_dir, ref_dir); // A = vx^2 + vy^2 (legnth of the vector).
+float B = 2*dot(cent_diff, ref_dir); // B = 2 * ((x0-xc)*vx + (y0-yc)*vy) (circle direction realtionship).
+float C = dot(cent_diff, cent_diff) - rad*rad; // C = (x0-xc)^2 + (y0-yc)^2 - r^2 (center to point rad based).
+
+// Cuadratic equation.
+float disc = B*B-4*A*C;
+float first_inter_dist = (-B-sqrt(disc))/(2*A);
+float second_inter_dist = (-B+sqrt(disc))/(2*A);
+
+// Compute new position.
+vector first_inter_pos;
+vector second_inter_pos;
+
+// Check if the vector intersects.
+if(disc>=0){
+
+    // Get two intersections.
+    first_inter_pos = pt_pos+first_inter_dist*ref_dir;
+    second_inter_pos = pt_pos+second_inter_dist*ref_dir;
+}
+
+else warning("The current %d reference direction doesn't intersect with the circle.", ref_dir);
+
 ```
 
 ## Cone Vector From Position
