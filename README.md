@@ -151,6 +151,7 @@ This repository is designated to be a place where I put some of the VEX snippets
 <summary> Vectorial Management </summary>
 
 * [`Angle Between Two Vectors`](#angle-between-two-vectors)
+* [`Circle And Vector Intersect`](#circle-and-vector-intersect)
 * [`Cone Vector From Position`](#cone-vector-from-position)
 * [`Flow Vector`](#flow-vector)
 * [`Flow Vector Reference Point`](#flow-vector-reference-point)
@@ -3854,6 +3855,35 @@ float full_angle = (int(sign(dot(axis, stable_axis)))==-1)? angle:360-angle;
 
 // Set angle value.
 f@angle = full_angle;
+```
+
+## Circle And Vector Intersect
+*Reference Code*: 86495975
+> [!NOTE]
+> This example is being created in order to show how we can get the position information from the intersection between a sphere and a directional vector, not to output a specific example using actual geometry. It can be used in different contexts and situations where the input geometry might change.
+
+**circle_and_vector_intersect**
+> [!IMPORTANT]
+> **Mode:** Detail.
+> - **Input 0:** no-connected.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Create checker using ternary conditions. """;
+
+// Set the frequency for the scene.
+float freq = chf("frequency");
+
+// Compute vertical sections.
+v@Cd = (sin(v@P.x*freq)<0)?0:1;
+
+// Add horizontal sections.
+v@Cd += (sin(v@P.z*freq)<0)?0:1;
+
+// Check if there's coincidence and multiply by 0.
+v@Cd *= (v@Cd.r==2)?0:1;
 ```
 
 ## Cone Vector From Position
