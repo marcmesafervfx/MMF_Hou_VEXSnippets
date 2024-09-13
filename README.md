@@ -4435,5 +4435,5 @@ v@P = def_pos*xform;
 ```
 
 # Acknowledgments Section
-Thanks for cooperating and giving feedback to make the best snippets possible!<br>
+Thanks for giving feedback to make the best snippets and presentation possible!<br>
 [Alain Lauzé](https://www.linkedin.com/in/alain-lauz%C3%A9-2569ab138/), [Andrea Bazzi](https://www.linkedin.com/in/andreabazzivfx/), [Filip Stanovsky](https://www.linkedin.com/in/filip-stanovsky-148862a8/), [Gabriel Casado](https://www.linkedin.com/in/gabriel-casado-feliu-05208a1b8/), [Mario Corrales](https://www.linkedin.com/in/mariocorralesmontero/)
