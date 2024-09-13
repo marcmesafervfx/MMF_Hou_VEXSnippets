@@ -196,16 +196,11 @@ This repository is designated to be a place where I put some of the VEX snippets
 """ Convert group string to group. """;
 
 // Get red group string and expand it to get a point array.
-string pt_grp_red = chs("group_red");
-int grp_red[] = expandpointgroup(0, pt_grp_red);
-
-// Get blue group string and expand it to get a point array.
-string pt_grp_blue = chs("group_blue");
-int grp_blue[] = expandpointgroup(0, pt_grp_blue);
+string pt_grp = chs("point_group");
+int grp[] = expandpointgroup(0, pt_grp);
 
 // Check if current ptnum is in the list and set the color.
-if(find(grp_red, @ptnum)>=0) v@Cd = {1,0,0};
-if(find(grp_blue, @ptnum)>=0) v@Cd = {0,0,1};
+setdetailattrib(0, "grp_array", grp);
 ```
 Credit for help: [Filip Stanovsky](https://www.linkedin.com/in/filip-stanovsky-148862a8/)
 
