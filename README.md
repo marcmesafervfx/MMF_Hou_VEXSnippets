@@ -228,39 +228,44 @@ if(find(grp_blue, ptnum)>=0) v@Cd = {0,0,1};
 
 // Create or input an array.
 float smp_array[] = array(0,1,2,2,3,3,4,5);
+int array_len = len(smp_array);
 
-// Initialize unique values.
-float unique_vals[];
-
-// Compute unique values from the array.
-foreach(float item; smp_array){
-    int checker = find(unique_vals, item);
-    if(checker<0) append(unique_vals, item);
-}
+// Sort array, required for the algorithm
+smp_array = sort(smp_array);
 
 // Initialize counting.
-float max_repeated = 0.0;
-int max_items = 0;
+float max_repeated = -2;
+int max_items = -1;
+
+// Algorithm trackers, seeded with the first item
+int count = 1;
+float prev_item = smp_array[0];
 
 // Check for the most repeated element in the array.
-foreach(float val; unique_vals){
-    
-    // Get values from original array that matches current value.
-    int items[] = find(smp_array, val);
-    
-    // Count how many items are in the array.
-    int item_count = len(items);
-    
-    // If the count is bigger, it is the most repeated one until now.
-    if(item_count>max_items){
-        max_items = item_count;
-        max_repeated = val;
+for(int i=1; i<array_len; i++){ // skip first item
+    float item = smp_array[i];
+   
+    // Increase count when it matches
+    if(item == prev_item) count ++;
+    else{
+        // When the item changes, with the array being sorted,
+        // the current max_items is the largest it will be for prev_item
+        if(count > max_items){
+            max_repeated = prev_item;
+            max_items = count;
+        }
+       
+        // Reset trackers
+        prev_item = item;
+        count = 1;
     }
 }
 
 // Store max repeated attribute.
 f@max_repeated = max_repeated;
+i@max_items = max_items;
 ```
+Credits for help: [Alain Lauzé](https://www.linkedin.com/in/alain-lauz%C3%A9-2569ab138/)
 
 ## Point Cloud To Array
 *Reference Code*: 49343432
