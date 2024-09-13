@@ -203,13 +203,11 @@ int grp_red[] = expandpointgroup(0, pt_grp_red);
 string pt_grp_blue = chs("group_blue");
 int grp_blue[] = expandpointgroup(0, pt_grp_blue);
 
-// Convert ptnum to float.
-float ptnum = float(@ptnum);
-
 // Check if current ptnum is in the list and set the color.
-if(find(grp_red, ptnum)>=0) v@Cd = {1,0,0};
-if(find(grp_blue, ptnum)>=0) v@Cd = {0,0,1};
+if(find(grp_red, @ptnum)>=0) v@Cd = {1,0,0};
+if(find(grp_blue, @ptnum)>=0) v@Cd = {0,0,1};
 ```
+Credit for help: [Filip Stanovsky](https://www.linkedin.com/in/filip-stanovsky-148862a8/)
 
 ## Most Repeated Value Array
 *Reference Code*: 30011921
