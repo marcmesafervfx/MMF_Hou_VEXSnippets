@@ -3887,7 +3887,7 @@ float angle = chf("angle");
 vector cent_diff = pt_pos-circle_center;
 
 // Coeficients cuadratic equation.
-float A = dot(ref_dir, ref_dir); // A = vx^2 + vy^2 (legnth of the vector).
+float A = dot(ref_dir, ref_dir); // A = vx^2 + vy^2 (length of the vector).
 float B = 2*dot(cent_diff, ref_dir); // B = 2 * ((x0-xc)*vx + (y0-yc)*vy) (circle direction realtionship).
 float C = dot(cent_diff, cent_diff) - rad*rad; // C = (x0-xc)^2 + (y0-yc)^2 - r^2 (center to point rad based).
 
