@@ -4436,4 +4436,4 @@ v@P = def_pos*xform;
 
 # Acknowledgments Section
 Thanks for cooperating and giving feedback to make the best snippets possible!<br>
-[Alain Lauzé](https://www.linkedin.com/in/alain-lauz%C3%A9-2569ab138/), [Filip Stanovsky](https://www.linkedin.com/in/filip-stanovsky-148862a8/), [Mario Corrales](https://www.linkedin.com/in/mariocorralesmontero/)
+[Alain Lauzé](https://www.linkedin.com/in/alain-lauz%C3%A9-2569ab138/), [Andrea Bazzi](https://www.linkedin.com/in/andreabazzivfx/), [Filip Stanovsky](https://www.linkedin.com/in/filip-stanovsky-148862a8/), [Mario Corrales](https://www.linkedin.com/in/mariocorralesmontero/)
