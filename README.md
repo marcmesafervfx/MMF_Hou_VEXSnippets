@@ -202,7 +202,6 @@ int grp[] = expandpointgroup(0, pt_grp);
 // Check if current ptnum is in the list and set the color.
 setdetailattrib(0, "grp_array", grp);
 ```
-Credit for help: [Filip Stanovsky](https://www.linkedin.com/in/filip-stanovsky-148862a8/)
 
 ## Most Repeated Value Array
 *Reference Code*: 30011921
@@ -259,7 +258,6 @@ for(int i=1; i<array_len; i++){ // skip first item
 f@max_repeated = max_repeated;
 i@max_items = max_items;
 ```
-Credits for help: [Alain Lauzé](https://www.linkedin.com/in/alain-lauz%C3%A9-2569ab138/)
 
 ## Point Cloud To Array
 *Reference Code*: 49343432
@@ -4436,3 +4434,6 @@ vector def_pos = new_pos*wave_m;
 v@P = def_pos*xform;
 ```
 
+# Acknowledgments Section
+Thanks for cooperating and giving feedback to make the best snippets possible!
+[Alain Lauzé](https://www.linkedin.com/in/alain-lauz%C3%A9-2569ab138/), [Filip Stanovsky](https://www.linkedin.com/in/filip-stanovsky-148862a8/), [Mario Corrales](https://www.linkedin.com/in/mariocorralesmontero/)
