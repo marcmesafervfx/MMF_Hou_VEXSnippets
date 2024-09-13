@@ -2,7 +2,7 @@
 # Initial Provisions
 This repository is designated to be a place where I put some of the VEX snippets I've been using to fix, check, create, and manipulate information in different contexts. If something needs to be revisited, let me know so I can check for it and commit any of the requested modifications.
 
-Thank you to [everyone](#acknowledgements-section) how gave me some comments to make this place better!
+Thank you to [everyone](#acknowledgments-section) how gave me some comments to make this place better!
 
 :warning: The current repository is in development.
 
