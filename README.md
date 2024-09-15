@@ -176,6 +176,7 @@ Thank you to [everyone](#acknowledgments-section) how gave me some comments to m
 <details>
 <summary> Water Deformers </summary>
 
+* [`Basic Kelvin Weke Deformer`](#basic-kelin-wake-deformer)
 * [`Wave Deformer`](#wave-deformer)
 
 </details>
@@ -4390,6 +4391,141 @@ setpointattrib(0, "iz", pt, int(index.z));
 ```
 
 # Water Deformers
+## Basic Kelvin Wake Deformer
+*Reference Code*: 88960949
+> [!NOTE]
+> Note that the results that the tools provides you are not real kelvin wakes. The provided code gives you room to modify, change and customize the kelvin wakes without limitations.
+
+> [!NOTE]
+> The code allows to create a pattern. The parameters are not ready to be animated, but the combination of different techniques would produce a good looking and animated kelvin wake. 
+
+> [!TIP]
+> You can test different values to achieve different results, but those are the defaults that I've been using for most of the tests:
+> - Reference position: {0,0,5}
+> - Reference direction: {0,0,-1}
+> - Width: 0.5
+> - Length: 5
+> - Div Wave Frequency: 10
+> - Trav Wave Frequency: 20
+> - Div Amplitude: 150
+> - Trav Amplitude: 0.075
+> - Max Angle: 39
+> - Origin Mask Max: 2
+> - Origin Mask Min: 0.5
+
+**kelvin_wake**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+// Get reference directional and positional values.
+vector ref_pos = chv("reference_position");
+vector ref_dir = normalize(chv("reference_direction"));
+float max_angle = radians(chf("max_angle") / 2);
+
+// Get dimension values.
+float width = chf("width");
+float length = chf("length");
+
+// Get frequency for 
+int div_freq = chi("div_wave_frequency");
+int trav_freq = chi("trav_wave_frequency");
+
+// Get wave amplitude.
+float div_amp = chf("div_amplitude");
+float trav_amp = chf("trav_amplitude");
+
+// Get origin fade distance values.
+float orig_max_distance = chf("origin_mask_max");
+float orig_min_distance = chf("origin_mask_min");
+
+// Adjust distance from origin.
+float orig_dist = fit(distance(v@P, ref_pos), orig_min_distance, orig_max_distance, 0, 1);
+
+// Store position in a variable.
+vector pos = v@P;
+
+// Traversal Waves position.
+vector trav_pos = ref_pos + ref_dir * length * 2;
+
+// Compute Traversal Waves.
+float trav_dist = distance(trav_pos, pos);
+float wave_trav_dist = fit(trav_dist, 0, length * 2, 1, 0);
+float trav_wave_factor = fit11(cos(2*$PI*wave_trav_dist * trav_freq*2), 0, 1);
+
+// Get direction from reference position to current point position.
+vector dir = normalize(pos - ref_pos);
+
+// Compute out cone angle where the Divergent Waves will be visible. 
+float out_cone = fit(dot(dir, ref_dir), 1, cos(max_angle), 1, 0);
+out_cone = pow(out_cone, 4);
+
+// Compute out cone angle where the Traversal Waves will be visible. 
+float in_cone = fit(dot(dir, ref_dir), 1, cos(max_angle/2), 0, 1);
+in_cone = pow(in_cone, 4);
+
+// Compute mask length based on distance from origin.
+float length_mask = fit(distance(v@P, ref_pos), 0, length, 1, 0);
+length_mask = pow(length_mask, 2);
+
+// Initialize divergent wave factor.
+float div_wave_factor = 0;
+
+// Iterate for each Divergent Wave side.
+for (int a = 0; a < 2; a++) {
+
+    // Get side multiplier.
+    int side_angle = (a)? -1 : 1;
+    
+    // Rotate direction based on iteration.
+    matrix rot = ident();
+    rotate(rot, $PI/2*side_angle, {0, 1, 0});
+    
+    // Compute max radius based on length*2 chord arc and the angles. 
+    float max_rad = (length*2)/(2*sin(max_angle));
+    
+    // Iteerate for each Divergent Wave input.
+    for(int i=0; i<div_freq; i++){
+    
+        // Check if the point is in the cone, has correct distance or it's already a wave. 
+        if (div_wave_factor >= 1 || out_cone == 0 || length_mask == 0) break;
+        
+        // Compute iteration push length.
+        float it_length = max_rad/(div_freq)*i;
+        
+        // Compute push direction and new position based on it_length.
+        vector dir_side = ref_dir * rot;
+        vector new_pos = ref_pos + dir_side * it_length;
+
+        // Get distance between current position and new reference position.
+        float dist = distance(pos, new_pos);
+        
+        // Set capture distance with its width.
+        dist = fit(dist, it_length - width, it_length + width, 0, 1);
+        
+        // Create fade on maximum and minimum values.
+        dist = fit11(sin(radians(dist * 180)), 0, 1);
+
+        // Update Divergent Wave factor with the maximum value.
+        div_wave_factor = max(dist, div_wave_factor);
+    }
+}
+
+// Inver wave factors and apply corresponding masks.
+div_wave_factor = (1 - div_wave_factor) * out_cone * in_cone * length_mask * orig_dist;
+trav_wave_factor = (1 - trav_wave_factor) * out_cone * orig_dist * length_mask;
+
+// Update Y position based on wave amplitude.
+v@P.y += div_wave_factor * div_amp + trav_wave_factor * trav_amp;
+
+// (Optional) Export color for each wave.
+v@Cd = set(div_wave_factor * div_amp, trav_wave_factor * trav_amp, 0) * 10;
+```
+
 ## Wave Deformer
 *Reference Code*: 81930198
 
