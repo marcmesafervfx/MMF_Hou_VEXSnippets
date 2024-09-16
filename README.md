@@ -2,7 +2,7 @@
 # Initial Provisions
 This repository is designated to be a place where I put some of the VEX snippets I've been using to fix, check, create, and manipulate information in different contexts. If something needs to be revisited, let me know so I can check for it and commit any of the requested modifications.
 
-Thank you to [everyone](#acknowledgments-section) how gave me some comments to make this place better!
+Thank you to [everyone](#acknowledgements-section) how gave me some comments to make this place better!
 
 :warning: The current repository is in development.
 
@@ -4572,6 +4572,6 @@ vector def_pos = new_pos*wave_m;
 v@P = def_pos*xform;
 ```
 
-# Acknowledgments Section
+# Acknowledgements Section
 Thanks for giving feedback to make the best snippets and presentation possible!<br>
 [Alain Lauzé](https://www.linkedin.com/in/alain-lauz%C3%A9-2569ab138/), [Andrea Bazzi](https://www.linkedin.com/in/andreabazzivfx/), [Christian Miró](https://www.linkedin.com/in/christianmiro/), [Filip Stanovsky](https://www.linkedin.com/in/filip-stanovsky-148862a8/), [Gabriel Casado](https://www.linkedin.com/in/gabriel-casado-feliu-05208a1b8/), [Josep Marsal](https://www.linkedin.com/in/josep-marsal-463b131bb/), [Maria Massot](https://www.linkedin.com/in/maria-massot-56673a16/), [Mario Corrales](https://www.linkedin.com/in/mariocorralesmontero/), [Tomáš Novák](https://www.linkedin.com/in/tomasnovakfx/), [Tomas Krejzek](https://www.linkedin.com/in/tomas-krejzek-17861891/)
