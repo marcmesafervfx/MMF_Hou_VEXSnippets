@@ -825,7 +825,7 @@ v@Cd = color;
 > This example is being created in order to show how to convert a point group into a point attribute. You can do the same process for the other geometry types.
 
 > [!NOTE]
-> Note that in this code you have two different methods: attr_creation and attr_name_array. Both output a really different result, so check what would be convinient for you.
+> Note that in this code you have two different methods: attr_creation and attr_name_array. Both output a really different result, so check what is better for you.
 
 > [!WARNING]
 > If you want to use the attr_creation method is better to check for how many groups you have in your current geometry... You don't want to get a lot of attributes.  
