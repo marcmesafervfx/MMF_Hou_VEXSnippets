@@ -314,19 +314,31 @@ i[]@nearpts = pts;
 ``` c
 """ Remove array duplicates. """;
 
-// Create or input an array.
+// Create or input an array and sort it.
 float smp_array[] = array(0,1,2,2,3,3,4,5);
+smp_array = sort(smp_array);
 
-// Initialize new array and loop through the vales of the old array. 
-float new_smp_array[];
+// Get previous value for the iteration.
+float prev_val = smp_array[0];
+
+// Remove first element of the array.
+smp_array = smp_array[1:];
+
+// Initialize final array.
+float final_array[];
+
+// Iterate for each value in the array.
 foreach(float val; smp_array){
-
-    // Add value if it is not found already in the new array.
-    if(find(new_smp_array, val)<0) append(new_smp_array, val);
+    
+    // Check if value is equal to the previous value.
+    if(prev_val != val) append(final_array, val);
+    
+    // Update previous value.
+    prev_val = val;
 }
 
 // Store array attribute.
-f[]@array = new_smp_array;
+f[]@array = final_array;
 ```
 
 # Attribute Management
