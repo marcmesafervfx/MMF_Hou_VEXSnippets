@@ -787,7 +787,7 @@ float cone = ceil(fit(dot(pt_dir, ref_dir), 1, cos(radians(max_angle)), 1, 0));
 
 // Compute distance.
 float dist = distance(v@P, ref_pos);
-dist = fit(dist, max_dist, max_dist, 1, 0);
+dist = (dist<=max_dist)? 1:0;
 
 // Export color with cone values.
 v@Cd = cone*dist;
