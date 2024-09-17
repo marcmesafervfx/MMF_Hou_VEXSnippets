@@ -30,6 +30,7 @@ Thank you to [everyone](#acknowledgements-section) how gave me some comments to 
 * [`Color Fresnel`](#color-fresnel)
 * [`Color Normalized Age`](#color-normalized-age)
 * [`Compute Curveu From Line`](#compute-curveu-from-line)
+* [`Cone Angle Direction`](#cone-angle-direction)
 * [`Find Equivalent Ptnum`](#find-equivalent-ptnum)
 * [`Group To Attribute`](#group-to-attribute)
 * [`Infrared From Float Attribute`](#infrared-from-float-attribute)
@@ -756,6 +757,40 @@ float curveu = float(@ptnum)/float(@numpt-1);
 
 // Set value.
 f@curveu = curveu;
+```
+
+## Cone Angle Direction
+*Reference Code*: 55464733
+
+**cone_angle**
+> [!IMPORTANT]
+> **Mode:** Points.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Cone angle direction. """; 
+
+// Get reference position, direction, angle and distance values.
+vector ref_pos = chv("reference_position");
+vector ref_dir = normalize(chv("reference_direction"));
+float max_angle = chf("max_angle")/2;
+float max_dist = chf("max_distance");
+
+// Get direction from reference position. 
+vector pt_dir = normalize(v@P-ref_pos);
+
+// Create cone direction and round values.
+float cone = ceil(fit(dot(pt_dir, ref_dir), 1, cos(radians(max_angle)), 1, 0));
+
+// Compute distance.
+float dist = distance(v@P, ref_pos);
+dist = fit(dist, max_dist, max_dist, 1, 0);
+
+// Export color with cone values.
+v@Cd = cone*dist;
 ```
 
 ## Find Equivalent Ptnum
