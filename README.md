@@ -325,7 +325,7 @@ float prev_val = smp_array[0];
 smp_array = smp_array[1:];
 
 // Initialize final array.
-float final_array[];
+float final_array[] = array(prev_val);
 
 // Iterate for each value in the array.
 foreach(float val; smp_array){
