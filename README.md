@@ -148,6 +148,7 @@ Thank you to [everyone](#acknowledgements-section) how gave me some comments to 
 * [`Recreate Bend Behaviour`](#recreate-bend-behaviour)
 * [`Smooth Geometry`](#smooth-geometry)
 * [`Sprite Orientation`](#sprite-orientation)
+* [`Transform Packed Objects`](#transform-packed-objects)
 
 </details>
 <details>
@@ -3862,6 +3863,37 @@ vector4 orient = quaternion(matrix3(cam_xform));
 
 // Export orient attribute.
 p@orient = orient;
+```
+
+## Transform Packed Objects
+*Reference Code*: 61834389
+> [!NOTE]
+> Note that the code is created to transform only packed objects from the center. If you want to apply transformations using the packed primitive centroid, you will need to use it as pivot or you will need to invert original transformation, apply new transformation and add the old transformations back.
+ 
+**trans_packed**
+> [!IMPORTANT]
+> **Mode:** Primitives.
+> - **Input 0:** connected to a packed geometry.
+> - **Input 1:** no-connected.
+> - **Input 2:** no-connected.
+> - **Input 3:** no-connected.
+
+``` c
+""" Transform packed objects. """;
+
+// Get translation, rotation and scale values.
+vector trans = chv("translate");
+vector rot = chv("rotation");
+vector scale = chv("scale");
+
+// Create matrix with retrieved information.
+matrix m = maketransform(0,0,trans,rot,scale);
+
+// Get packed transformations from first primitive.
+matrix old_xform = getpackedtransform(0, @primnum);
+
+// Set packed transformations.
+setpackedtransform(0, @primnum, old_xform*m);
 ```
 
 # Vectorial Management
