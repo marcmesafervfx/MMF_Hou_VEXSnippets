@@ -4208,25 +4208,25 @@ vector pos = {0,0,0};
 vector dir_pt1 = set(-0.7, 2, 0);
 vector dir_pt2 = set(0.7, 0.7, 0);
 
-// Define the points using the origin and direction
+// Define the points using the origin and direction.
 vector final_pt1 = origin_pt1 + dir_pt1;
 vector final_pt2 = origin_pt2 + dir_pt2;
 
-// Calculate the denominator of the intersection formula
+// Calculate the denominator of the intersection formula.
 float denominator = (origin_pt1.x - final_pt1.x) * (origin_pt2.y - final_pt2.y) - 
                     (origin_pt1.y - final_pt1.y) * (origin_pt2.x - final_pt2.x);
 
-// Avoid division by zero
+// Avoid division by zero.
 if (abs(denominator) > 1e-6) {
 
-    // Calculate the numerators for Px and Py
+    // Calculate the numerators for Px and Py.
     float Px_numer = ((origin_pt1.x * final_pt1.y - origin_pt1.y * final_pt1.x) * (origin_pt2.x - final_pt2.x)) - 
                      ((origin_pt1.x - final_pt1.x) * (origin_pt2.x * final_pt2.y - origin_pt2.y * final_pt2.x));
 
     float Py_numer = ((origin_pt1.x * final_pt1.y - origin_pt1.y * final_pt1.x) * (origin_pt2.y - final_pt2.y)) - 
                      ((origin_pt1.y - final_pt1.y) * (origin_pt2.x * final_pt2.y - origin_pt2.y * final_pt2.x));
 
-    // Calculate intersection position
+    // Calculate intersection position.
     pos = set(Px_numer / denominator, Py_numer / denominator, 0);
 
 }
