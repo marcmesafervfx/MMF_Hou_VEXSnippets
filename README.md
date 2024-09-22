@@ -178,7 +178,7 @@ Thank you to [everyone](#acknowledgements-section) how gave me some comments to 
 <details>
 <summary> Water Deformers </summary>
 
-* [`Basic Kelvin Weke Deformer`](#basic-kelin-wake-deformer)
+* [`Basic Kelvin Wake Deformer`](#basic-kelvin-wake-deformer)
 * [`Wave Deformer`](#wave-deformer)
 
 </details>
