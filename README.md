@@ -4202,26 +4202,34 @@ for(int pt=0; pt<pts; pt++){
 // Initialize point positions.
 vector origin_pt1 = set(0.5, 0, 0);
 vector origin_pt2 = set(-0.5, 0, 0);
+vector pos = {0,0,0};
 
 // Initialize direction vector.
-vector dir_pt1 = set(-0.7, 0.7, 0);
+vector dir_pt1 = set(-0.7, 2, 0);
 vector dir_pt2 = set(0.7, 0.7, 0);
 
-// Compute final position using the direction and origin position.
-vector final_pt1 = origin_pt1 + dir_pt1 * 1.0e08;
-vector final_pt2 = origin_pt2 + dir_pt2 * 1.0e08;
+// Define the points using the origin and direction
+vector final_pt1 = origin_pt1 + dir_pt1;
+vector final_pt2 = origin_pt2 + dir_pt2;
 
-// Compute intersection position using the line-line equation by Eric Wolfgang Weisstein.
-float den = (origin_pt1.x - final_pt1.x) *
-            (origin_pt2.y - final_pt2.y) -
-            (origin_pt1.y - final_pt1.y) *
-            (origin_pt2.x - final_pt2.x);
+// Calculate the denominator of the intersection formula
+float denominator = (origin_pt1.x - final_pt1.x) * (origin_pt2.y - final_pt2.y) - 
+                    (origin_pt1.y - final_pt1.y) * (origin_pt2.x - final_pt2.x);
 
-float mag_vec = (origin_pt1.x * final_pt1.y - origin_pt1.y * final_pt1.x);
-            
-vector pos = set(mag_vec * (origin_pt2.x - final_pt2.x) + (origin_pt1.x - final_pt1.x) * mag_vec,
-                 mag_vec * (origin_pt2.y - final_pt2.y) + (origin_pt1.y - final_pt1.y) * mag_vec,
-                 0) / den;
+// Avoid division by zero
+if (abs(denominator) > 1e-6) {
+
+    // Calculate the numerators for Px and Py
+    float Px_numer = ((origin_pt1.x * final_pt1.y - origin_pt1.y * final_pt1.x) * (origin_pt2.x - final_pt2.x)) - 
+                     ((origin_pt1.x - final_pt1.x) * (origin_pt2.x * final_pt2.y - origin_pt2.y * final_pt2.x));
+
+    float Py_numer = ((origin_pt1.x * final_pt1.y - origin_pt1.y * final_pt1.x) * (origin_pt2.y - final_pt2.y)) - 
+                     ((origin_pt1.y - final_pt1.y) * (origin_pt2.x * final_pt2.y - origin_pt2.y * final_pt2.x));
+
+    // Calculate intersection position
+    pos = set(Px_numer / denominator, Py_numer / denominator, 0);
+
+}
 
 // Store intersection position.
 v@intersect_pos = pos;
