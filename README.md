@@ -204,7 +204,7 @@ Thank you to [everyone](#acknowledgements-section) how gave me some comments to 
 string pt_grp = chs("point_group");
 int grp[] = expandpointgroup(0, pt_grp);
 
-// Check if current ptnum is in the list and set the color.
+// Set detail group array value.
 setdetailattrib(0, "grp_array", grp);
 ```
 
