@@ -2700,9 +2700,6 @@ if(count==0) removepoint(0, @ptnum);
 > [!NOTE]
 > This example is being created in order to show how to convert a point string attribute into a point group. You can do the same process for the other geometry types, but you have to make sure that the attribute that you are using is a string.
 
-> [!WARNING]
-> Don't use attributes with a lot of different values... You don't want to get a lot of groups.  
-
 **attr_to_grp**
 > [!IMPORTANT]
 > **Mode:** Points.
@@ -2712,19 +2709,21 @@ if(count==0) removepoint(0, @ptnum);
 > - **Input 3:** no-connected.
 
 ``` c
-""" Create checker using ternary conditions. """;
+""" Convert attribute pattern to group. """;
 
-// Set the frequency for the scene.
-float freq = chf("frequency");
+// Get attribute pattern and group name.
+string attr_pattern = chs("attribute_pattern");
+string grp_name = chs("group_name");
 
-// Compute vertical sections.
-v@Cd = (sin(v@P.x*freq)<0)?0:1;
+// Expand attribute pattern.
+int grp[] = expandprimgroup(0, attr_pattern);
 
-// Add horizontal sections.
-v@Cd += (sin(v@P.z*freq)<0)?0:1;
+// Iterate for each element of the expanded group.
+foreach(int prim; grp){
 
-// Check if there's coincidence and multiply by 0.
-v@Cd *= (v@Cd.r==2)?0:1;
+    // Set prim group.
+    setprimgroup(0, grp_name, prim, 1);
+}
 ```
 
 ## Group Expand
