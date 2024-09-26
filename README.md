@@ -3289,7 +3289,7 @@ v@P += finaloffset;
 > - **Input 3:** no-connected.
 
 ``` c
-""" Deform poitn position based on rest and animated geometry. """; 
+""" Deform point position based on rest and animated geometry. """; 
 
 // Initialize primitive and uv intrinsic coordinates.
 int prim; vector uvw;
