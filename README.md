@@ -998,12 +998,11 @@ v@Cd = norm_pos;
 int maxpts = chi('max_points');
 float rad = chf('radius');
 
-// Get nearpoints from first input and remove current value.
+// Get nearpoints from first input.
 int pts[] = nearpoints(0, v@P, rad, maxpts);
-removevalue(pts, @ptnum);
 
 // Compute normalized density value based on maxpoints.
-float density = len(pts)/float(maxpts-1);
+float density = (len(pts)-1)/float(maxpts-1);
 
 // Export density attribute.
 f@density = density;
