@@ -189,7 +189,7 @@ Thank you to [everyone](#acknowledgements-section) how gave me some comments to 
 > [!NOTE]
 > You can do the same process with different types of geometry. Just remember to modify the corresponding functions and geometry number.
 
-**str_to_grp**
+**grp_to_array**
 > [!IMPORTANT]
 > **Mode:** Points.
 > - **Input 0:** connected to a geometry.
