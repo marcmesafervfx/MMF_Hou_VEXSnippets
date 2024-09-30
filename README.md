@@ -1195,9 +1195,9 @@ i@variant = var;
 **cst_to_camera**
 > [!IMPORTANT]
 > **Mode:** Points.
-> - **Input 0:** connected to a wrangle snippet 51915380 Camera Transformations.
-> - **Input 1:** connected to a timeshift node (set the reference frame), which is connected to wrangle snippet 51915380.
-> - **Input 2:** no-connected.
+> - **Input 0:** connected to a geometry.
+> - **Input 1:** connected to a wrangle snippet 51915380 Camera Transformations.
+> - **Input 2:** connected to a timeshift node (set the reference frame), which is connected to wrangle snippet 51915380.
 > - **Input 3:** no-connected.
 
 ``` c
