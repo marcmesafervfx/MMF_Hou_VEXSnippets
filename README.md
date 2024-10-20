@@ -2701,7 +2701,7 @@ if(count==0) removepoint(0, @ptnum);
 
 **attr_to_grp**
 > [!IMPORTANT]
-> **Mode:** Points.
+> **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
