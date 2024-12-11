@@ -1707,7 +1707,7 @@ createPrim(pt0, pt1, pt5, pt4);
 
 **create_circle**
 > [!IMPORTANT]
-> **Mode:** Details.
+> **Mode:** Detail.
 > - **Input 0:** no-connected.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
@@ -1919,7 +1919,7 @@ addprim(0, "polyline", pts);
 
 **primitive_centroid**
 > [!IMPORTANT]
-> **Mode:** Primitive.
+> **Mode:** Primitives.
 > - **Input 0:** connected to a geometry.
 > - **Input 1:** no-connected.
 > - **Input 2:** no-connected.
