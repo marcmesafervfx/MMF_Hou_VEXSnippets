@@ -1,6 +1,6 @@
 ![banner](banner_vex.png)
 # Initial Provisions
-This repository is designated to be a place where I put some of the VEX snippets I've been using to fix, check, create, and manipulate information in different contexts. If something needs to be revisited, let me know so I can check for it and commit any of the requested modifications.
+Explore this collection of VEX snippets I’ve put together to streamline coding, data manipulation and experimentation in Houdini. If improvements are needed, I’m happy to review and incorporate them.
 
 Thank you to [everyone](#acknowledgements-section) how gave me some comments to make this place better!
 
